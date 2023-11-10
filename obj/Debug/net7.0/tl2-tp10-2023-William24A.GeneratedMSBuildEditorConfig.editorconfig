@@ -9,37 +9,41 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = tl2_tp10_2023_William24A
 build_property.RootNamespace = tl2_tp10_2023_William24A
-build_property.ProjectDir = c:\Users\wil37\OneDrive\Documentos\A_Segundo_Año\2-Taller de Lenguaje 2\tl2-tp10-2023-William24A\
+build_property.ProjectDir = C:\Users\wil37\OneDrive\Documentos\A_Segundo_Año\2-Taller de Lenguaje 2\tl2-tp10-2023-William24A\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\wil37\OneDrive\Documentos\A_Segundo_Año\2-Taller de Lenguaje 2\tl2-tp10-2023-William24A
+build_property.MSBuildProjectDirectory = C:\Users\wil37\OneDrive\Documentos\A_Segundo_Año\2-Taller de Lenguaje 2\tl2-tp10-2023-William24A
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Home/Index.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Home/Privacy.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Shared/Error.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/_ViewImports.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Usuario/Listar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xMaXN0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/_ViewStart.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Shared/_Layout.cshtml]
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-r1klj845fz

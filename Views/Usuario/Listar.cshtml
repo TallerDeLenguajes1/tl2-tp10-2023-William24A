@@ -1,0 +1,16 @@
+@model List<> // Define el modelo para esta vista
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lista de Elementos</title>
+    </head>
+    <body>
+        <h1>Lista de Elementos</h1>
+        <ul>
+        @foreach (var elemento in Model)
+        {
+            <li>@elemento.NombreUsuario</li>
+        }
+        </ul>
+    </body>
+</html>
