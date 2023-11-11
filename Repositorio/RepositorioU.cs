@@ -1,6 +1,5 @@
-using UtilizarUsuario;
 
-namespace RepoUsuarioU
+namespace tl2_tp10_2023_William24A.Models
 {
     public interface IDUsuarioRepository
     {

@@ -1,4 +1,4 @@
-namespace UtilizarUsuario
+namespace tl2_tp10_2023_William24A.Models
 {
     public class Usuario
     {

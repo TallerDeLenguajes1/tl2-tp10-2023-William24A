@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp10_2023_William24A.Models;
-using RepoUsuarioU;
 
 namespace tl2_tp10_2023_William24A.Controllers;
 
@@ -21,7 +20,7 @@ public class UsuarioController : Controller
     public IActionResult Listar()
     {
         var usuarios = repoUsuarioC.GetAll();
-        return View("usuarios");
+        return View(usuarios);
     }
 
     public IActionResult Index()
