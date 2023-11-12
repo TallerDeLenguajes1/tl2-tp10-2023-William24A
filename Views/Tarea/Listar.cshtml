@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Home Page"; // titulo de la pestaña
+}
+
+@model List<Tarea>
+
+<h2>Lista Tarea</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th hidden>ID</th> <!-- oculto el id--->
+            <th hidden>ID Tablero</th>
+            <th>Tarea</th>
+            <th>Descripcion</th>
+            <th>Color</th>
+            <th>Estado</th>
+            <th hidden>ID usuario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tarea in Model)
+        {
+            <tr>
+                <td hidden>@tarea.Id</td>
+                <td hidden>@tarea.IdTablero</td>
+                <td>@tarea.Nombre</td>
+                <td>@tarea.Descripcion</td>
+                <td>@tarea.Color</td>
+                <td>@tarea.Estado</td>
+                <td hidden>@tarea.IdUsuarioAsignado1</td>
+                <td>
+                    <button>
+                        <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id">Modificar</a>
+                    </button>
+                    <!-- asp-controller = nombre del controlador -->
+                    <!-- asp-action = nombre del metodo de accion (los que estan en el controlador) -->
+                    <!-- asp-route-id = nombre del parametro -->
+                    <button>
+                        <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,8 +1,9 @@
-using UtilizarTarea;
+
 using System.Data.SQLite;
 using System.Data.SqlClient;
 
-namespace RepoTareaU
+
+namespace tl2_tp10_2023_William24A.Models
 {
     public class RepoTareaC : IDTareaRepositorio
     {

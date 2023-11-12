@@ -1,0 +1,21 @@
+@model Tarea
+
+
+<form asp-controller="Tarea" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="@Model.IdTablero">Id Tablero</label>
+        <input asp-for="@Model.IdTablero" class="form-control" />
+        <label asp-for="@Model.Nombre">Nombre</label>
+        <input asp-for="@Model.Nombre" class="form-control" />
+        <label asp-for="@Model.Descripcion">Descripcion</label>
+        <input asp-for="@Model.Descripcion" class="form-control" />
+        <label asp-for="@Model.Color">Color</label>
+        <input asp-for="@Model.Color" class="form-control" />
+        <label asp-for="@Model.Estado">Estado</label>
+        <input asp-for="@Model.Estado" class="form-control" />
+        <label asp-for="@Model.IdUsuarioAsignado1">ID usuario asignado</label>
+        <input asp-for="@Model.IdUsuarioAsignado1" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

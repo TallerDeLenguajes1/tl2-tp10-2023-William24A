@@ -1,4 +1,4 @@
-namespace UtilizarTarea
+namespace tl2_tp10_2023_William24A.Models
 {
     public enum EstadoTarea
     {
@@ -10,7 +10,7 @@ namespace UtilizarTarea
     }
     public class Tarea
     {
-        private int? id;
+        private int id;
         private int? idTablero;
         private string? nombre;
         private string? descripcion;
@@ -18,7 +18,7 @@ namespace UtilizarTarea
         private EstadoTarea estado;
         private int? idUsuarioAsignado;
 
-        public int? Id { get => id; set => id = value; }
+        public int Id { get => id; set => id = value; }
         public int? IdTablero { get => idTablero; set => idTablero = value; }
         public string? Nombre { get => nombre; set => nombre = value; }
         public string? Descripcion { get => descripcion; set => descripcion = value; }

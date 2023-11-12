@@ -1,6 +1,5 @@
-using UtilizarTarea;
 
-namespace RepoTareaU
+namespace tl2_tp10_2023_William24A.Models
 {
     public interface IDTareaRepositorio
     {
