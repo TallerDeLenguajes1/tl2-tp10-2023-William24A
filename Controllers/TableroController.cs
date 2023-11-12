@@ -4,53 +4,53 @@ using tl2_tp10_2023_William24A.Models;
 
 namespace tl2_tp10_2023_William24A.Controllers;
 
-public class UsuarioController : Controller
+public class TableroController : Controller
 {
-    private readonly ILogger<UsuarioController> _logger;
+    private readonly ILogger<TableroController> _logger;
 
-    private IDUsuarioRepository repoUsuarioC;
+    private IDtableroRepositorio repoTableroC;
 
-    public UsuarioController(ILogger<UsuarioController> logger)
+    public TableroController(ILogger<TableroController> logger)
     {
         _logger = logger;
-        repoUsuarioC = new RepoUsuarioC();
+        repoTableroC = new RepoTableroC();
     }
 
     [HttpGet]
     public IActionResult Listar()
     {
-        var usuarios = repoUsuarioC.GetAll();
-        return View(usuarios);
+        var tableros = repoTableroC.ListarTableros();
+        return View(tableros);
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Usuario());
+        return View(new Tablero());
     }
     [HttpPost]
-    public IActionResult Create(Usuario usuario)
+    public IActionResult Create(Tablero tablero)
     {
-        repoUsuarioC.Create(usuario);
+        repoTableroC.CrearTablero(tablero);
         return RedirectToAction("Listar");
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(repoUsuarioC.GetById(id));
+        return View(repoTableroC.ObtenerTableroID(id));
     }
     [HttpPost]
-    public IActionResult Update(Usuario usuario)
+    public IActionResult Update(Tablero tablero)
     {
-        repoUsuarioC.Update(usuario.Id, usuario);
+        repoTableroC.ModificarTablero(tablero.Id, tablero);
         return RedirectToAction("Listar");
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        repoUsuarioC.Remove(id);
+        repoTableroC.DeleteTablero(id);
         return RedirectToAction("Listar");
     }
     

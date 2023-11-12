@@ -1,6 +1,5 @@
-using UtilizarTablero;
 
-namespace RepoTableroU
+namespace tl2_tp10_2023_William24A.Models
 {
     public interface IDtableroRepositorio
     {

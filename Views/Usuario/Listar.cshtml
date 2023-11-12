@@ -1,16 +1,36 @@
-@model List<Usuario> // Define el modelo para esta vista
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Lista de Elementos</title>
-    </head>
-    <body>
-        <h1>Lista de Elementos</h1>
-        <ul>
-        @foreach (var elemento in Model)
+﻿@{
+    ViewData["Title"] = "Home Page"; // titulo de la pestaña
+}
+
+@model List<Usuario>
+
+<h2>Lista Usuarios</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th hidden>ID</th> <!-- oculto el id--->
+            <th>Usuario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
         {
-            <li>@elemento.NombreUsuario</li>
+            <tr>
+                <td hidden>@usuario.Id</td>
+                <td>@usuario.NombreUsuario</td>
+                <td>
+                    <button>
+                        <a asp-controller="Usuario" asp-action="Update" asp-route-id="@usuario.Id">Modificar</a>
+                    </button>
+                    <!-- asp-controller = nombre del controlador -->
+                    <!-- asp-action = nombre del metodo de accion (los que estan en el controlador) -->
+                    <!-- asp-route-id = nombre del parametro -->
+                    <button>
+                        <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@usuario.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                    </button>
+                </td>
+            </tr>
         }
-        </ul>
-    </body>
-</html>
+    </tbody>
+</table>
