@@ -19,7 +19,7 @@ public class TareaController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        var tableros = repoTareaC.BuscarTodasTarea(2);
+        var tableros = repoTareaC.BuscarTareasTablero(1);
         return View(tableros);
     }
 
