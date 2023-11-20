@@ -33,9 +33,6 @@
                     <button>
                         <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id">Modificar</a>
                     </button>
-                    <!-- asp-controller = nombre del controlador -->
-                    <!-- asp-action = nombre del metodo de accion (los que estan en el controlador) -->
-                    <!-- asp-route-id = nombre del parametro -->
                     <button>
                         <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
                     </button>

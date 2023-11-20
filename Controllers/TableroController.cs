@@ -19,41 +19,102 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        var tableros = repoTableroC.ListarTableros();
-        return View(tableros);
+        if(isAdmin())
+        {
+            var tableros = repoTableroC.ListarTableros();
+            return View(tableros);
+        }else{
+            if(isOperador())
+            {
+                var tablerosU = repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                return View(tablerosU);
+            }
+        }
+        return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Tablero());
+        if(isAdmin() || isOperador())
+        {
+            return View(new Tablero());
+        }
+        return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
     [HttpPost]
     public IActionResult Create(Tablero tablero)
     {
-        repoTableroC.CrearTablero(tablero);
-        return RedirectToAction("Listar");
+        if(!ModelState.IsValid) return RedirectToAction("Index");
+        if(isAdmin()){
+            repoTableroC.CrearTablero(tablero);
+            return RedirectToAction("Listar");
+        }
+        else
+        {
+            if(tablero.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
+            {
+                repoTableroC.CrearTablero(tablero);
+                return RedirectToAction("Listar");
+            }
+        }
+        return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(repoTableroC.ObtenerTableroID(id));
+        if(isAdmin() && isOperador())
+        {
+             return View(repoTableroC.ObtenerTableroID(id));
+        }
+        return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
     [HttpPost]
     public IActionResult Update(Tablero tablero)
     {
-        repoTableroC.ModificarTablero(tablero.Id, tablero);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            repoTableroC.ModificarTablero(tablero.Id, tablero);
+            return RedirectToAction("Listar");
+        }
+        else
+        {
+            if(isOperador() && tablero.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            {
+                repoTableroC.ModificarTablero(tablero.Id, tablero);
+                return RedirectToAction("Listar");
+            }
+        }
+        return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        repoTableroC.DeleteTablero(id);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            repoTableroC.DeleteTablero(id);
+            return RedirectToAction("Listar");
+        }
+        return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
     
+    private bool isAdmin()
+        {
+            if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "admin") 
+                return true;
+                
+            return false;
+        }
+    private bool isOperador()
+    {
+        if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "operador") 
+                return true;
+                
+            return false;
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

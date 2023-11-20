@@ -7,7 +7,7 @@ namespace tl2_tp10_2023_William24A.Models
         private string cadenaConexion = "Data Source=DB/kanban.db;Cache=Shared";
         public void Create(Usuario usuario)
         {
-            var query = $"INSERT INTO Usuario (nombre_de_usuario) VALUES (@name);";
+            var query = $"INSERT INTO Usuario (nombre_de_usuario, contrasenia, tipo) VALUES (@name,@contrasenia,@tipo);";
             using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
 
@@ -15,7 +15,8 @@ namespace tl2_tp10_2023_William24A.Models
                 var command = new SQLiteCommand(query, connection);
 
                 command.Parameters.Add(new SQLiteParameter("@name", usuario.NombreUsuario));
-
+                command.Parameters.Add(new SQLiteParameter("@contrasenia", usuario.Contrasenia));
+                command.Parameters.Add(new SQLiteParameter("@tipo", usuario.Tipo));
                 command.ExecuteNonQuery();
 
                 connection.Close(); 
@@ -38,6 +39,8 @@ namespace tl2_tp10_2023_William24A.Models
                         var usuario = new Usuario();
                         usuario.Id = Convert.ToInt32(reader["id"]);
                         usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
+                        usuario.Contrasenia = reader["contrasenia"].ToString();
+                        usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
                         usuarios.Add(usuario);
                     }
                 }
@@ -60,6 +63,8 @@ namespace tl2_tp10_2023_William24A.Models
                 {
                     usuario.Id = Convert.ToInt32(reader["id"]);
                     usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
+                    usuario.Contrasenia = reader["contrasenia"].ToString();
+                    usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
                 }
             }
             connection.Close();

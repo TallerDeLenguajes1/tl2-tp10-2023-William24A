@@ -19,39 +19,88 @@ public class TareaController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        var tableros = repoTareaC.BuscarTareasTablero(1);
-        return View(tableros);
+        if(isAdmin())
+        {
+            var tableros = repoTareaC.BuscarTareasTablero(1);
+            return View(tableros);
+        }
+        else
+        {
+            if(isOperador())
+            {
+                var tablerosU = repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                return View(tablerosU);
+            }
+            else
+            {
+                return RedirectToRoute(new {controller = "Login", action = "Index"});
+            } 
+        }
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Tarea());
+        if(isAdmin())
+        {
+            return View(new Tarea());
+        }
+        return RedirectToRoute(new {controller = "Login", action = "Index"});
     }
     [HttpPost]
     public IActionResult Create(Tarea tarea)
     {
-        repoTareaC.CreaTarea(tarea);
-        return RedirectToAction("Listar");
+        if(isAdmin()){
+            repoTareaC.CreaTarea(tarea);
+            return RedirectToAction("Listar");
+        }
+        return RedirectToRoute(new {controller = "Login", action = "Index"});
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(repoTareaC.BuscarPorId(id));
+        if(isAdmin())
+        {
+             return View(repoTareaC.BuscarPorId(id));
+        }
+       return RedirectToRoute(new {controller = "Login", action = "Index"});
     }
     [HttpPost]
     public IActionResult Update(Tarea tarea)
     {
-        repoTareaC.Modificar(tarea.Id, tarea);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            repoTareaC.Modificar(tarea.Id, tarea);
+            return RedirectToAction("Listar");
+        }
+        return RedirectToRoute(new {controller = "Login", action = "Index"});
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        repoTareaC.DeleteTarea(id);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            repoTareaC.DeleteTarea(id);
+            return RedirectToAction("Listar");
+        }
+       return RedirectToRoute(new {controller = "Login", action = "Index"});
+    }
+
+    private bool isAdmin()
+        {
+            if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "admin") 
+                return true;
+                
+            return false;
+        }
+    private bool isOperador()
+    {
+        if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "operador") 
+                return true;
+                
+            return false;
     }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
