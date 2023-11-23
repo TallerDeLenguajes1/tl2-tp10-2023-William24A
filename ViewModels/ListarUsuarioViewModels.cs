@@ -7,17 +7,20 @@ namespace MVC.ViewModels
 {
     public class ListarUsuarioViewModel
     {
-        
-        public string NombreUsuario {get;set;}
-        public string Tipo {get;set;}
+        public List<UsuarioViewModel> UsuariosViewModels {get;set;}
         public ListarUsuarioViewModel()
         {
-
+            UsuariosViewModels = new List<UsuarioViewModel>();
         }
-        public ListarUsuarioViewModel(Usuario usuario)
+        public ListarUsuarioViewModel(List<Usuario> usuarios)
         {
-            NombreUsuario = usuario.NombreUsuario;
-            Tipo = usuario.Tipo.ToString();
+            UsuariosViewModels = new List<UsuarioViewModel>();
+            foreach (var usuario in usuarios)
+            {
+                var usuarioViewModel = new UsuarioViewModel(usuario);
+                UsuariosViewModels.Add(usuarioViewModel);  
+            }
+          
         }        
     }
 }

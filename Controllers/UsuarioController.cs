@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MVC.ViewModels;
 using tl2_tp10_2023_William24A.Models;
 
 namespace tl2_tp10_2023_William24A.Controllers;
@@ -20,7 +21,8 @@ public class UsuarioController : Controller
     public IActionResult Listar()
     {
         var usuarios = repoUsuarioC.GetAll();
-        return View(usuarios);
+        var usuariosView = new ListarUsuarioViewModel(usuarios);
+        return View(usuariosView);
     }
 
     [HttpGet]

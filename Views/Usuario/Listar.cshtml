@@ -1,8 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page"; // titulo de la pestaña
 }
-
-@model List<Usuario>
+@using MVC.ViewModels
+@model MVC.ViewModels.ListarUsuarioViewModel
 
 <h2>Lista Usuarios</h2>
 
@@ -14,11 +14,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var usuario in Model)
+        @foreach (var usuario in Model.UsuariosViewModels)
         {
             <tr>
-                <td hidden>@usuario.Id</td>
                 <td>@usuario.NombreUsuario</td>
+                <td>@usuario.Tipo</td>
                 <td>
                     <button>
                         <a asp-controller="Usuario" asp-action="Update" asp-route-id="@usuario.Id">Modificar</a>
