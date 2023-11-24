@@ -6,7 +6,7 @@
 
 <h2>Lista Tableros</h2>
 
-<table>
+<table class= "table">
     <thead>
         <tr>
             <th hidden>ID</th> <!-- oculto el id--->
@@ -22,22 +22,21 @@
                 <td>@tablero.Nombre</td>
                 <td>@tablero.Descripcion</td>
                 <td>
-                    <button>
-                        <a asp-controller="Tablero" asp-action="Update" asp-route-id="@tablero.Id">Modificar</a>
-                    </button>
-                    <button>
-                        <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@tablero.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
-                    </button>
-                    <button>
-                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id">Tarea</a>
-                    </button>
+                    
+                        <a asp-controller="Tablero" asp-action="Update" asp-route-id="@tablero.Id" class="btn btn-primary">Modificar</a>
+                    
+                        <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@tablero.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                    
+                   
+                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id" class="btn btn-primary" >Tarea</a>
+                    
                 </td>
             </tr>
         }
         <tr>
-            <button>
-                <a asp-controller="Tablero" asp-action="Create">Crear tablero</a>  
-            </button>
+            
+                <a asp-controller="Tablero" asp-action="Create" class="btn btn-primary">Crear tablero</a>  
+
         </tr>
     </tbody>
 </table>
