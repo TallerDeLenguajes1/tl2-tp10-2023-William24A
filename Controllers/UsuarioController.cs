@@ -28,11 +28,12 @@ public class UsuarioController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Usuario());
+        return View(new CrearUsuarioViewModel());
     }
     [HttpPost]
-    public IActionResult Create(Usuario usuario)
+    public IActionResult Create(CrearUsuarioViewModel usuarioVMD)
     {
+        var usuario = new Usuario(usuarioVMD);
         repoUsuarioC.Create(usuario);
         return RedirectToAction("Listar");
     }
@@ -40,11 +41,14 @@ public class UsuarioController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(repoUsuarioC.GetById(id));
+        var usuario = repoUsuarioC.GetById(id);
+        var usuarioVM = new UsuarioViewModel(usuario);
+        return View(usuarioVM);
     }
     [HttpPost]
-    public IActionResult Update(Usuario usuario)
+    public IActionResult Update(UsuarioViewModel usuarioVM)
     {
+        var usuario = new Usuario(usuarioVM);
         repoUsuarioC.Update(usuario.Id, usuario);
         return RedirectToAction("Listar");
     }

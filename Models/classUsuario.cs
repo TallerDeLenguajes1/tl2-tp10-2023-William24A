@@ -28,5 +28,17 @@ namespace tl2_tp10_2023_William24A.Models
             NombreUsuario = usuar.NombreUsuario;
             Contrasenia = usuar.Contrasenia;
         }
+        public Usuario(CrearUsuarioViewModel usuar)
+        {
+            NombreUsuario = usuar.NombreUsuario;
+            Contrasenia = usuar.Contrasenia;
+            Tipo = usuar.Tipo;
+        }
+        public Usuario(UsuarioViewModel usuar)
+        {
+            Id = usuar.Id;
+            NombreUsuario = usuar.NombreUsuario;
+            Tipo = usuar.Tipo;
+        }
     }
 }

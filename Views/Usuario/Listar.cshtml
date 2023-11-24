@@ -21,20 +21,20 @@
                 <td>@usuario.Tipo</td>
                 <td>
                     <button>
-                        <a asp-controller="Usuario" asp-action="Update" asp-route-id="@usuario.Id">Modificar</a>
+                        <a asp-controller="Usuario" asp-action="Update" class="btn btn-primary" asp-route-id="@usuario.Id">Modificar</a>
                     </button>
                     <!-- asp-controller = nombre del controlador -->
                     <!-- asp-action = nombre del metodo de accion (los que estan en el controlador) -->
                     <!-- asp-route-id = nombre del parametro -->
                     <button>
-                        <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@usuario.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                        <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@usuario.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
                     </button>
                 </td>
             </tr>
         }
         <tr>
             <button>
-                <a asp-controller="Usuario" asp-action="Create">Crear Usuario</a>  
+                <a asp-controller="Usuario" asp-action="Create" class="btn btn-primary">Crear Usuario</a>  
             </button>
         </tr>
     </tbody>

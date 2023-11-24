@@ -10,7 +10,7 @@ namespace MVC.ViewModels
         
         public int Id {get;set;}
         public string NombreUsuario {get;set;}
-        public string Tipo {get;set;}
+        public Tipo Tipo {get;set;}
         
         public UsuarioViewModel()
         {
@@ -20,7 +20,7 @@ namespace MVC.ViewModels
         {
             Id = usuario.Id;
             NombreUsuario = usuario.NombreUsuario;
-            Tipo = usuario.Tipo.ToString();
+            Tipo = usuario.Tipo;
         }        
     }
 }

@@ -87,9 +87,10 @@ namespace tl2_tp10_2023_William24A.Models
         {
             SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
             SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"UPDATE Usuario SET nombre_de_usuario = @nombre WHERE id = @idUsuario;";
+            command.CommandText = $"UPDATE Usuario SET nombre_de_usuario = @nombre, tipo = @tipo WHERE id = @idUsuario;";
             command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
             command.Parameters.Add(new SQLiteParameter("@nombre",usuario.NombreUsuario));
+            command.Parameters.Add(new SQLiteParameter("@tipo",usuario.Tipo));
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
