@@ -48,14 +48,15 @@ public class TableroController : Controller
     [HttpPost]
     public IActionResult Create(CrearTableroViewModel tableroVM)
     {
-        if(!ModelState.IsValid) return RedirectToAction("Index");
         if(isAdmin()){
+            if(!ModelState.IsValid) return RedirectToAction("Create");
             var tablero = new Tablero(tableroVM); 
             repoTableroC.CrearTablero(tablero);
             return RedirectToAction("Listar");
         }
         else
         {
+            if(!ModelState.IsValid) return RedirectToAction("Create");
             if(tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
             {
                 var tablero = new Tablero(tableroVM); 
@@ -82,12 +83,14 @@ public class TableroController : Controller
     {
         if(isAdmin())
         {
+            if(!ModelState.IsValid) return RedirectToAction("Listar");
             var tablero = new Tablero(tableroVM);
             repoTableroC.ModificarTablero(tablero.Id, tablero);
             return RedirectToAction("Listar");
         }
         else
         {
+            if(!ModelState.IsValid) return RedirectToAction("Listar");
             if(isOperador() && tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 var tablero = new Tablero(tableroVM);

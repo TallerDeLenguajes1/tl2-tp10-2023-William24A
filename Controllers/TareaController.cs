@@ -18,11 +18,11 @@ public class TareaController : Controller
     }
 
     [HttpGet]
-    public IActionResult Listar()
+    public IActionResult Listar(int id)
     {
         if(isAdmin())
         {
-            var tableros = repoTareaC.BuscarTareasTablero(1);
+            var tableros = repoTareaC.BuscarTareasTablero(id);
             var tablerosVM = new ListarTareaViewModel(tableros);
             return View(tablerosVM);
         }
@@ -54,6 +54,7 @@ public class TareaController : Controller
     public IActionResult Create(CrearTareaViewModel tareaVM)
     {
         if(isAdmin()){
+            if(!ModelState.IsValid) return RedirectToAction("Create");
             var tarea = new Tarea(tareaVM);
             repoTareaC.CreaTarea(tarea);
             return RedirectToAction("Listar");
@@ -77,6 +78,7 @@ public class TareaController : Controller
     {
         if(isAdmin())
         {
+            if(!ModelState.IsValid) return RedirectToAction("Listar");
             var tarea = new Tarea(tareaVM);
             repoTareaC.Modificar(tarea.Id, tarea);
             return RedirectToAction("Listar");

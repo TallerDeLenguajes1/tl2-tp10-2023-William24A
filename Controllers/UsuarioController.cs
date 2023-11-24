@@ -33,6 +33,7 @@ public class UsuarioController : Controller
     [HttpPost]
     public IActionResult Create(CrearUsuarioViewModel usuarioVMD)
     {
+        if(!ModelState.IsValid) return RedirectToAction("Create");
         var usuario = new Usuario(usuarioVMD);
         repoUsuarioC.Create(usuario);
         return RedirectToAction("Listar");
@@ -48,6 +49,7 @@ public class UsuarioController : Controller
     [HttpPost]
     public IActionResult Update(UsuarioViewModel usuarioVM)
     {
+        if(!ModelState.IsValid) return RedirectToAction("Listar");
         var usuario = new Usuario(usuarioVM);
         repoUsuarioC.Update(usuario.Id, usuario);
         return RedirectToAction("Listar");

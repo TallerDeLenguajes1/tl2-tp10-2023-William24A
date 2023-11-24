@@ -8,9 +8,16 @@ namespace MVC.ViewModels
     public class TableroViewModel
     {
         
+        [Required] 
         public int Id {get;set;}
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        [Display(Name = "ID usuario asignado")] 
         public int Id_usuario_propietario {get;set;}
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        [Display(Name = "Nombre")]
         public string? Nombre {get;set;}
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        [Display(Name = "Descripcion")]
         public string? Descripcion {get;set;}
         
         public TableroViewModel()

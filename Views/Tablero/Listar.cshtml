@@ -25,11 +25,11 @@
                     <button>
                         <a asp-controller="Tablero" asp-action="Update" asp-route-id="@tablero.Id">Modificar</a>
                     </button>
-                    <!-- asp-controller = nombre del controlador -->
-                    <!-- asp-action = nombre del metodo de accion (los que estan en el controlador) -->
-                    <!-- asp-route-id = nombre del parametro -->
                     <button>
                         <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@tablero.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                    </button>
+                    <button>
+                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id">Tarea</a>
                     </button>
                 </td>
             </tr>

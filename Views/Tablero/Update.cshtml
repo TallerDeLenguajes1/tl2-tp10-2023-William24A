@@ -5,11 +5,17 @@
     <div class="form-group">
         <label asp-for="@Model.Id_usuario_propietario">Ingrese el nuevo id usuario</label>
         <input asp-for="@Model.Id_usuario_propietario" class="form-control"/>
+        <span asp-validation-for="@Model.Id_usuario_propietario" class="text-danger"></span> 
+
         <label asp-for="@Model.Nombre">Ingrese el nuevo Nombre</label>
         <input asp-for="@Model.Nombre" class="form-control"/>
+        <span asp-validation-for="@Model.Nombre" class="text-danger"></span> 
+
         <label asp-for="@Model.Descripcion">Ingrese la nueva Descripcion</label>
         <input asp-for="@Model.Descripcion" class="form-control"/>
+        <span asp-validation-for="@Model.Descripcion" class="text-danger"></span> 
     </div>
 
     <button type="submit">Enviar</button>
 </form>
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}

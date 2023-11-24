@@ -7,9 +7,13 @@ namespace MVC.ViewModels
 {
     public class UsuarioViewModel
     {
-        
+        [Required] 
         public int Id {get;set;}
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        [Display(Name = "Nombre")] 
         public string NombreUsuario {get;set;}
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        [Display(Name = "Tipo")] 
         public Tipo Tipo {get;set;}
         
         public UsuarioViewModel()
