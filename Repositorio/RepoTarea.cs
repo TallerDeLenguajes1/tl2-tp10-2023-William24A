@@ -38,7 +38,15 @@ namespace tl2_tp10_2023_William24A.Models
                     tarea.Estado = (EstadoTarea)Convert.ToInt32(reader["estado"]); 
                     tarea.Descripcion = reader["descripcion"].ToString();
                     tarea.Color = reader["color"].ToString();
-                    tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]);
+                    if(!reader.IsDBNull(reader.GetOrdinal("id_usuario_asignado")))
+                    {
+                        tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]);
+                    }
+                    else
+                    {
+                        tarea.IdUsuarioAsignado1 = 0;
+                    }
+                    
                 }
             }
             connection.Close();
@@ -97,7 +105,7 @@ namespace tl2_tp10_2023_William24A.Models
                             tarea.Estado = (EstadoTarea)Convert.ToInt32(reader["estado"]); 
                             tarea.Descripcion = reader["descripcion"].ToString();
                             tarea.Color = reader["color"].ToString();
-                            tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]);
+                            tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]) as int?;
                             tareas.Add(tarea);
                     }
                 }

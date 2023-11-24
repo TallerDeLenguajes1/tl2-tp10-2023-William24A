@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MVC.ViewModels;
 using tl2_tp10_2023_William24A.Models;
 
 namespace tl2_tp10_2023_William24A.Controllers;
@@ -22,12 +23,14 @@ public class TableroController : Controller
         if(isAdmin())
         {
             var tableros = repoTableroC.ListarTableros();
-            return View(tableros);
+            var tablerosVM = new ListarTableroViewModel(tableros);
+            return View(tablerosVM);
         }else{
             if(isOperador())
             {
                 var tablerosU = repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                return View(tablerosU);
+                var tablerosUVM = new ListarTableroViewModel(tablerosU);
+                return View(tablerosUVM);
             }
         }
         return RedirectToRoute(new { controller = "Login", action = "Index"});
@@ -38,22 +41,24 @@ public class TableroController : Controller
     {
         if(isAdmin() || isOperador())
         {
-            return View(new Tablero());
+            return View(new CrearTableroViewModel());
         }
         return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
     [HttpPost]
-    public IActionResult Create(Tablero tablero)
+    public IActionResult Create(CrearTableroViewModel tableroVM)
     {
         if(!ModelState.IsValid) return RedirectToAction("Index");
         if(isAdmin()){
+            var tablero = new Tablero(tableroVM); 
             repoTableroC.CrearTablero(tablero);
             return RedirectToAction("Listar");
         }
         else
         {
-            if(tablero.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
+            if(tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
             {
+                var tablero = new Tablero(tableroVM); 
                 repoTableroC.CrearTablero(tablero);
                 return RedirectToAction("Listar");
             }
@@ -64,24 +69,28 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        if(isAdmin() && isOperador())
+        if(isAdmin() || isOperador())
         {
-             return View(repoTableroC.ObtenerTableroID(id));
+            var tablero = repoTableroC.ObtenerTableroID(id);
+            var tableroVM = new TableroViewModel(tablero);
+             return View(tableroVM);
         }
         return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
     [HttpPost]
-    public IActionResult Update(Tablero tablero)
+    public IActionResult Update(TableroViewModel tableroVM)
     {
         if(isAdmin())
         {
+            var tablero = new Tablero(tableroVM);
             repoTableroC.ModificarTablero(tablero.Id, tablero);
             return RedirectToAction("Listar");
         }
         else
         {
-            if(isOperador() && tablero.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            if(isOperador() && tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
+                var tablero = new Tablero(tableroVM);
                 repoTableroC.ModificarTablero(tablero.Id, tablero);
                 return RedirectToAction("Listar");
             }

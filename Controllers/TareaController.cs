@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp10_2023_William24A.Models;
+using MVC.ViewModels;
 
 namespace tl2_tp10_2023_William24A.Controllers;
 
@@ -22,14 +23,16 @@ public class TareaController : Controller
         if(isAdmin())
         {
             var tableros = repoTareaC.BuscarTareasTablero(1);
-            return View(tableros);
+            var tablerosVM = new ListarTareaViewModel(tableros);
+            return View(tablerosVM);
         }
         else
         {
             if(isOperador())
             {
                 var tablerosU = repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                return View(tablerosU);
+                var tablerosUVM = new ListarTareaViewModel(tablerosU);
+                return View(tablerosUVM);
             }
             else
             {
@@ -43,14 +46,15 @@ public class TareaController : Controller
     {
         if(isAdmin())
         {
-            return View(new Tarea());
+            return View(new CrearTareaViewModel());
         }
         return RedirectToRoute(new {controller = "Login", action = "Index"});
     }
     [HttpPost]
-    public IActionResult Create(Tarea tarea)
+    public IActionResult Create(CrearTareaViewModel tareaVM)
     {
         if(isAdmin()){
+            var tarea = new Tarea(tareaVM);
             repoTareaC.CreaTarea(tarea);
             return RedirectToAction("Listar");
         }
@@ -62,15 +66,18 @@ public class TareaController : Controller
     {
         if(isAdmin())
         {
-             return View(repoTareaC.BuscarPorId(id));
+            var tarea = repoTareaC.BuscarPorId(id);
+            var tareaVM = new TareaViewModel(tarea);
+             return View(tareaVM);
         }
        return RedirectToRoute(new {controller = "Login", action = "Index"});
     }
     [HttpPost]
-    public IActionResult Update(Tarea tarea)
+    public IActionResult Update(TareaViewModel tareaVM)
     {
         if(isAdmin())
         {
+            var tarea = new Tarea(tareaVM);
             repoTareaC.Modificar(tarea.Id, tarea);
             return RedirectToAction("Listar");
         }

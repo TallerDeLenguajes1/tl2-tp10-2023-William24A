@@ -2,7 +2,7 @@
     ViewData["Title"] = "Home Page"; // titulo de la pestaña
 }
 
-@model List<Tablero>
+@model MVC.ViewModels.ListarTableroViewModel
 
 <h2>Lista Tableros</h2>
 
@@ -11,16 +11,14 @@
         <tr>
             <th hidden>ID</th> <!-- oculto el id--->
             <th>Tablero</th>
-            <th hidden>ID usuario</th>
             <th>Descripcion</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var tablero in Model)
+        @foreach (var tablero in Model.TablerosViewModels)
         {
             <tr>
                 <td hidden>@tablero.Id</td>
-                <td hidden>@tablero.Id_usuario_propietario</td>
                 <td>@tablero.Nombre</td>
                 <td>@tablero.Descripcion</td>
                 <td>

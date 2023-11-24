@@ -1,3 +1,4 @@
+using MVC.ViewModels;
 namespace tl2_tp10_2023_William24A.Models
 {
     public enum EstadoTarea
@@ -25,6 +26,31 @@ namespace tl2_tp10_2023_William24A.Models
         public string? Color { get => color; set => color = value; }
         public EstadoTarea Estado { get => estado; set => estado = value; }
         public int? IdUsuarioAsignado1 { get => idUsuarioAsignado; set => idUsuarioAsignado = value; }
+
+        public Tarea()
+        {
+
+        }
+
+        public Tarea(CrearTareaViewModel tareaVM)
+        {
+            IdTablero = tareaVM.IdTablero;
+            Nombre = tareaVM.Nombre;
+            Descripcion = tareaVM.Descripcion;
+            Color = tareaVM.Color;
+            Estado = tareaVM.Estado;
+            IdUsuarioAsignado1 = tareaVM.IdUsuarioAsignado1;
+        }
+        public Tarea(TareaViewModel tareaVM)
+        {
+            Id = tareaVM.Id;
+            IdTablero = tareaVM.IdTablero;
+            Nombre = tareaVM.Nombre;
+            Descripcion = tareaVM.Descripcion;
+            Color = tareaVM.Color;
+            Estado = tareaVM.Estado;
+            IdUsuarioAsignado1 = tareaVM.IdUsuarioAsignado1;
+        }
     }
     
 }
