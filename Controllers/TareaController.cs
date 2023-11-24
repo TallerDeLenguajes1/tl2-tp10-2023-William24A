@@ -9,12 +9,12 @@ public class TareaController : Controller
 {
     private readonly ILogger<TareaController> _logger;
 
-    private IDTareaRepositorio repoTareaC;
+    private IDTareaRepositorio _repoTareaC;
 
-    public TareaController(ILogger<TareaController> logger)
+    public TareaController(ILogger<TareaController> logger, IDTareaRepositorio repoTareaC)
     {
         _logger = logger;
-        repoTareaC = new RepoTareaC();
+        _repoTareaC = repoTareaC;
     }
 
     [HttpGet]
@@ -22,7 +22,7 @@ public class TareaController : Controller
     {
         if(isAdmin())
         {
-            var tableros = repoTareaC.BuscarTareasTablero(id);
+            var tableros = _repoTareaC.BuscarTareasTablero(id);
             var tablerosVM = new ListarTareaViewModel(tableros);
             return View(tablerosVM);
         }
@@ -30,7 +30,7 @@ public class TareaController : Controller
         {
             if(isOperador())
             {
-                var tablerosU = repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                var tablerosU = _repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
                 var tablerosUVM = new ListarTareaViewModel(tablerosU);
                 return View(tablerosUVM);
             }
@@ -56,7 +56,7 @@ public class TareaController : Controller
         if(isAdmin()){
             if(!ModelState.IsValid) return RedirectToAction("Create");
             var tarea = new Tarea(tareaVM);
-            repoTareaC.CreaTarea(tarea);
+            _repoTareaC.CreaTarea(tarea);
             return RedirectToAction("Listar");
         }
         return RedirectToRoute(new {controller = "Login", action = "Index"});
@@ -67,7 +67,7 @@ public class TareaController : Controller
     {
         if(isAdmin())
         {
-            var tarea = repoTareaC.BuscarPorId(id);
+            var tarea = _repoTareaC.BuscarPorId(id);
             var tareaVM = new TareaViewModel(tarea);
              return View(tareaVM);
         }
@@ -80,7 +80,7 @@ public class TareaController : Controller
         {
             if(!ModelState.IsValid) return RedirectToAction("Listar");
             var tarea = new Tarea(tareaVM);
-            repoTareaC.Modificar(tarea.Id, tarea);
+            _repoTareaC.Modificar(tarea.Id, tarea);
             return RedirectToAction("Listar");
         }
         return RedirectToRoute(new {controller = "Login", action = "Index"});
@@ -91,7 +91,7 @@ public class TareaController : Controller
     {
         if(isAdmin())
         {
-            repoTareaC.DeleteTarea(id);
+            _repoTareaC.DeleteTarea(id);
             return RedirectToAction("Listar");
         }
        return RedirectToRoute(new {controller = "Login", action = "Index"});

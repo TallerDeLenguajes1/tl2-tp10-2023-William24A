@@ -9,12 +9,12 @@ public class UsuarioController : Controller
 {
     private readonly ILogger<UsuarioController> _logger;
 
-    private IDUsuarioRepository repoUsuarioC;
+    private readonly IDUsuarioRepository _repoUsuarioC;
 
-    public UsuarioController(ILogger<UsuarioController> logger)
+    public UsuarioController(ILogger<UsuarioController> logger, IDUsuarioRepository reporUsuario)
     {
         _logger = logger;
-        repoUsuarioC = new RepoUsuarioC();
+        _repoUsuarioC = reporUsuario;
     }
 
     [HttpGet]
@@ -22,7 +22,7 @@ public class UsuarioController : Controller
     {
         if(isAdmin())
         {
-            var usuarios = repoUsuarioC.GetAll();
+            var usuarios = _repoUsuarioC.GetAll();
             var usuariosView = new ListarUsuarioViewModel(usuarios);
             return View(usuariosView);
         }
@@ -39,14 +39,14 @@ public class UsuarioController : Controller
     {
         if(!ModelState.IsValid) return RedirectToAction("Create");
         var usuario = new Usuario(usuarioVMD);
-        repoUsuarioC.Create(usuario);
+        _repoUsuarioC.Create(usuario);
         return RedirectToAction("Listar");
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        var usuario = repoUsuarioC.GetById(id);
+        var usuario = _repoUsuarioC.GetById(id);
         var usuarioVM = new UsuarioViewModel(usuario);
         return View(usuarioVM);
     }
@@ -55,14 +55,14 @@ public class UsuarioController : Controller
     {
         if(!ModelState.IsValid) return RedirectToAction("Listar");
         var usuario = new Usuario(usuarioVM);
-        repoUsuarioC.Update(usuario.Id, usuario);
+        _repoUsuarioC.Update(usuario.Id, usuario);
         return RedirectToAction("Listar");
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        repoUsuarioC.Remove(id);
+        _repoUsuarioC.Remove(id);
         return RedirectToAction("Listar");
     }
 

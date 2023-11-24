@@ -1,8 +1,14 @@
+using tl2_tp10_2023_William24A.Controllers;
+using tl2_tp10_2023_William24A.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddScoped<IDUsuarioRepository, RepoUsuarioC>();
+builder.Services.AddScoped<IDtableroRepositorio, RepoTableroC>();
+builder.Services.AddScoped<IDTareaRepositorio, RepoTareaC>();
 
 builder.Services.AddSession(options =>
 {
