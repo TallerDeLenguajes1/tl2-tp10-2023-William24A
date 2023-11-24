@@ -20,9 +20,13 @@ public class UsuarioController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        var usuarios = repoUsuarioC.GetAll();
-        var usuariosView = new ListarUsuarioViewModel(usuarios);
-        return View(usuariosView);
+        if(isAdmin())
+        {
+            var usuarios = repoUsuarioC.GetAll();
+            var usuariosView = new ListarUsuarioViewModel(usuarios);
+            return View(usuariosView);
+        }
+        return RedirectToRoute(new {controller = "Login", action = "Index"});  
     }
 
     [HttpGet]
@@ -60,6 +64,21 @@ public class UsuarioController : Controller
     {
         repoUsuarioC.Remove(id);
         return RedirectToAction("Listar");
+    }
+
+     private bool isAdmin()
+        {
+            if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "admin") 
+                return true;
+                
+            return false;
+        }
+    private bool isOperador()
+    {
+        if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "operador") 
+                return true;
+                
+            return false;
     }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
