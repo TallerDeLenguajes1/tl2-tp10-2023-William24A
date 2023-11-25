@@ -33,7 +33,7 @@ public class TableroController : Controller
                 return View(tablerosUVM);
             }
         }
-        return RedirectToRoute(new { controller = "Login", action = "Index"});
+        return RedirectToRoute(new { controller = "Home", action = "Index"});
     }
 
     [HttpGet]
@@ -70,13 +70,22 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        if(isAdmin() || isOperador())
+        if(isAdmin())
         {
             var tablero = _repoTableroC.ObtenerTableroID(id);
             var tableroVM = new TableroViewModel(tablero);
              return View(tableroVM);
         }
-        return RedirectToRoute(new { controller = "Login", action = "Index"});
+        else
+        {
+            if(isOperador() && _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            {
+                var tablero = _repoTableroC.ObtenerTableroID(id);
+                var tableroVM = new TableroViewModel(tablero);
+                return View(tableroVM);
+            }
+        }
+        return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
     }
     [HttpPost]
     public IActionResult Update(TableroViewModel tableroVM)

@@ -26,44 +26,64 @@ public class UsuarioController : Controller
             var usuariosView = new ListarUsuarioViewModel(usuarios);
             return View(usuariosView);
         }
-        return RedirectToRoute(new {controller = "Login", action = "Index"});  
+        return RedirectToRoute(new {controller = "Home", action = "Index"});  
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new CrearUsuarioViewModel());
+        if(isAdmin())
+        {
+            return View(new CrearUsuarioViewModel());
+        }
+        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
     }
     [HttpPost]
     public IActionResult Create(CrearUsuarioViewModel usuarioVMD)
     {
-        if(!ModelState.IsValid) return RedirectToAction("Create");
-        var usuario = new Usuario(usuarioVMD);
-        _repoUsuarioC.Create(usuario);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            if(!ModelState.IsValid) return RedirectToAction("Create");
+            var usuario = new Usuario(usuarioVMD);
+            _repoUsuarioC.Create(usuario);
+            return RedirectToAction("Listar");
+        }
+        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        var usuario = _repoUsuarioC.GetById(id);
-        var usuarioVM = new UsuarioViewModel(usuario);
-        return View(usuarioVM);
+         if(isAdmin())
+        {
+            var usuario = _repoUsuarioC.GetById(id);
+            var usuarioVM = new UsuarioViewModel(usuario);
+            return View(usuarioVM);
+        }
+        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
     }
     [HttpPost]
     public IActionResult Update(UsuarioViewModel usuarioVM)
     {
-        if(!ModelState.IsValid) return RedirectToAction("Listar");
-        var usuario = new Usuario(usuarioVM);
-        _repoUsuarioC.Update(usuario.Id, usuario);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            if(!ModelState.IsValid) return RedirectToAction("Listar");
+            var usuario = new Usuario(usuarioVM);
+            _repoUsuarioC.Update(usuario.Id, usuario);
+            return RedirectToAction("Listar");
+        }
+        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        _repoUsuarioC.Remove(id);
-        return RedirectToAction("Listar");
+        if(isAdmin())
+        {
+            _repoUsuarioC.Remove(id);
+            return RedirectToAction("Listar");
+        }
+        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
     }
 
      private bool isAdmin()
