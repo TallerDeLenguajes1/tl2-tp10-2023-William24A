@@ -19,6 +19,7 @@ namespace MVC.ViewModels
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Descripcion")]
         public string? Descripcion {get;set;}
+        public List<Usuario> Usuarios {get;set;}
         
         public TableroViewModel()
         {
@@ -30,6 +31,7 @@ namespace MVC.ViewModels
             Id_usuario_propietario = tablero.Id_usuario_propietario;
             Nombre = tablero.Nombre;
             Descripcion = tablero.Descripcion;
+            Usuarios = new List<Usuario>();
         }        
     }
 }

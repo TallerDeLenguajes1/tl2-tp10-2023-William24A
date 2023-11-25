@@ -3,9 +3,15 @@
 
 <form asp-controller="Tablero" asp-action="Create">
     <div class="form-group">
-        <label asp-for="@Model.Id_usuario_propietario">Id usuario propietario</label>
-        <input asp-for="@Model.Id_usuario_propietario" class="form-control" />
-        <span asp-validation-for="@Model.Id_usuario_propietario" class="text-danger"></span> 
+        <label class="form-label" asp-for="@Model.Id_usuario_propietario"></label>
+        <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.Id_usuario_propietario">
+            <option selected>Seleccione uno</option>
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <option>@usuario.Id</option>
+            }
+        </select>
+         
     <div class="form-group">
         <label asp-for="@Model.Nombre">Nombre</label>
         <input asp-for="@Model.Nombre" class="form-control" />

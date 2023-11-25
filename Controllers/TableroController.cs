@@ -10,11 +10,13 @@ public class TableroController : Controller
     private readonly ILogger<TableroController> _logger;
 
     private readonly IDtableroRepositorio _repoTableroC;
+    private readonly IDUsuarioRepository _repoUsuarioC;
 
-    public TableroController(ILogger<TableroController> logger,IDtableroRepositorio repoTableroC )
+    public TableroController(ILogger<TableroController> logger,IDtableroRepositorio repoTableroC, IDUsuarioRepository repoUsuarioC )
     {
         _logger = logger;
         _repoTableroC = repoTableroC;
+        _repoUsuarioC = repoUsuarioC;
     }
 
     [HttpGet]
@@ -41,7 +43,10 @@ public class TableroController : Controller
     {
         if(isAdmin() || isOperador())
         {
-            return View(new CrearTableroViewModel());
+            CrearTableroViewModel crearTableroViewModel = new();
+            crearTableroViewModel.Usuarios = _repoUsuarioC.GetAll();
+            if (crearTableroViewModel.Usuarios == null) return NoContent();
+            return View(crearTableroViewModel);
         }
         return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
@@ -74,6 +79,8 @@ public class TableroController : Controller
         {
             var tablero = _repoTableroC.ObtenerTableroID(id);
             var tableroVM = new TableroViewModel(tablero);
+            tableroVM.Usuarios = _repoUsuarioC.GetAll();
+            if (tableroVM.Usuarios == null) return NoContent();
              return View(tableroVM);
         }
         else

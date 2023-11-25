@@ -4,7 +4,13 @@
     <input hidden asp-for="@Model.Id"> 
     <div class="form-group">
         <label asp-for="@Model.Id_usuario_propietario">Ingrese el nuevo id usuario</label>
-        <input asp-for="@Model.Id_usuario_propietario" class="form-control"/>
+        <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.Id_usuario_propietario">
+            <option selected>Seleccione uno</option>
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <option>@usuario.Id</option>
+            }
+        </select>
         <span asp-validation-for="@Model.Id_usuario_propietario" class="text-danger"></span> 
 
         <label asp-for="@Model.Nombre">Ingrese el nuevo Nombre</label>

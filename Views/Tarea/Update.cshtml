@@ -24,7 +24,7 @@
     </div>
     <div class="form-group">
         <label asp-for="@Model.Estado">Estado</label>
-        <input asp-for="@Model.Estado" class="form-control" />
+        <select asp-for="@Model.Estado" class="form-control"  asp-items="@Html.GetEnumSelectList<EstadoTarea>()"></select>
         <span asp-validation-for="@Model.Estado" class="text-danger"></span> 
     </div>
     <div class="form-group">
