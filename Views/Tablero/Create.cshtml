@@ -8,7 +8,7 @@
             <option selected>Seleccione uno</option>
             @foreach (var usuario in Model.Usuarios)
             {
-                <option>@usuario.Id</option>
+                <option value=@usuario.Id>@usuario.Id</option>
             }
         </select>
          
