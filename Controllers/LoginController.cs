@@ -30,12 +30,17 @@ public class LoginController : Controller
         var usuarioLogeado = Usuarios.FirstOrDefault(u => u.NombreUsuario == usuario.NombreUsuario && u.Contrasenia == usuario.Contrasenia);
 
         // si el usuario no existe devuelvo al index
-        if (usuarioLogeado == null) return RedirectToRoute(new { controller = "Login", action = "Index"});
+        if (usuarioLogeado == null)
+        {
+            _logger.LogWarning("Intento de acceso invalido "+ usuario.NombreUsuario+" clave "+ usuario.Contrasenia);
+            return RedirectToRoute(new { controller = "Login", action = "Index"});
+        } 
         
         //Registro el usuario
         logearUsuario(usuarioLogeado);
         
         //Devuelvo el usuario al Home
+        _logger.LogInformation("El usuario " + usuarioLogeado.NombreUsuario + " ingreso correctamente");
         return RedirectToRoute(new { controller = "Usuario", action = "Listar"});
     }
     private void logearUsuario(Usuario user)
