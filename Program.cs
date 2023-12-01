@@ -6,6 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
+
+var CadenaDeConexion = builder.Configuration.GetConnectionString("SqliteConexion")!.ToString();
+builder.Services.AddSingleton<string>(CadenaDeConexion);
+
 builder.Services.AddScoped<IDUsuarioRepository, RepoUsuarioC>();
 builder.Services.AddScoped<IDtableroRepositorio, RepoTableroC>();
 builder.Services.AddScoped<IDTareaRepositorio, RepoTareaC>();

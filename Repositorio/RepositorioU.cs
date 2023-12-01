@@ -4,6 +4,7 @@ namespace tl2_tp10_2023_William24A.Models
     public interface IDUsuarioRepository
     {
         public List<Usuario> GetAll();
+        public Usuario login(string nombre, string password);
         public Usuario GetById(int id);
         public void Create(Usuario usuario);
         public void Remove(int id);

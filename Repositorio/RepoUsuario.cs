@@ -4,7 +4,11 @@ namespace tl2_tp10_2023_William24A.Models
 {
     public class RepoUsuarioC : IDUsuarioRepository
     {
-        private string cadenaConexion = "Data Source=DB/kanban.db;Cache=Shared";
+        private readonly string cadenaConexion;
+        public RepoUsuarioC(string cadenaConexion)
+        {
+            this.cadenaConexion = cadenaConexion;
+        }
         public void Create(Usuario usuario)
         {
             var query = $"INSERT INTO Usuario (nombre_de_usuario, contrasenia, tipo) VALUES (@name,@contrasenia,@tipo);";
@@ -69,6 +73,31 @@ namespace tl2_tp10_2023_William24A.Models
             }
             connection.Close();
 
+            return usuario;
+        }
+
+        public Usuario login(string nombre, string password)
+        {
+            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
+            Usuario usuario = null;
+            SQLiteCommand command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Usuario WHERE nombre_de_usuario = @nombre AND contrasenia = @contrasenia ";
+            command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
+            command.Parameters.Add(new SQLiteParameter("@contrasenia", password));
+            connection.Open();
+            using(SQLiteDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    usuario = new Usuario();
+                    usuario.Id = Convert.ToInt32(reader["id"]);
+                    usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
+                    usuario.Contrasenia = reader["contrasenia"].ToString();
+                    usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
+                }
+            }
+            connection.Close();
+            //if(usuario == null) throw new Exception("usuario no registrado");
             return usuario;
         }
 
