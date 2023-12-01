@@ -51,21 +51,22 @@ public class TableroController : Controller
         return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
     [HttpPost]
-    public IActionResult Create(CrearTableroViewModel tableroVM)
+    public IActionResult Create(Tablero tableroVM)
     {
         if(isAdmin()){
-            /*if(!ModelState.IsValid)
+            //var tablero = new Tablero(tableroVM); 
+            if(!ModelState.IsValid)
             {
                 var errors = ModelState.Select(x => x.Value.Errors)
                 .Where(y=>y.Count>0)
                 .ToList();
                 return RedirectToAction("Create");
-            } */
-            var tablero = new Tablero(tableroVM); 
-            _repoTableroC.CrearTablero(tablero);
+            }
+            
+            _repoTableroC.CrearTablero(tableroVM);
             return RedirectToAction("Listar");
         }
-        else
+       /* else
         {
             if(!ModelState.IsValid) return RedirectToAction("Create");
             if(tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
@@ -74,7 +75,7 @@ public class TableroController : Controller
                 _repoTableroC.CrearTablero(tablero);
                 return RedirectToAction("Listar");
             }
-        }
+        }*/
         return RedirectToRoute(new { controller = "Login", action = "Index"});
     }
 
