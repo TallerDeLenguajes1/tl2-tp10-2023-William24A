@@ -4,7 +4,11 @@ namespace tl2_tp10_2023_William24A.Models
 {
     public class RepoTableroC : IDtableroRepositorio
     {
-        private string cadenaConexion ="Data Source=DB/kanban.db;Cache=Shared";
+         private readonly string cadenaConexion;
+        public RepoTableroC(string cadenaConexion)
+        {
+            this.cadenaConexion = cadenaConexion;
+        }
         public Tablero CrearTablero(Tablero tablero) //modificacion preguntar
         {
             string query = $"INSERT INTO Tablero(id_usuario_propietario,nombre,descripcion) VALUES(@id_usuario, @nombre,@descripcion);";
@@ -54,6 +58,11 @@ namespace tl2_tp10_2023_William24A.Models
                     }
                 }
                 connection.Close();
+            }
+            if(tableros == null)
+            {
+                throw new Exception("Tableros no encontrados.");
+
             }
             return tableros;
         }

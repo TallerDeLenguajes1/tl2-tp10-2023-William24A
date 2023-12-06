@@ -20,81 +20,137 @@ public class TareaController : Controller
     [HttpGet]
     public IActionResult Listar(int id)
     {
-        if(isAdmin())
+        try
         {
-            var tableros = _repoTareaC.BuscarTareasTablero(id);
-            var tablerosVM = new ListarTareaViewModel(tableros);
-            return View(tablerosVM);
-        }
-        else
-        {
-            if(isOperador())
+           if(isAdmin())
             {
-                var tablerosU = _repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                var tablerosUVM = new ListarTareaViewModel(tablerosU);
-                return View(tablerosUVM);
+                var tableros = _repoTareaC.BuscarTareasTablero(id);
+                var tablerosVM = new ListarTareaViewModel(tableros);
+                return View(tablerosVM);
             }
             else
             {
-                return RedirectToRoute(new {controller = "Login", action = "Index"});
+                if(isOperador())
+                {
+                    var tablerosU = _repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                    var tablerosUVM = new ListarTareaViewModel(tablerosU);
+                    return View(tablerosUVM);
+                }
+                else
+                {
+                    return RedirectToRoute(new {controller = "Login", action = "Index"});
+                } 
             } 
         }
+        catch (System.Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        if(isAdmin())
+        try
         {
-            return View(new CrearTareaViewModel());
+            if(isAdmin())
+            {
+                return View(new CrearTareaViewModel());
+            }
+            return RedirectToRoute(new {controller = "Login", action = "Index"});
         }
-        return RedirectToRoute(new {controller = "Login", action = "Index"});
+        catch (System.Exception ex)
+        {
+            
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
     [HttpPost]
     public IActionResult Create(CrearTareaViewModel tareaVM)
     {
-        if(isAdmin()){
+        try
+        {
+            if(isAdmin()){
             if(!ModelState.IsValid) return RedirectToAction("Create");
-            var tarea = new Tarea(tareaVM);
-            _repoTareaC.CreaTarea(tarea);
-            return RedirectToRoute(new {controller = "Tablero", action = "Listar"});;
+                var tarea = new Tarea(tareaVM);
+                _repoTareaC.CreaTarea(tarea);
+                return RedirectToRoute(new {controller = "Tablero", action = "Listar"});;
+            }
+            return RedirectToRoute(new {controller = "Login", action = "Index"}); 
         }
-        return RedirectToRoute(new {controller = "Login", action = "Index"});
+        catch (System.Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        if(isAdmin())
+        try
         {
-            var tarea = _repoTareaC.BuscarPorId(id);
-            var tareaVM = new TareaViewModel(tarea);
-             return View(tareaVM);
+            if(isAdmin())
+            {
+                var tarea = _repoTareaC.BuscarPorId(id);
+                var tareaVM = new TareaViewModel(tarea);
+                return View(tareaVM);
+            }
+            return RedirectToRoute(new {controller = "Login", action = "Index"});
         }
-       return RedirectToRoute(new {controller = "Login", action = "Index"});
+        catch (System.Exception ex)
+        {
+           _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
     [HttpPost]
     public IActionResult Update(TareaViewModel tareaVM)
     {
-        if(isAdmin())
+        try
         {
-            if(!ModelState.IsValid) return RedirectToAction("Listar");
-            var tarea = new Tarea(tareaVM);
-            _repoTareaC.Modificar(tarea.Id, tarea);
-            return RedirectToRoute(new {controller = "Tablero", action = "Listar"});
+           if(isAdmin())
+            {
+                if(!ModelState.IsValid) return RedirectToAction("Listar");
+                var tarea = new Tarea(tareaVM);
+                _repoTareaC.Modificar(tarea.Id, tarea);
+                return RedirectToRoute(new {controller = "Tablero", action = "Listar"});
+            }
+            return RedirectToRoute(new {controller = "Login", action = "Index"}); 
         }
-        return RedirectToRoute(new {controller = "Login", action = "Index"});
+        catch (System.Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        if(isAdmin())
+        try
         {
-            _repoTareaC.DeleteTarea(id);
-            return RedirectToRoute(new {controller = "Tablero", action = "Listar"});
+            if(isAdmin())
+            {
+                _repoTareaC.DeleteTarea(id);
+                return RedirectToRoute(new {controller = "Tablero", action = "Listar"});
+            }
+            return RedirectToRoute(new {controller = "Login", action = "Index"});
         }
-       return RedirectToRoute(new {controller = "Login", action = "Index"});
+        catch (System.Exception ex)
+        {
+            
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     private bool isAdmin()

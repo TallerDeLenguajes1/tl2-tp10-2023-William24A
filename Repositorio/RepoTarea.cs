@@ -7,7 +7,11 @@ namespace tl2_tp10_2023_William24A.Models
 {
     public class RepoTareaC : IDTareaRepositorio
     {
-        private string cadenaConexion ="Data Source=DB/kanban.db;Cache=Shared";
+        private readonly string cadenaConexion;
+        public RepoTareaC(string cadenaConexion)
+        {
+            this.cadenaConexion = cadenaConexion;
+        }
         public void AsignarUsuTarea(int idUsuario, int idTarea)
         {
             SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
@@ -50,7 +54,8 @@ namespace tl2_tp10_2023_William24A.Models
                 }
             }
             connection.Close();
-
+            if(tarea == null)
+                    throw new Exception("Tarea no encontrada.");
             return tarea;
         }
 
@@ -81,6 +86,8 @@ namespace tl2_tp10_2023_William24A.Models
                 }
                 connection.Close();
             }
+            if(tareas == null)
+                    throw new Exception("Tareas no encontradas.");
             return tareas;
         }
 
@@ -111,6 +118,8 @@ namespace tl2_tp10_2023_William24A.Models
                 }
                 connection.Close();
             }
+            if(tareas == null)
+                    throw new Exception("Tareas no encontradas.");
             return tareas;
         }
 

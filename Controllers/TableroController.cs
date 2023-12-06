@@ -22,117 +22,172 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        if(isAdmin())
+        try
         {
-            var tableros = _repoTableroC.ListarTableros();
-            var tablerosVM = new ListarTableroViewModel(tableros);
-            return View(tablerosVM);
-        }else{
-            if(isOperador())
+            if(isAdmin())
             {
-                var tablerosU = _repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                var tablerosUVM = new ListarTableroViewModel(tablerosU);
-                return View(tablerosUVM);
+                var tableros = _repoTableroC.ListarTableros();
+                var tablerosVM = new ListarTableroViewModel(tableros);
+                return View(tablerosVM);
+            }else{
+                if(isOperador())
+                {
+                    var tablerosU = _repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                    var tablerosUVM = new ListarTableroViewModel(tablerosU);
+                    return View(tablerosUVM);
+                }
             }
+            return RedirectToRoute(new { controller = "Home", action = "Index"});
         }
-        return RedirectToRoute(new { controller = "Home", action = "Index"});
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());            
+            return RedirectToRoute(new { controller = "Shared", action = "Error"});
+        }
+
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        if(isAdmin() || isOperador())
+        try
         {
-            CrearTableroViewModel crearTableroViewModel = new();
-            crearTableroViewModel.Usuarios = _repoUsuarioC.GetAll();
-            if (crearTableroViewModel.Usuarios == null) return NoContent();
-            return View(crearTableroViewModel);
+            if(isAdmin() || isOperador())
+            {
+                CrearTableroViewModel crearTableroViewModel = new();
+                crearTableroViewModel.Usuarios = _repoUsuarioC.GetAll();
+                if (crearTableroViewModel.Usuarios == null) return NoContent();
+                return View(crearTableroViewModel);
+            }
+            return RedirectToRoute(new { controller = "Login", action = "Index"});
         }
-        return RedirectToRoute(new { controller = "Login", action = "Index"});
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
     [HttpPost]
     public IActionResult Create(CrearTableroViewModel tableroVM)
     {
-        if(isAdmin()){
-            var tablero = new Tablero(tableroVM); 
-            if(!ModelState.IsValid)
-            {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                .Where(y=>y.Count>0)
-                .ToList();
-                return RedirectToAction("Create");
-            }
-            
-            _repoTableroC.CrearTablero(tablero);
-            return RedirectToAction("Listar");
-        }
-        else
+
+        try
         {
-            if(!ModelState.IsValid) return RedirectToAction("Create");
-            if(tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
-            {
+            if(isAdmin()){
                 var tablero = new Tablero(tableroVM); 
+                /*if(!ModelState.IsValid)
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                    .Where(y=>y.Count>0)
+                    .ToList();
+                    return RedirectToAction("Create");
+                }*/
+                
                 _repoTableroC.CrearTablero(tablero);
                 return RedirectToAction("Listar");
             }
+            else
+            {
+                if(!ModelState.IsValid) return RedirectToAction("Create");
+                if(tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
+                {
+                    var tablero = new Tablero(tableroVM); 
+                    _repoTableroC.CrearTablero(tablero);
+                    return RedirectToAction("Listar");
+                }
+            }
+            return RedirectToRoute(new { controller = "Login", action = "Index"});
         }
-        return RedirectToRoute(new { controller = "Login", action = "Index"});
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-        if(isAdmin())
+        try
         {
-            var tablero = _repoTableroC.ObtenerTableroID(id);
-            var tableroVM = new TableroViewModel(tablero);
-            tableroVM.Usuarios = _repoUsuarioC.GetAll();
-            if (tableroVM.Usuarios == null) return NoContent();
-             return View(tableroVM);
-        }
-        else
-        {
-            if(isOperador() && _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+             if(isAdmin())
             {
                 var tablero = _repoTableroC.ObtenerTableroID(id);
                 var tableroVM = new TableroViewModel(tablero);
+                tableroVM.Usuarios = _repoUsuarioC.GetAll();
+                if (tableroVM.Usuarios == null) return NoContent();
                 return View(tableroVM);
             }
+            else
+            {
+                if(isOperador() && _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    var tablero = _repoTableroC.ObtenerTableroID(id);
+                    var tableroVM = new TableroViewModel(tablero);
+                    return View(tableroVM);
+                }
+            }
+            return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
         }
-        return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+       
     }
     [HttpPost]
     public IActionResult Update(TableroViewModel tableroVM)
     {
-        if(isAdmin())
+        try
         {
-            if(!ModelState.IsValid) return RedirectToAction("Listar");
-            var tablero = new Tablero(tableroVM);
-            _repoTableroC.ModificarTablero(tablero.Id, tablero);
-            return RedirectToAction("Listar");
-        }
-        else
-        {
-            if(!ModelState.IsValid) return RedirectToAction("Listar");
-            if(isOperador() && tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            if(isAdmin())
             {
+                //if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var tablero = new Tablero(tableroVM);
                 _repoTableroC.ModificarTablero(tablero.Id, tablero);
                 return RedirectToAction("Listar");
             }
+            else
+            {
+                if(!ModelState.IsValid) return RedirectToAction("Listar");
+                if(isOperador() && tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    var tablero = new Tablero(tableroVM);
+                    _repoTableroC.ModificarTablero(tablero.Id, tablero);
+                    return RedirectToAction("Listar");
+                }
+            }
+            return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
         }
-        return RedirectToRoute(new { controller = "Login", action = "Index"});
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        if(isAdmin())
+        try
         {
-            _repoTableroC.DeleteTablero(id);
-            return RedirectToAction("Listar");
+            if(isAdmin())
+            {
+                _repoTableroC.DeleteTablero(id);
+                return RedirectToAction("Listar");
+            }
+            return RedirectToRoute(new { controller = "Login", action = "Index"});
         }
-        return RedirectToRoute(new { controller = "Login", action = "Index"});
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
     
     private bool isAdmin()

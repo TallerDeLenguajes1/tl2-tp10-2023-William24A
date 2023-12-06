@@ -20,70 +20,126 @@ public class UsuarioController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        if(isAdmin())
+        try
         {
-            var usuarios = _repoUsuarioC.GetAll();
-            var usuariosView = new ListarUsuarioViewModel(usuarios);
-            return View(usuariosView);
+            if(isAdmin())
+            {
+                var usuarios = _repoUsuarioC.GetAll();
+                var usuariosView = new ListarUsuarioViewModel(usuarios);
+                return View(usuariosView);
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"});  
         }
-        return RedirectToRoute(new {controller = "Home", action = "Index"});  
+        catch (System.Exception ex)
+        {
+            
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        if(isAdmin())
+        try
         {
-            return View(new CrearUsuarioViewModel());
+            if(isAdmin())
+            {
+                return View(new CrearUsuarioViewModel());
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"});  
         }
-        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        catch (System.Exception ex)
+        {
+            
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+       
     }
     [HttpPost]
     public IActionResult Create(CrearUsuarioViewModel usuarioVMD)
     {
-        if(isAdmin())
+        try
         {
-            if(!ModelState.IsValid) return RedirectToAction("Create");
-            var usuario = new Usuario(usuarioVMD);
-            _repoUsuarioC.Create(usuario);
-            return RedirectToAction("Listar");
+             if(isAdmin())
+            {
+                if(!ModelState.IsValid) return RedirectToAction("Create");
+                var usuario = new Usuario(usuarioVMD);
+                _repoUsuarioC.Create(usuario);
+                return RedirectToAction("Listar");
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"}); 
         }
-        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        catch (System.Exception ex)
+        {
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+       
     }
 
     [HttpGet]
     public IActionResult Update(int id)
     {
-         if(isAdmin())
+        try
         {
-            var usuario = _repoUsuarioC.GetById(id);
-            var usuarioVM = new UsuarioViewModel(usuario);
-            return View(usuarioVM);
+             if(isAdmin())
+                {
+                    var usuario = _repoUsuarioC.GetById(id);
+                    var usuarioVM = new UsuarioViewModel(usuario);
+                    return View(usuarioVM);
+                }
+                return RedirectToRoute(new {controller = "Home", action = "Index"}); 
         }
-        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        catch (System.Exception ex)
+        {
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
     [HttpPost]
     public IActionResult Update(UsuarioViewModel usuarioVM)
     {
-        if(isAdmin())
+        try
         {
-            if(!ModelState.IsValid) return RedirectToAction("Listar");
-            var usuario = new Usuario(usuarioVM);
-            _repoUsuarioC.Update(usuario.Id, usuario);
-            return RedirectToAction("Listar");
+            if(isAdmin())
+            {
+                if(!ModelState.IsValid) return RedirectToAction("Listar");
+                var usuario = new Usuario(usuarioVM);
+                _repoUsuarioC.Update(usuario.Id, usuario);
+                return RedirectToAction("Listar");
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"}); 
         }
-        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        catch (System.Exception ex)
+        {
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
     [HttpGet]
     public IActionResult Delete(int id)
     {
-        if(isAdmin())
+        try
         {
-            _repoUsuarioC.Remove(id);
-            return RedirectToAction("Listar");
+             if(isAdmin())
+            {
+                _repoUsuarioC.Remove(id);
+                return RedirectToAction("Listar");
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"});
         }
-        return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        catch (System.Exception ex)
+        {
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
+        
     }
 
      private bool isAdmin()

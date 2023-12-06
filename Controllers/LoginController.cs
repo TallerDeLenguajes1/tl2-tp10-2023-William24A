@@ -10,7 +10,6 @@ public class LoginController : Controller
     private readonly ILogger<LoginController> _logger;
 
     private readonly IDUsuarioRepository _repoUsuarioC;
-    List<Usuario> Usuarios;
 
     public LoginController(ILogger<LoginController> logger,IDUsuarioRepository dUsuarioRepository)
     {

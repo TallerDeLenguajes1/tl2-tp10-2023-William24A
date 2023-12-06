@@ -50,6 +50,8 @@ namespace tl2_tp10_2023_William24A.Models
                 }
                 connection.Close();
             }
+            if(usuarios == null)
+                    throw new Exception("Usuarios no encontrados.");
             return usuarios;
         }
 
@@ -72,7 +74,8 @@ namespace tl2_tp10_2023_William24A.Models
                 }
             }
             connection.Close();
-
+            if(usuario == null)
+                    throw new Exception("Usuario no encontrados.");
             return usuario;
         }
 
@@ -97,7 +100,7 @@ namespace tl2_tp10_2023_William24A.Models
                 }
             }
             connection.Close();
-            //if(usuario == null) throw new Exception("usuario no registrado");
+            if(usuario == null) throw new Exception("usuario no registrado");
             return usuario;
         }
 
