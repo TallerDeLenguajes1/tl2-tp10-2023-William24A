@@ -22,7 +22,10 @@
                 <td>
                         <a asp-controller="Usuario" asp-action="Update" class="btn btn-primary"  asp-route-id="@usuario.Id">Modificar</a>
                     
-                        <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@usuario.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                        <a asp-controller="Usuario" asp-action="Delete" 
+                        asp-route-id="@usuario.Id" class="btn btn-primary" 
+                        onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">
+                        Eliminar</a>  
                 </td>
             </tr>
         }
