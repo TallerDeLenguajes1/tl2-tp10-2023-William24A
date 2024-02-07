@@ -83,7 +83,8 @@ public class TableroController : Controller
                     .ToList();
                     return RedirectToAction("Create");
                 }*/
-                
+                if(!ModelState.IsValid)
+                    return RedirectToAction("Error");
                 _repoTableroC.CrearTablero(tablero);
                 return RedirectToAction("Listar");
             }
@@ -145,7 +146,7 @@ public class TableroController : Controller
         {
             if(isAdmin())
             {
-                //if(!ModelState.IsValid) return RedirectToAction("Listar");
+                if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var tablero = new Tablero(tableroVM);
                 _repoTableroC.ModificarTablero(tablero.Id, tablero);
                 return RedirectToAction("Listar");

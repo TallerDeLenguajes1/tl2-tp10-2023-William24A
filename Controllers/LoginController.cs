@@ -40,7 +40,7 @@ public class LoginController : Controller
         catch(Exception ex)
         {
             _logger.LogError(ex.ToString());            
-            return  BadRequest();
+            return  RedirectToRoute(new { controller = "Home", action = "Error"});
         }
         
     }

@@ -23,7 +23,7 @@ namespace MVC.ViewModels
         
         public TableroViewModel()
         {
-
+            Usuarios = new List<Usuario>();
         }
         public TableroViewModel(Tablero tablero)
         {
