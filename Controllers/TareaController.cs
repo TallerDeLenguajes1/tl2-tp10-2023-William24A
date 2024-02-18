@@ -10,11 +10,15 @@ public class TareaController : Controller
     private readonly ILogger<TareaController> _logger;
 
     private IDTareaRepositorio _repoTareaC;
+    private IDtableroRepositorio _repoTablero;
+    private IDUsuarioRepository _repoUsuarios;
 
-    public TareaController(ILogger<TareaController> logger, IDTareaRepositorio repoTareaC)
+    public TareaController(ILogger<TareaController> logger, IDTareaRepositorio repoTareaC, IDtableroRepositorio repoTablerp, IDUsuarioRepository repoUsuario)
     {
         _logger = logger;
         _repoTareaC = repoTareaC;
+        _repoTablero = repoTablerp;
+        _repoUsuarios = repoUsuario;
     }
 
     [HttpGet]
@@ -57,7 +61,11 @@ public class TareaController : Controller
         {
             if(isAdmin())
             {
-                return View(new CrearTareaViewModel());
+                CrearTareaViewModel crearTareaViewModel = new();
+                crearTareaViewModel.Usuarios = _repoUsuarios.GetAll();
+                crearTareaViewModel.Tableros = _repoTablero.ListarTableros();
+                if (crearTareaViewModel.Usuarios == null || crearTareaViewModel.Tableros == null) return NoContent();
+                return View(crearTareaViewModel);
             }
             return RedirectToRoute(new {controller = "Login", action = "Index"});
         }
@@ -75,7 +83,7 @@ public class TareaController : Controller
         try
         {
             if(isAdmin()){
-            if(!ModelState.IsValid) return RedirectToAction("Create");
+                if(!ModelState.IsValid) return RedirectToAction("Create");
                 var tarea = new Tarea(tareaVM);
                 _repoTareaC.CreaTarea(tarea);
                 return RedirectToRoute(new {controller = "Tablero", action = "Listar"});;
@@ -99,6 +107,9 @@ public class TareaController : Controller
             {
                 var tarea = _repoTareaC.BuscarPorId(id);
                 var tareaVM = new TareaViewModel(tarea);
+                tareaVM.Usuarios = _repoUsuarios.GetAll();
+                tareaVM.Tableros = _repoTablero.ListarTableros();
+                if (tareaVM.Usuarios == null || tareaVM.Tableros == null) return NoContent();
                 return View(tareaVM);
             }
             return RedirectToRoute(new {controller = "Login", action = "Index"});

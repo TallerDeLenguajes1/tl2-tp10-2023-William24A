@@ -7,6 +7,8 @@ namespace MVC.ViewModels
 {
     public class CrearTareaViewModel
     {
+        public List<Usuario> Usuarios {get;set;}
+        public List<Tablero> Tableros {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "ID Tablero")] 
         public int? IdTablero {get;set;}
@@ -22,13 +24,13 @@ namespace MVC.ViewModels
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Estado")] 
         public EstadoTarea Estado {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "ID Usuario asignado")] 
         public int? IdUsuarioAsignado1  {get;set;}
         
         public CrearTareaViewModel()
         {
-
+            Usuarios = new List<Usuario>();
+            Tableros = new List<Tablero>();
         }
         public CrearTareaViewModel(Tarea tarea)
         {
@@ -38,6 +40,8 @@ namespace MVC.ViewModels
             Color = tarea.Color;
             Estado = tarea.Estado;
             IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
+            Usuarios = new List<Usuario>();
+            Tableros = new List<Tablero>();
         }        
     }
 }

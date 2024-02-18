@@ -76,15 +76,8 @@ public class TableroController : Controller
         {
             if(isAdmin()){
                 var tablero = new Tablero(tableroVM); 
-                /*if(!ModelState.IsValid)
-                {
-                    var errors = ModelState.Select(x => x.Value.Errors)
-                    .Where(y=>y.Count>0)
-                    .ToList();
-                    return RedirectToAction("Create");
-                }*/
                 if(!ModelState.IsValid)
-                    return RedirectToAction("Error");
+                    return RedirectToAction("Create");
                 _repoTableroC.CrearTablero(tablero);
                 return RedirectToAction("Listar");
             }
