@@ -22,6 +22,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 var usuarios = _repoUsuarioC.GetAll();
@@ -44,6 +45,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 return View(new CrearUsuarioViewModel());
@@ -63,6 +65,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
              if(isAdmin())
             {
                 if(!ModelState.IsValid) return RedirectToAction("Create");
@@ -85,6 +88,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
              if(isAdmin())
                 {
                     var usuario = _repoUsuarioC.GetById(id);
@@ -105,6 +109,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
@@ -127,6 +132,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
              if(isAdmin())
             {
                 _repoUsuarioC.Remove(id);
@@ -149,9 +155,9 @@ public class UsuarioController : Controller
                 
             return false;
         }
-    private bool isOperador()
+    private bool isLogueado()
     {
-        if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "operador") 
+        if (HttpContext.Session != null && !String.IsNullOrEmpty(HttpContext.Session.GetString("Usuario"))) 
                 return true;
                 
             return false;

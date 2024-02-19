@@ -24,7 +24,7 @@ namespace MVC.ViewModels
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Estado")] 
         public EstadoTarea Estado {get;set;}
-        [Display(Name = "ID Usuario asignado")] 
+        [Display(Name = "Nombre Usuario asignado")] 
         public int? IdUsuarioAsignado1  {get;set;}
         
         public CrearTareaViewModel()

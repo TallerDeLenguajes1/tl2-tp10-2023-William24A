@@ -20,8 +20,13 @@ namespace tl2_tp10_2023_William24A.Models
             command.Parameters.Add(new SQLiteParameter("@idUsuarioAsignado", idUsuario));
             command.Parameters.Add(new SQLiteParameter("@idTarea",idTarea));
             connection.Open();
-            command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
             connection.Close();
+
+            if (rowsAffected == 0)
+                {
+                    throw new Exception("Tarea a eliminar no existe");
+                }
         }
 
         public Tarea BuscarPorId(int id)
@@ -42,7 +47,7 @@ namespace tl2_tp10_2023_William24A.Models
                     tarea.Estado = (EstadoTarea)Convert.ToInt32(reader["estado"]); 
                     tarea.Descripcion = reader["descripcion"].ToString();
                     tarea.Color = reader["color"].ToString();
-                    if(!reader.IsDBNull(reader.GetOrdinal("id_usuario_asignado")))
+                    if(!reader.IsDBNull(6))
                     {
                         tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]);
                     }
@@ -80,7 +85,15 @@ namespace tl2_tp10_2023_William24A.Models
                             tarea.Estado = (EstadoTarea)Convert.ToInt32(reader["estado"]); 
                             tarea.Descripcion = reader["descripcion"].ToString();
                             tarea.Color = reader["color"].ToString();
-                            tarea.IdUsuarioAsignado1 = reader["id_usuario_asignado"] as int?;
+                            if(!reader.IsDBNull(6))
+                            {
+                                tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]);
+                            }
+                            else
+                            {
+                                tarea.IdUsuarioAsignado1 = 0;
+                            }
+                    
                             tareas.Add(tarea);
                     }
                 }
@@ -112,7 +125,15 @@ namespace tl2_tp10_2023_William24A.Models
                             tarea.Estado = (EstadoTarea)Convert.ToInt32(reader["estado"]); 
                             tarea.Descripcion = reader["descripcion"].ToString();
                             tarea.Color = reader["color"].ToString();
-                            tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]) as int?;
+                            if(!reader.IsDBNull(6))
+                            {
+                                tarea.IdUsuarioAsignado1 = Convert.ToInt32(reader["id_usuario_asignado"]);
+                            }
+                            else
+                            {
+                                tarea.IdUsuarioAsignado1 = 0;
+                            }
+                    
                             tareas.Add(tarea);
                     }
                 }
@@ -149,8 +170,13 @@ namespace tl2_tp10_2023_William24A.Models
             command.CommandText = $"DELETE FROM Tarea WHERE id = @idTarea;";
             command.Parameters.Add(new SQLiteParameter("@idTarea", idTarea));
             connection.Open();
-            command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
             connection.Close();
+
+            if (rowsAffected == 0)
+                {
+                    throw new Exception("Tarea a eliminar no existe");
+                }
         }
 
         public void Modificar(int id, Tarea tarea)
@@ -167,8 +193,13 @@ namespace tl2_tp10_2023_William24A.Models
             command.Parameters.Add(new SQLiteParameter("@idusuario", tarea.IdUsuarioAsignado1));
 
             connection.Open();
-            command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
             connection.Close();
+
+            if (rowsAffected == 0)
+                {
+                    throw new Exception("Tarea a eliminar no existe");
+                }
         }
     }
 }

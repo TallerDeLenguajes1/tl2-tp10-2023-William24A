@@ -179,6 +179,14 @@ public class TareaController : Controller
                 
             return false;
     }
+
+    private bool isLogueado()
+    {
+        if (HttpContext.Session != null && !String.IsNullOrEmpty(HttpContext.Session.GetString("Usuario"))) 
+                return true;
+                
+            return false;
+    }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

@@ -24,18 +24,12 @@ public class TableroController : Controller
     {
         try
         {
-            if(isAdmin())
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(isAdmin() || isOperador())
             {
                 var tableros = _repoTableroC.ListarTableros();
                 var tablerosVM = new ListarTableroViewModel(tableros);
                 return View(tablerosVM);
-            }else{
-                if(isOperador())
-                {
-                    var tablerosU = _repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                    var tablerosUVM = new ListarTableroViewModel(tablerosU);
-                    return View(tablerosUVM);
-                }
             }
             return RedirectToRoute(new { controller = "Home", action = "Index"});
         }
@@ -52,6 +46,7 @@ public class TableroController : Controller
     {
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin() || isOperador())
             {
                 CrearTableroViewModel crearTableroViewModel = new();
@@ -74,6 +69,7 @@ public class TableroController : Controller
 
         try
         {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin()){
                 var tablero = new Tablero(tableroVM); 
                 if(!ModelState.IsValid)
@@ -106,22 +102,14 @@ public class TableroController : Controller
     {
         try
         {
-             if(isAdmin())
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+             if(isAdmin() ||  _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 var tablero = _repoTableroC.ObtenerTableroID(id);
                 var tableroVM = new TableroViewModel(tablero);
                 tableroVM.Usuarios = _repoUsuarioC.GetAll();
                 if (tableroVM.Usuarios == null) return NoContent();
                 return View(tableroVM);
-            }
-            else
-            {
-                if(isOperador() && _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
-                {
-                    var tablero = _repoTableroC.ObtenerTableroID(id);
-                    var tableroVM = new TableroViewModel(tablero);
-                    return View(tableroVM);
-                }
             }
             return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
         }
@@ -137,22 +125,13 @@ public class TableroController : Controller
     {
         try
         {
-            if(isAdmin())
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(isAdmin() || tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var tablero = new Tablero(tableroVM);
                 _repoTableroC.ModificarTablero(tablero.Id, tablero);
                 return RedirectToAction("Listar");
-            }
-            else
-            {
-                if(!ModelState.IsValid) return RedirectToAction("Listar");
-                if(isOperador() && tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
-                {
-                    var tablero = new Tablero(tableroVM);
-                    _repoTableroC.ModificarTablero(tablero.Id, tablero);
-                    return RedirectToAction("Listar");
-                }
             }
             return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
         }
@@ -169,7 +148,8 @@ public class TableroController : Controller
     {
         try
         {
-            if(isAdmin())
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(isAdmin() || _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 _repoTableroC.DeleteTablero(id);
                 return RedirectToAction("Listar");
@@ -198,6 +178,15 @@ public class TableroController : Controller
                 
             return false;
     }
+
+    private bool isLogueado()
+    {
+        if (HttpContext.Session != null && !String.IsNullOrEmpty(HttpContext.Session.GetString("Usuario"))) 
+                return true;
+                
+            return false;
+    }
+    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
