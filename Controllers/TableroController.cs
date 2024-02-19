@@ -11,12 +11,14 @@ public class TableroController : Controller
 
     private readonly IDtableroRepositorio _repoTableroC;
     private readonly IDUsuarioRepository _repoUsuarioC;
+    private readonly IDTareaRepositorio _repoTarea;
 
-    public TableroController(ILogger<TableroController> logger,IDtableroRepositorio repoTableroC, IDUsuarioRepository repoUsuarioC )
+    public TableroController(ILogger<TableroController> logger,IDtableroRepositorio repoTableroC, IDUsuarioRepository repoUsuarioC, IDTareaRepositorio repoTarea)
     {
         _logger = logger;
         _repoTableroC = repoTableroC;
         _repoUsuarioC = repoUsuarioC;
+        _repoTarea = repoTarea;
     }
 
     [HttpGet]
@@ -25,11 +27,21 @@ public class TableroController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin() || isOperador())
+            if(isOperador())
             {
-                var tableros = _repoTableroC.ListarTableros();
-                var tablerosVM = new ListarTableroViewModel(tableros);
+                var tableros = _repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                var myTableros = tablerosTareasAsignadas(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                var tablerosVM = new ListarTableroViewModel(tableros, myTableros);
                 return View(tablerosVM);
+            }
+            else
+            {
+               if(isAdmin())
+               {
+                 var tableros = _repoTableroC.ListarTableros();
+                 var tablerosVM = new ListarTableroViewModel(tableros);
+                 return View(tablerosVM);
+               }
             }
             return RedirectToRoute(new { controller = "Home", action = "Index"});
         }
@@ -187,10 +199,22 @@ public class TableroController : Controller
             return false;
     }
     
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    private List<Tablero> tablerosTareasAsignadas(int idUsuario)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        List<Tarea> misTareasAsignadas = _repoTarea.BuscarTodasTarea(idUsuario);
+
+        List<Tablero> tableros = _repoTableroC.ListarTableros();
+
+        List<Tablero> tablerosTareasAsignadas = new List<Tablero>(); 
+
+        foreach (var tablero in tableros)
+        {
+            if (tablero.Id_usuario_propietario != idUsuario && misTareasAsignadas.Any(tarea => tarea.IdTablero == tablero.Id))
+            {
+                tablerosTareasAsignadas.Add(tablero);
+            }
+        }
+
+        return tablerosTareasAsignadas;
     }
 }
