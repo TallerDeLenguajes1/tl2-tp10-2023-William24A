@@ -34,15 +34,16 @@ public class TareaController : Controller
             }
             else
             {
-                if(isOperador())
+                if(isOperador() && Convert.ToInt32(HttpContext.Session.GetString("Id")) == id)
                 {
-                    var tablerosU = _repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                    var tablerosU = _repoTareaC.BuscarTareasTablero(id);
                     var tablerosUVM = new ListarTareaViewModel(tablerosU);
                     return View(tablerosUVM);
                 }
                 else
                 {
-                    return RedirectToRoute(new {controller = "Login", action = "Index"});
+                    return NotFound();
+                    //return RedirectToRoute(new {controller = "Home", action = "Error"});
                 } 
             } 
         }

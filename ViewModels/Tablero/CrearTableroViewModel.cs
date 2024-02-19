@@ -7,8 +7,6 @@ namespace MVC.ViewModels
 {
     public class CrearTableroViewModel
     {
-        //[Required(ErrorMessage = "Este campo es requerido.")]
-        //[Display(Name = "ID usuario propietario")] 
         public List<Usuario> Usuarios {get;set;}
         public int Id_usuario_propietario {get;set;}
 
