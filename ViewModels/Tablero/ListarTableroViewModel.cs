@@ -9,6 +9,7 @@ namespace MVC.ViewModels
     {
         public List<TableroViewModel> TablerosViewModels {get;set;}
         public List<TableroViewModel> MyTablerosViewModels {get;set;}
+        public string Operador {get; set;}
         public ListarTableroViewModel()
         {
             TablerosViewModels = new List<TableroViewModel>();
@@ -22,9 +23,10 @@ namespace MVC.ViewModels
                 TablerosViewModels.Add(tableroViewModel);  
             }
             MyTablerosViewModels = new List<TableroViewModel>();
+            Operador = "";
         }  
 
-        public ListarTableroViewModel(List<Tablero> tableros, List<Tablero> myTableros)
+        public ListarTableroViewModel(List<Tablero> tableros, List<Tablero> myTableros, string operador)
         {
             TablerosViewModels = new List<TableroViewModel>();
             MyTablerosViewModels = new List<TableroViewModel>();
@@ -39,6 +41,7 @@ namespace MVC.ViewModels
                 var tableroViewModel = new TableroViewModel(tablero);
                 MyTablerosViewModels.Add(tableroViewModel);  
             }
+            Operador = operador;
           
         }       
     }

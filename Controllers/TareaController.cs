@@ -40,7 +40,7 @@ public class TareaController : Controller
                     return NotFound();
                 }
                 var tarea = _repoTareaC.BuscarTareasTablero(id);
-                var tareaVM = new ListarTareaViewModel(tarea, Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                var tareaVM = new ListarTareaViewModel(tarea, Convert.ToInt32(HttpContext.Session.GetString("Id")), "operador");
                 return View(tareaVM);
                 //return RedirectToRoute(new {controller = "Home", action = "Error"}); 
             }
@@ -143,7 +143,7 @@ public class TareaController : Controller
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var tarea = new Tarea(tareaVM);
                 _repoTareaC.Modificar(tarea.Id, tarea);
-                return RedirectToRoute(new {controller = "Tarea", action = "Listar", id = tareaVM.IdTablero});
+                return RedirectToRoute(new {controller = "Tarea", action = "MyTarea"});
             }
             else
             {
@@ -151,7 +151,7 @@ public class TareaController : Controller
                 {
                     var tarea = new Tarea(tareaVM);
                     _repoTareaC.Modificar(tarea.Id, tarea);
-                    return RedirectToRoute(new {controller = "Tarea", action = "Listar", id = tareaVM.IdTablero});
+                    return RedirectToRoute(new {controller = "Tarea", action = "MyTarea"});
                 }
             }
             return RedirectToRoute(new {controller = "Login", action = "Index"}); 
@@ -162,6 +162,28 @@ public class TareaController : Controller
             return RedirectToRoute(new {controller = "Shared", action ="Error"});
         }
         
+    }
+
+    [HttpGet]
+    public IActionResult MyTarea()
+    {
+        try
+        {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            var tareas = _repoTareaC.BuscarTodasTarea(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+            string operador = "";
+            if(isOperador())
+            {
+                operador = "operador";
+            }
+            var tareaViewModel = new ListarMiTareaViewModel(tareas, _repoTablero.ListarTableros(), _repoUsuarios.GetById(Convert.ToInt32(HttpContext.Session.GetString("Id"))),operador);
+            return View(tareaViewModel);
+        }
+        catch (System.Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+        }
     }
 
     [HttpGet]

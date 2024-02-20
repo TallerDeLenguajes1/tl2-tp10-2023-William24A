@@ -31,7 +31,7 @@ public class TableroController : Controller
             {
                 var tableros = _repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
                 var myTableros = tablerosTareasAsignadas(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                var tablerosVM = new ListarTableroViewModel(tableros, myTableros);
+                var tablerosVM = new ListarTableroViewModel(tableros, myTableros,"operador");
                 return View(tablerosVM);
             }
             else

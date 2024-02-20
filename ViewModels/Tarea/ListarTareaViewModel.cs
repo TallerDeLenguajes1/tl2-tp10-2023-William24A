@@ -9,10 +9,11 @@ namespace MVC.ViewModels
     {
         public List<TareaViewModel> TareasViewModels {get;set;}
         public List<TareaViewModel> MyTareasViewModels {get;set;}
-        
+        public string Operador {get;set;}
         public ListarTareaViewModel()
         {
             TareasViewModels = new List<TareaViewModel>();
+            MyTareasViewModels = new List<TareaViewModel>();
         }
         public ListarTareaViewModel(List<Tarea> tareas)
         {
@@ -23,9 +24,10 @@ namespace MVC.ViewModels
                 TareasViewModels.Add(tareaViewModel);  
             }
             MyTareasViewModels = new List<TareaViewModel>();
+            Operador = "";
         } 
 
-        public ListarTareaViewModel(List<Tarea> tareas, int id)
+        public ListarTareaViewModel(List<Tarea> tareas, int id, string operador)
         {
             TareasViewModels = new List<TareaViewModel>();
             MyTareasViewModels = new List<TareaViewModel>();
@@ -41,6 +43,7 @@ namespace MVC.ViewModels
                 }
                   
             }
+            Operador = operador;
           
         }       
     }
