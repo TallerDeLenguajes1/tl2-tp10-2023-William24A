@@ -1,11 +1,10 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using tl2_tp10_2023_William24A.Models;
 
 
 namespace MVC.ViewModels
 {
-    public class TareaViewModel
+    public class ActualizarTareaViewModel
     {
         [Required]
         public int Id {get;set;}
@@ -30,12 +29,13 @@ namespace MVC.ViewModels
         public List<Tablero> Tableros {get;set;}
         public string Operador {get;set;}
         
-        public TareaViewModel()
+        public ActualizarTareaViewModel()
         {
             Usuarios = new List<Usuario>();
             Tableros = new List<Tablero>();
+            Operador = "";
         }
-        public TareaViewModel(Tarea tarea)
+        public ActualizarTareaViewModel(Tarea tarea)
         {
             Id = tarea.Id;
             IdTablero = tarea.IdTablero;
@@ -49,7 +49,7 @@ namespace MVC.ViewModels
             Tableros = new List<Tablero>();
         } 
 
-        public TareaViewModel(Tarea tarea, string operador)
+        public ActualizarTareaViewModel(Tarea tarea, string operador)
         {
             Id = tarea.Id;
             IdTablero = tarea.IdTablero;

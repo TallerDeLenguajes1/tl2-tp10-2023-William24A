@@ -26,26 +26,24 @@ public class TareaController : Controller
     {
         try
         {
+           if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
            if(isAdmin())
             {
-                var tableros = _repoTareaC.BuscarTareasTablero(id);
-                var tablerosVM = new ListarTareaViewModel(tableros);
-                return View(tablerosVM);
+                var tarea = _repoTareaC.BuscarTareasTablero(id);
+                var tareaVM = new ListarTareaViewModel(tarea);
+                return View(tareaVM);
             }
             else
             {
-                if(isOperador() && Convert.ToInt32(HttpContext.Session.GetString("Id")) == id)
-                {
-                    var tablerosU = _repoTareaC.BuscarTareasTablero(id);
-                    var tablerosUVM = new ListarTareaViewModel(tablerosU);
-                    return View(tablerosUVM);
-                }
-                else
+                if (!isOperador())
                 {
                     return NotFound();
-                    //return RedirectToRoute(new {controller = "Home", action = "Error"});
-                } 
-            } 
+                }
+                var tarea = _repoTareaC.BuscarTareasTablero(id);
+                var tareaVM = new ListarTareaViewModel(tarea, Convert.ToInt32(HttpContext.Session.GetString("Id")));
+                return View(tareaVM);
+                //return RedirectToRoute(new {controller = "Home", action = "Error"}); 
+            }
         }
         catch (System.Exception ex)
         {
@@ -60,6 +58,7 @@ public class TareaController : Controller
     {
         try
         {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 CrearTareaViewModel crearTareaViewModel = new();
@@ -83,11 +82,12 @@ public class TareaController : Controller
     {
         try
         {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin()){
                 if(!ModelState.IsValid) return RedirectToAction("Create");
                 var tarea = new Tarea(tareaVM);
                 _repoTareaC.CreaTarea(tarea);
-                return RedirectToRoute(new {controller = "Tablero", action = "Listar"});;
+                return RedirectToRoute(new {controller = "Tarea", action = "Listar", id = tareaVM.IdTablero});
             }
             return RedirectToRoute(new {controller = "Login", action = "Index"}); 
         }
@@ -104,14 +104,23 @@ public class TareaController : Controller
     {
         try
         {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 var tarea = _repoTareaC.BuscarPorId(id);
-                var tareaVM = new TareaViewModel(tarea);
+                var tareaVM = new ActualizarTareaViewModel(tarea);
                 tareaVM.Usuarios = _repoUsuarios.GetAll();
                 tareaVM.Tableros = _repoTablero.ListarTableros();
                 if (tareaVM.Usuarios == null || tareaVM.Tableros == null) return NoContent();
                 return View(tareaVM);
+            }else
+            {
+                if(isOperador() && _repoTareaC.BuscarPorId(id).IdUsuarioAsignado1 == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    var tarea = _repoTareaC.BuscarPorId(id);
+                    var tareaVM = new ActualizarTareaViewModel(tarea,"operador"); 
+                    return View(tareaVM);
+                }
             }
             return RedirectToRoute(new {controller = "Login", action = "Index"});
         }
@@ -123,16 +132,27 @@ public class TareaController : Controller
         
     }
     [HttpPost]
-    public IActionResult Update(TareaViewModel tareaVM)
+    public IActionResult Update(ActualizarTareaViewModel tareaVM)
     {
         try
         {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            
            if(isAdmin())
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var tarea = new Tarea(tareaVM);
                 _repoTareaC.Modificar(tarea.Id, tarea);
-                return RedirectToRoute(new {controller = "Tablero", action = "Listar"});
+                return RedirectToRoute(new {controller = "Tarea", action = "Listar", id = tareaVM.IdTablero});
+            }
+            else
+            {
+                if(isOperador() && tareaVM.IdUsuarioAsignado1 == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    var tarea = new Tarea(tareaVM);
+                    _repoTareaC.Modificar(tarea.Id, tarea);
+                    return RedirectToRoute(new {controller = "Tarea", action = "Listar", id = tareaVM.IdTablero});
+                }
             }
             return RedirectToRoute(new {controller = "Login", action = "Index"}); 
         }
@@ -149,6 +169,7 @@ public class TareaController : Controller
     {
         try
         {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 _repoTareaC.DeleteTarea(id);

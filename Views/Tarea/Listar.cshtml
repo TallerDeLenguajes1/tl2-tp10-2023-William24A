@@ -1,6 +1,3 @@
-@{
-    ViewData["Title"] = "Home Page"; // titulo de la pestaña
-}
 
 @model MVC.ViewModels.ListarTareaViewModel
 
@@ -39,5 +36,38 @@
         <tr>
                 <a asp-controller="Tarea" asp-action="Create" class="btn btn-primary">Crear tarea</a>  
         </tr>
+    </tbody>
+</table>
+<h5>Tareas asignadas</h5>
+<table class = "table">
+    <thead>
+        <tr>
+            <th hidden>ID</th> <!-- oculto el id--->
+            <th hidden>ID Tablero</th>
+            <th>Tarea</th>
+            <th>Descripcion</th>
+            <th>Color</th>
+            <th>Estado</th>
+            <th hidden>ID usuario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tarea in Model.MyTareasViewModels)
+        {
+            <tr>
+                <td hidden>@tarea.Id</td>
+                <td hidden>@tarea.IdTablero</td>
+                <td>@tarea.Nombre</td>
+                <td>@tarea.Descripcion</td>
+                <td>@tarea.Color</td>
+                <td>@tarea.Estado</td>
+                <td hidden>@tarea.IdUsuarioAsignado1</td>
+                <td>
+                        <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
+
+                        <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,6 +1,3 @@
-@{
-    ViewData["Title"] = "Home Page"; // titulo de la pestaña
-}
 
 @model MVC.ViewModels.ListarTableroViewModel
 
@@ -28,7 +25,7 @@
                         <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@tablero.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
                     
                    
-                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id_usuario_propietario" class="btn btn-primary" >Tarea</a>
+                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id" class="btn btn-primary" >Tarea</a>
                     
                 </td>
             </tr>

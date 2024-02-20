@@ -40,5 +40,11 @@ namespace tl2_tp10_2023_William24A.Models
             NombreUsuario = usuar.NombreUsuario;
             Tipo = usuar.Tipo;
         }
+        public Usuario(ActualizarUsuarioViewModel usuar)
+        {
+            Id = usuar.Id;
+            NombreUsuario = usuar.NombreUsuario;
+            Tipo = usuar.Tipo;
+        }
     }
 }

@@ -118,7 +118,7 @@ public class TableroController : Controller
              if(isAdmin() ||  _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 var tablero = _repoTableroC.ObtenerTableroID(id);
-                var tableroVM = new TableroViewModel(tablero);
+                var tableroVM = new ActualizarTableroViewModel(tablero);
                 tableroVM.Usuarios = _repoUsuarioC.GetAll();
                 if (tableroVM.Usuarios == null) return NoContent();
                 return View(tableroVM);
@@ -133,7 +133,7 @@ public class TableroController : Controller
        
     }
     [HttpPost]
-    public IActionResult Update(TableroViewModel tableroVM)
+    public IActionResult Update(ActualizarTableroViewModel tableroVM)
     {
         try
         {

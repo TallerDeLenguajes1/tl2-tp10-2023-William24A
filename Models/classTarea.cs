@@ -51,6 +51,16 @@ namespace tl2_tp10_2023_William24A.Models
             Estado = tareaVM.Estado;
             IdUsuarioAsignado1 = tareaVM.IdUsuarioAsignado1;
         }
+        public Tarea(ActualizarTareaViewModel tareaVM)
+        {
+            Id = tareaVM.Id;
+            IdTablero = tareaVM.IdTablero;
+            Nombre = tareaVM.Nombre;
+            Descripcion = tareaVM.Descripcion;
+            Color = tareaVM.Color;
+            Estado = tareaVM.Estado;
+            IdUsuarioAsignado1 = tareaVM.IdUsuarioAsignado1;
+        }
     }
     
 }

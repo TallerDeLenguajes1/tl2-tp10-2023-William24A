@@ -32,5 +32,12 @@ namespace tl2_tp10_2023_William24A.Models
             Nombre = tableroVM.Nombre;
             Descripcion = tableroVM.Descripcion;
         }
+        public Tablero(ActualizarTableroViewModel tableroVM)
+        {
+            Id = tableroVM.Id;
+            Id_usuario_propietario = tableroVM.Id_usuario_propietario;
+            Nombre = tableroVM.Nombre;
+            Descripcion = tableroVM.Descripcion;
+        }
     }
 }

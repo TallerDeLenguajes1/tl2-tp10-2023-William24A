@@ -92,7 +92,7 @@ public class UsuarioController : Controller
              if(isAdmin())
                 {
                     var usuario = _repoUsuarioC.GetById(id);
-                    var usuarioVM = new UsuarioViewModel(usuario);
+                    var usuarioVM = new ActualizarUsuarioViewModel(usuario);
                     return View(usuarioVM);
                 }
                 return RedirectToRoute(new {controller = "Home", action = "Index"}); 
@@ -105,7 +105,7 @@ public class UsuarioController : Controller
         
     }
     [HttpPost]
-    public IActionResult Update(UsuarioViewModel usuarioVM)
+    public IActionResult Update(ActualizarUsuarioViewModel usuarioVM)
     {
         try
         {
