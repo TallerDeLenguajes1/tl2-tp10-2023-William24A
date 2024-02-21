@@ -31,6 +31,15 @@ namespace MVC.ViewModels
             Nombre = tablero.Nombre;
             Descripcion = tablero.Descripcion;
             Usuarios = new List<Usuario>();
-        }        
+        }  
+
+         public ActualizarTableroViewModel(Tablero tablero, List<Usuario> usuarios)
+        {
+            Id = tablero.Id;
+            Id_usuario_propietario = tablero.Id_usuario_propietario;
+            Nombre = tablero.Nombre;
+            Descripcion = tablero.Descripcion;
+            Usuarios = usuarios;
+        }       
     }
 }

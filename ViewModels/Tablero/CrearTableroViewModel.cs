@@ -29,6 +29,10 @@ namespace MVC.ViewModels
             Nombre = tablero.Nombre;
             Descripcion = tablero.Descripcion;
             Usuarios = new List<Usuario>();
-        }        
+        } 
+        public CrearTableroViewModel( List<Usuario> usuarios)
+        {
+            Usuarios = usuarios;
+        }         
     }
 }

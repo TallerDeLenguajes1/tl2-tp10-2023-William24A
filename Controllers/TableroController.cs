@@ -61,8 +61,9 @@ public class TableroController : Controller
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin() || isOperador())
             {
-                CrearTableroViewModel crearTableroViewModel = new();
-                crearTableroViewModel.Usuarios = _repoUsuarioC.GetAll();
+                /*CrearTableroViewModel crearTableroViewModel = new();
+                crearTableroViewModel.Usuarios = _repoUsuarioC.GetAll();*/
+                var crearTableroViewModel = new CrearTableroViewModel(_repoUsuarioC.GetAll());
                 if (crearTableroViewModel.Usuarios == null) return NoContent();
                 return View(crearTableroViewModel);
             }
@@ -118,8 +119,7 @@ public class TableroController : Controller
              if(isAdmin() ||  _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 var tablero = _repoTableroC.ObtenerTableroID(id);
-                var tableroVM = new ActualizarTableroViewModel(tablero);
-                tableroVM.Usuarios = _repoUsuarioC.GetAll();
+                var tableroVM = new ActualizarTableroViewModel(tablero, _repoUsuarioC.GetAll());
                 if (tableroVM.Usuarios == null) return NoContent();
                 return View(tableroVM);
             }

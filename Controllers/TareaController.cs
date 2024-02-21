@@ -61,9 +61,7 @@ public class TareaController : Controller
             if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
-                CrearTareaViewModel crearTareaViewModel = new();
-                crearTareaViewModel.Usuarios = _repoUsuarios.GetAll();
-                crearTareaViewModel.Tableros = _repoTablero.ListarTableros();
+                var crearTareaViewModel = new CrearTareaViewModel(_repoUsuarios.GetAll(), _repoTablero.ListarTableros());
                 if (crearTareaViewModel.Usuarios == null || crearTareaViewModel.Tableros == null) return NoContent();
                 return View(crearTareaViewModel);
             }
@@ -108,9 +106,7 @@ public class TareaController : Controller
             if(isAdmin())
             {
                 var tarea = _repoTareaC.BuscarPorId(id);
-                var tareaVM = new ActualizarTareaViewModel(tarea);
-                tareaVM.Usuarios = _repoUsuarios.GetAll();
-                tareaVM.Tableros = _repoTablero.ListarTableros();
+                var tareaVM = new ActualizarTareaViewModel(tarea, _repoUsuarios.GetAll(), _repoTablero.ListarTableros());
                 if (tareaVM.Usuarios == null || tareaVM.Tableros == null) return NoContent();
                 return View(tareaVM);
             }else

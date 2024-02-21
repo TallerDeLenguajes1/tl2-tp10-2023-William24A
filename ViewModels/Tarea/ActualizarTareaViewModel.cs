@@ -35,7 +35,7 @@ namespace MVC.ViewModels
             Tableros = new List<Tablero>();
             Operador = "";
         }
-        public ActualizarTareaViewModel(Tarea tarea)
+        public ActualizarTareaViewModel(Tarea tarea, List<Usuario> usuarios, List<Tablero> tableros)
         {
             Id = tarea.Id;
             IdTablero = tarea.IdTablero;
@@ -45,8 +45,8 @@ namespace MVC.ViewModels
             Estado = tarea.Estado;
             IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
             Operador = "";
-            Usuarios = new List<Usuario>();
-            Tableros = new List<Tablero>();
+            Usuarios = usuarios;
+            Tableros = tableros;
         } 
 
         public ActualizarTareaViewModel(Tarea tarea, string operador)

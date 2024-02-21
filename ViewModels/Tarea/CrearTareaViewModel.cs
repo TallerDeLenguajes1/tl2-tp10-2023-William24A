@@ -42,6 +42,12 @@ namespace MVC.ViewModels
             IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
             Usuarios = new List<Usuario>();
             Tableros = new List<Tablero>();
+        } 
+
+        public CrearTareaViewModel(List<Usuario> usuarios, List<Tablero> tableros)
+        {
+            Usuarios = usuarios;
+            Tableros = tableros;
         }        
     }
 }
