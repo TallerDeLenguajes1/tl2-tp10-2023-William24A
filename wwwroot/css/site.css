@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.formLogueo{
+  margin: 3em auto;
+  width: 40%;
+}
