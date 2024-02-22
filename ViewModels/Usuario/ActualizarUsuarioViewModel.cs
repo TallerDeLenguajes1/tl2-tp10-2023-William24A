@@ -16,12 +16,6 @@ namespace MVC.ViewModels
         [Display(Name = "Nombre de usuario")]
         public string NombreUsuario {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
-        [StringLength(10, MinimumLength = 3, ErrorMessage = "Este campo debe contener entre 3 y 10 caracteres alfanumericos.")]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Este campo debe contener solo letras y números.")]
-        [Display(Name = "Contraseña")]
-        [PasswordPropertyText]
-        public string Contrasenia{get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Tipo")] 
         public Tipo Tipo {get;set;}
         

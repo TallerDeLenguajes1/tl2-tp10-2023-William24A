@@ -22,15 +22,46 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Listar">Usuario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tablero" asp-action="Listar">Tablero</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tarea" asp-action="MyTarea">Mis Tareas</a>
-                        </li>
+                        @if(!string.IsNullOrEmpty(Context.Session.GetString("Usuario")))
+                        {
+                                @if(Context.Session.GetString("Tipo") == Tipo.admin.ToString())
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Listar">Usuario</a>
+                                        </li>
+                                    }
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tablero" asp-action="Listar">Tablero</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tarea" asp-action="MyTarea">Mis Tareas</a>
+                                </li>
+                        }
+                         @if(!string.IsNullOrEmpty(Context.Session.GetString("Usuario")))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle">Usuario: </i>
+                                    @Context.Session.GetString("Usuario")
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @* <li><hr class="dropdown-divider" /></li> *@
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Usuario" asp-action="Configuracion" asp-route-id= "@Context.Session.GetString("Id")">
+                                            <i class="bi bi-gear-fill"></i>
+                                            Configuración
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Login" asp-action="Logout">
+                                            <i class="bi bi-power"></i>
+                                            Cerrar sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -44,7 +75,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - tl2_tp10_2023_William24A - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Albarracin William Fernando - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

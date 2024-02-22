@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Mi perfil";
+}
+@model MVC.ViewModels.UsuarioViewModel
+@using tl2_tp10_2023_William24A.Models;
+
+<div class="text-center">
+  <div class="card-header">
+    Detalles de usuario
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Nombre de usuario</h5>
+    <p class="card-text">@Model.NombreUsuario</p>
+
+    <h5 class="card-title">Tipo</h5>
+    <p class="card-text">@Model.Tipo</p>
+
+    <a asp-controller="Usuario" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Modificar</a>
+    <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>
+  </div>
+</div>

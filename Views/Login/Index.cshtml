@@ -3,17 +3,19 @@
     <article>
         <form asp-controller="Login" asp-action="Login" method="post" class = "formLogueo">
             <div class="form-group">
-                <label asp-for="@Model.NombreUsuario"></label>
+                <label asp-for="@Model.NombreUsuario" ></label>
                 <input asp-for="@Model.NombreUsuario" class="form-control" placeholder="nombre de usuario" aria-label="Username" aria-describedby="basic-addon1">
                 <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>    
             </div>
 
             <div class="form-group">
-                <label asp-for="@Model.Contrasenia"></label>
+                <label asp-for="@Model.Contrasenia" ></label>
                 <input type="password" asp-for="@Model.Contrasenia" class="form-control" placeholder="contraseña" aria-label="contraseña" aria-describedby="basic-addon1"/>
                 <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary ">Iniciar sesión</button>
+            </div>           
         </form>
         @if (ViewData.ModelState.Count > 0)
                 {

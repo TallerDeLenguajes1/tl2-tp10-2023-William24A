@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page"; // titulo de la pestaña
+    ViewData["Title"] = "Listar Usuarios"; // titulo de la pestaña
 }
 @using MVC.ViewModels
 @model MVC.ViewModels.ListarUsuarioViewModel
@@ -11,12 +11,14 @@
         <tr>
             <th hidden>ID</th> <!-- oculto el id--->
             <th>Usuario</th>
+            <th>Tipo</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var usuario in Model.UsuariosViewModels)
         {
             <tr>
+                <td hidden>@usuario.Id</td>
                 <td>@usuario.NombreUsuario</td>
                 <td>@usuario.Tipo</td>
                 <td>

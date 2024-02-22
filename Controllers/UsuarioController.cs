@@ -137,7 +137,7 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(isAdmin())
+             if(isAdmin() || id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 _repoUsuarioC.Remove(id);
                 if (id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
@@ -158,7 +158,7 @@ public class UsuarioController : Controller
         
     }
 
-        [HttpGet]
+    [HttpGet]
     public IActionResult Configuracion() // listo los usuarios
     {
         try

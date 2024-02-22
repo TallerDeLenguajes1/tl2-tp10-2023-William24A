@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using tl2_tp10_2023_William24A.Models;
 
 
