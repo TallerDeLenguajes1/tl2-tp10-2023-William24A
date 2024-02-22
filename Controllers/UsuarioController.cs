@@ -66,7 +66,11 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(isAdmin())
+             if(_repoUsuarioC.ExistUser(usuarioVMD.NombreUsuario))
+            {
+                ModelState.AddModelError("NombreDeUsuario", "El nombre de usuario ingresado ya existe.");
+            }
+            if(isAdmin())
             {
                 if(!ModelState.IsValid) return RedirectToAction("Create");
                 var usuario = new Usuario(usuarioVMD);
@@ -206,11 +210,5 @@ public class UsuarioController : Controller
                 return true;
                 
             return false;
-    }
-    
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

@@ -21,9 +21,14 @@ namespace tl2_tp10_2023_William24A.Models
                 command.Parameters.Add(new SQLiteParameter("@name", usuario.NombreUsuario));
                 command.Parameters.Add(new SQLiteParameter("@contrasenia", usuario.Contrasenia));
                 command.Parameters.Add(new SQLiteParameter("@tipo", usuario.Tipo));
-                command.ExecuteNonQuery();
+                int rowsAffected = command.ExecuteNonQuery();
 
                 connection.Close(); 
+
+                 if (rowsAffected == 0) // ??
+                {
+                    throw new Exception();
+                } 
             }
         }
 
@@ -57,23 +62,26 @@ namespace tl2_tp10_2023_William24A.Models
 
         public Usuario GetById(int id)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
-            var usuario = new Usuario();
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Usuario WHERE id = @idUsuario";
-            command.Parameters.Add(new SQLiteParameter("@idUsuario", id));
-            connection.Open();
-            using(SQLiteDataReader reader = command.ExecuteReader())
+            Usuario usuario = null;
+            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
-                while (reader.Read())
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM Usuario WHERE id = @idUsuario";
+                command.Parameters.Add(new SQLiteParameter("@idUsuario", id));
+                connection.Open();
+                using(SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    usuario.Id = Convert.ToInt32(reader["id"]);
-                    usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
-                    usuario.Contrasenia = reader["contrasenia"].ToString();
-                    usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
+                    while (reader.Read())
+                    {
+                        usuario = new Usuario();
+                        usuario.Id = Convert.ToInt32(reader["id"]);
+                        usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
+                        usuario.Contrasenia = reader["contrasenia"].ToString();
+                        usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
+                    }
                 }
+                connection.Close();
             }
-            connection.Close();
             if(usuario == null)
                     throw new Exception("Usuario no encontrados.");
             return usuario;
@@ -81,25 +89,27 @@ namespace tl2_tp10_2023_William24A.Models
 
         public Usuario login(string nombre, string password)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
             Usuario usuario = null;
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM Usuario WHERE nombre_de_usuario = @nombre AND contrasenia = @contrasenia ";
-            command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
-            command.Parameters.Add(new SQLiteParameter("@contrasenia", password));
-            connection.Open();
-            using(SQLiteDataReader reader = command.ExecuteReader())
+            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
-                while (reader.Read())
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM Usuario WHERE nombre_de_usuario = @nombre AND contrasenia = @contrasenia ";
+                command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
+                command.Parameters.Add(new SQLiteParameter("@contrasenia", password));
+                connection.Open();
+                using(SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    usuario = new Usuario();
-                    usuario.Id = Convert.ToInt32(reader["id"]);
-                    usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
-                    usuario.Contrasenia = reader["contrasenia"].ToString();
-                    usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
+                    while (reader.Read())
+                    {
+                        usuario = new Usuario();
+                        usuario.Id = Convert.ToInt32(reader["id"]);
+                        usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
+                        usuario.Contrasenia = reader["contrasenia"].ToString();
+                        usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
+                    }
                 }
+                connection.Close();
             }
-            connection.Close();
             if(usuario == null) throw new Exception("usuario no registrado");
             return usuario;
         }
@@ -131,15 +141,22 @@ namespace tl2_tp10_2023_William24A.Models
 
         public void Update(int idUsuario, Usuario usuario)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"UPDATE Usuario SET nombre_de_usuario = @nombre, tipo = @tipo WHERE id = @idUsuario;";
-            command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
-            command.Parameters.Add(new SQLiteParameter("@nombre",usuario.NombreUsuario));
-            command.Parameters.Add(new SQLiteParameter("@tipo",usuario.Tipo));
-            connection.Open();
-            command.ExecuteNonQuery();
-            connection.Close();
+            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            {
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = $"UPDATE Usuario SET nombre_de_usuario = @nombre, tipo = @tipo WHERE id = @idUsuario;";
+                command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
+                command.Parameters.Add(new SQLiteParameter("@nombre",usuario.NombreUsuario));
+                command.Parameters.Add(new SQLiteParameter("@tipo",usuario.Tipo));
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+                connection.Close();
+
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("usuario no registrado");
+                }
+            }
         }
 
         public bool ExistUser(string nombre)

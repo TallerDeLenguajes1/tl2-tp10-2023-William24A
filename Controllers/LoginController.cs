@@ -22,25 +22,30 @@ public class LoginController : Controller
     }
 
 
-    public IActionResult Login(Usuario usuario)
+    public IActionResult Login(LoginViewModel usuario)
     {
         try
         { 
+             if(!ModelState.IsValid) return RedirectToAction("Index");
+
             var usuarioLogeado = _repoUsuarioC.login(usuario.NombreUsuario ,usuario.Contrasenia);
             if(usuarioLogeado == null )
             {
                 _logger.LogWarning("Intento de acceso invalido "+ usuario.NombreUsuario+" clave "+ usuario.Contrasenia);
-                RedirectToRoute(new { controller = "Login", action = "Index"});
+                ModelState.AddModelError(string.Empty, "Nombre de usuario o contraseña incorrectos.");
+                return View("Index", usuario); 
             }
 
+            _logger.LogInformation("El usuario: " + usuario.NombreUsuario + " Ingreso correctamente"); 
+
             logearUsuario(usuarioLogeado);
-            _logger.LogInformation("El usuario " + usuarioLogeado.NombreUsuario + " ingreso correctamente");
             return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
         }
         catch(Exception ex)
         {
-            _logger.LogError(ex.ToString());            
-            return  RedirectToRoute(new { controller = "Home", action = "Error"});
+            _logger.LogError($"Error al intentar logear un usuario {ex.ToString()}");
+            ModelState.AddModelError(string.Empty, "Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo.");
+            return View("Index", usuario); 
         }
         
     }
@@ -54,7 +59,6 @@ public class LoginController : Controller
     {
         HttpContext.Session.SetString("Usuario", user.NombreUsuario);
         HttpContext.Session.SetString("Id", user.Id.ToString());
-        HttpContext.Session.SetString("Contrasenia", user.Contrasenia);
         HttpContext.Session.SetString("Tipo", user.Tipo.ToString());
     }
 
