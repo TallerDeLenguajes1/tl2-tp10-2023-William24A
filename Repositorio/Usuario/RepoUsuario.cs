@@ -106,13 +106,27 @@ namespace tl2_tp10_2023_William24A.Models
 
         public void Remove(int id)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"DELETE FROM Usuario WHERE id = @idUsuario;";
-            command.Parameters.Add(new SQLiteParameter("@idUsuario", id));
-            connection.Open();
-            command.ExecuteNonQuery();
-            connection.Close();
+            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                using (SQLiteCommand pragmaCommand = new SQLiteCommand("PRAGMA foreign_keys = 1;", connection))
+                {
+                    pragmaCommand.ExecuteNonQuery();
+                }
+
+                using (SQLiteCommand deleteCommand = connection.CreateCommand())
+                {
+                    deleteCommand.CommandText = @"DELETE from Usuario WHERE id = @id;";
+                    deleteCommand.Parameters.Add(new SQLiteParameter("@id", id));
+                    int rowsAffected = deleteCommand.ExecuteNonQuery();
+                    connection.Close();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("usuario no registrado");
+                    }
+                }
+            }
         }
 
         public void Update(int idUsuario, Usuario usuario)
@@ -126,6 +140,27 @@ namespace tl2_tp10_2023_William24A.Models
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();
+        }
+
+        public bool ExistUser(string nombre)
+        {
+            bool existe = false;
+            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            {
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = @"SELECT * FROM usuario WHERE nombre_de_usuario = @nombre;";
+                command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
+                connection.Open();
+                using(SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        existe = true;
+                    }
+                }
+                connection.Close();
+            }
+            return existe;
         }
     }
 }

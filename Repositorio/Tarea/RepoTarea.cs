@@ -165,18 +165,20 @@ namespace tl2_tp10_2023_William24A.Models
 
         public void DeleteTarea(int idTarea)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"DELETE FROM Tarea WHERE id = @idTarea;";
-            command.Parameters.Add(new SQLiteParameter("@idTarea", idTarea));
-            connection.Open();
-            int rowsAffected = command.ExecuteNonQuery();
-            connection.Close();
+            using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            {
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = $"DELETE FROM Tarea WHERE id = @idTarea;";
+                command.Parameters.Add(new SQLiteParameter("@idTarea", idTarea));
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+                connection.Close();
 
-            if (rowsAffected == 0)
-                {
-                    throw new Exception("Tarea a eliminar no existe");
-                }
+                if (rowsAffected == 0)
+                    {
+                        throw new Exception("Tarea a eliminar no existe");
+                    }
+            }
         }
 
         public void Modificar(int id, Tarea tarea)

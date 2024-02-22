@@ -20,6 +20,12 @@ namespace MVC.ViewModels
         {
 
         }
+        public UsuarioViewModel(string nombre, string tipo, int id)
+        {
+            Id = id;
+            NombreUsuario = nombre;
+            Tipo = (Tipo)Enum.Parse(typeof(Tipo), tipo);
+        }
         public UsuarioViewModel(Usuario usuario)
         {
             Id = usuario.Id;

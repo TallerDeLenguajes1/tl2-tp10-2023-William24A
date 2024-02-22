@@ -35,7 +35,7 @@ public class LoginController : Controller
 
             logearUsuario(usuarioLogeado);
             _logger.LogInformation("El usuario " + usuarioLogeado.NombreUsuario + " ingreso correctamente");
-            return RedirectToRoute(new { controller = "Usuario", action = "Listar"});
+            return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
         }
         catch(Exception ex)
         {
@@ -43,6 +43,12 @@ public class LoginController : Controller
             return  RedirectToRoute(new { controller = "Home", action = "Error"});
         }
         
+    }
+
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToRoute(new { controller = "Login", action = "Index" });
     }
     private void logearUsuario(Usuario user)
     {

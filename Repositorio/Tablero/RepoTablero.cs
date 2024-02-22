@@ -27,13 +27,29 @@ namespace tl2_tp10_2023_William24A.Models
 
         public void DeleteTablero(int idTablero)
         {
-            SQLiteConnection connection = new SQLiteConnection(cadenaConexion);
-            SQLiteCommand command = connection.CreateCommand();
-            command.CommandText = $"DELETE FROM Tablero WHERE id = @idTablero;";
-            command.Parameters.Add(new SQLiteParameter("@idTablero", idTablero));
-            connection.Open();
-            command.ExecuteNonQuery();
-            connection.Close();
+             using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
+            {
+                connection.Open();
+
+                using (SQLiteCommand pragmaCommand = new SQLiteCommand("PRAGMA foreign_keys = 1;", connection))
+                {
+                    pragmaCommand.ExecuteNonQuery();
+                }
+
+                using (SQLiteCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = @"DELETE FROM Tablero WHERE id = @id;";
+                    command.Parameters.Add(new SQLiteParameter("@id", idTablero));
+                    int rowsAffected = command.ExecuteNonQuery();
+                    connection.Close();
+
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("Tablero a eliminar no existe");
+                    }
+                }
+                
+            }
         }
 
         public List<Tablero> ListarTableros()

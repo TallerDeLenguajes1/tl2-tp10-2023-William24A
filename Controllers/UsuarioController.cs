@@ -136,7 +136,13 @@ public class UsuarioController : Controller
              if(isAdmin())
             {
                 _repoUsuarioC.Remove(id);
-                return RedirectToAction("Listar");
+                if (id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    return RedirectToRoute(new {controller = "Login", action="Logout"});
+                }else
+                {
+                    return RedirectToAction("Listar");
+                }
             }
             return RedirectToRoute(new {controller = "Home", action = "Index"});
         }
@@ -146,6 +152,45 @@ public class UsuarioController : Controller
             return RedirectToRoute(new {controller = "Shared", action ="Error"});
         }
         
+    }
+
+        [HttpGet]
+    public IActionResult Configuracion() // listo los usuarios
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"}); 
+                int id =  Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                string usuario = HttpContext.Session.GetString("Usuario");
+                string rol = HttpContext.Session.GetString("Tipo");
+                UsuarioViewModel u = new UsuarioViewModel(usuario,rol,id);
+                return View(u);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error al acceder a configuración de usuario {ex.ToString()}"); // loggeo el error
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
+        
+    }
+
+    [AcceptVerbs("GET", "POST")]
+    public IActionResult VerifyUserName(string nombreDeUsuario)
+    {
+        try
+        {
+            if (_repoUsuarioC.ExistUser(nombreDeUsuario))
+            {
+                return Json($"El nombre de usuario {nombreDeUsuario} ya esta en uso.");
+            }
+            return Json(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{ex.Message}"); // loggeo el error
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
+
     }
 
      private bool isAdmin()
