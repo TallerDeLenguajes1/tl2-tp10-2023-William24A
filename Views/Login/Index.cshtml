@@ -1,18 +1,30 @@
 @model MVC.ViewModels.LoginViewModel
+<section>
+    <article>
+        <form asp-controller="Login" asp-action="Login" method="post" class = "formLogueo">
+            <div class="form-group">
+                <label asp-for="@Model.NombreUsuario"></label>
+                <input asp-for="@Model.NombreUsuario" class="form-control" placeholder="nombre de usuario" aria-label="Username" aria-describedby="basic-addon1">
+                <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>    
+            </div>
 
-<form asp-controller="Login" asp-action="Login" method="post" class = "formLogueo">
-    <div class="form-group">
-        <label asp-for="@Model.NombreUsuario"></label>
-        <input asp-for="@Model.NombreUsuario" class="form-control" />
-        <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>    
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Contrasenia"></label>
-        <input type = "password" asp-for="@Model.Contrasenia" class="form-control" />
-        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+            <div class="form-group">
+                <label asp-for="@Model.Contrasenia"></label>
+                <input type="password" asp-for="@Model.Contrasenia" class="form-control" placeholder="contraseña" aria-label="contraseña" aria-describedby="basic-addon1"/>
+                <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        </form>
+        @if (ViewData.ModelState.Count > 0)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            @modelError.ErrorMessage
+                        }
+                    </div>
+                }
+    </article>
+</section>
 
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }
