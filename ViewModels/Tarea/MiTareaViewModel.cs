@@ -14,11 +14,6 @@ namespace MVC.ViewModels
         public string? Color {get;set;}
         public EstadoTarea Estado {get;set;}
         
-        
-        public MiTareaViewModel()
-        {
-            
-        }
         public MiTareaViewModel(Tarea tarea, Tablero tablero)
         {
             IdTablero = tarea.IdTablero;

@@ -1,0 +1,64 @@
+@model MVC.ViewModels.ListarTableroViewModel
+
+<a type="button"  asp-controller="Tablero" asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus"></i>
+        Nuevo tablero
+</a>
+
+<div class="card">
+    <div class="card-header text-center">
+         <h4>Todos los tableros</h4>
+    </div>
+    <div class="card-body">
+        
+        @if (Model.TodosTablerosVM.Count != 0)
+        {
+        <table class="table" style="width:100%" id="myTable" >
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Usuario propietario</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th></th>
+                    <th></th>
+                    <th hidden>ID</th> <!-- oculto el id--->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.TodosTablerosVM)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@t.NombreUsuarioPropietario</td>
+                        <td>@t.Nombre</td>
+                        <td>@t.Descripcion</td>
+                        <td class = "td-dropdown">
+                        @if(t.Modificable == true)
+                        {
+                            <div>
+                                <td>
+                                    <a type="button" class="btn btn-primary" asp-controller="Tablero" asp-action="Update" asp-route-id="@t.Id">
+                                    Modificar
+                                    </a>
+                                    <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@t.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">
+                                    Eliminar
+                                    </a>  
+                                </td>
+                            </div>
+                        }
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-primary" asp-controller="Tarea" asp-action="Listar" asp-route-id="@t.Id">
+                                Ver Tareas
+                            </a>
+                        </td>
+                        <td hidden>@t.Id</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
+    </div>
+</div>
+<script src="~/js/site5.js"></script>

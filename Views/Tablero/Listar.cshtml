@@ -1,72 +1,109 @@
 
 @model MVC.ViewModels.ListarTableroViewModel
 
-<h2>Lista Tableros</h2>
+<a type="button" asp-controller="Tablero" asp-action="Create" class="btn btn-primary">
+    <i class="bi bi-plus"></i>
+    Crear Tablero
+</a>
 
-<table class= "table">
-    <thead>
-        <tr>
-            <th hidden>ID</th> <!-- oculto el id--->
-            <th>Tablero</th>
-            <th>Descripcion</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tablero in Model.TablerosViewModels)
-        {
-            <tr>
-                <td hidden>@tablero.Id</td>
-                <td>@tablero.Nombre</td>
-                <td>@tablero.Descripcion</td>
-                <td>
-                    
-                        <a asp-controller="Tablero" asp-action="Update" asp-route-id="@tablero.Id" class="btn btn-primary">Modificar</a>
-                    
-                        <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@tablero.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
-                    
-                   
-                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id" class="btn btn-primary" >Tarea</a>
-                    
-                </td>
-            </tr>
-        }
-        <tr>
-            
-                <a asp-controller="Tablero" asp-action="Create" class="btn btn-primary">Crear tablero</a>  
+<div class="card">
+    <div class="card-header text-center">
+         <h4>Tableros</h4>
+    </div>
+    <div class="card-body">
+        <h5>Mis tableros</h5>
+        <table class = "table" style="width:100%" >    
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Usuario propietario</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th></th>
+                    <th></th>
+                    <th hidden>ID</th> <!-- oculto el id--->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.MisTablerosVM)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@t.NombreUsuarioPropietario</td>
+                        <td>@t.Nombre</td>
+                        <td>@t.Descripcion</td>
+                        <td class = "td-dropdown">
+                        @if(t.Modificable == true)
+                        {
+                            <div>
+                                <td>
+                                    <a type="button" class="btn btn-primary" asp-controller="Tablero" asp-action="Update" asp-route-id="@t.Id">
+                                    Modificar
+                                    </a>
+                                    <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@t.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">
+                                    Eliminar
+                                    </a>  
+                                </td>
+                            </div>
+                        }
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-primary" asp-controller="Tarea" asp-action="Listar" asp-route-id="@t.Id">
+                                Ver Tareas
+                            </a>
+                        </td>
+                        <td hidden>@t.Id</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h5 id = "table-doble">Tableros con tareas asignadas</h5>
+        <table class = "table" style="width:100%" >
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Usuario propietario</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th></th>
+                    <th></th>
+                    <th hidden>ID</th> <!-- oculto el id--->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.TablerosTareasVM)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@t.NombreUsuarioPropietario</td>
+                        <td>@t.Nombre</td>
+                        <td>@t.Descripcion</td>
+                        <td class = "td-dropdown">
+                        @if(t.Modificable == true || Context.Session.GetString("Tipo") == Tipo.admin.ToString())
+                        {
+                           <div>
+                                <td>
+                                    <a type="button" class="btn btn-primary" asp-controller="Tablero" asp-action="Update" asp-route-id="@t.Id">
+                                    Modificar
+                                    </a>
+                                    <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@t.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">
+                                    Eliminar
+                                    </a>  
+                                </td>
+                            </div>
+                        }
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-primary" asp-controller="Tarea" asp-action="Listar" asp-route-id="@t.Id">
+                                Ver Tareas
+                            </a>
+                        </td>
+                        <td hidden>@t.Id</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        </tr>
-    </tbody>
-</table>
-@if(@Model.Operador == "operador")
-{
-<h5 id = "table-doble">Tableros con tareas asignadas</h5>
-<table class= "table">
-    <thead>
-        <tr>
-            <th hidden>ID</th> <!-- oculto el id--->
-            <th>Tablero</th>
-            <th>Descripcion</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tablero in Model.MyTablerosViewModels)
-        {
-            <tr>
-                <td hidden>@tablero.Id</td>
-                <td>@tablero.Nombre</td>
-                <td>@tablero.Descripcion</td>
-                <td>
-                    
-                        <a asp-controller="Tablero" asp-action="Update" asp-route-id="@tablero.Id" class="btn btn-primary">Modificar</a>
-                    
-                        <a asp-controller="Tablero" asp-action="Delete" asp-route-id="@tablero.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
-                    
-                   
-                        <a asp-controller="Tarea" asp-action="Listar" asp-route-id="@tablero.Id" class="btn btn-primary" >Tarea</a>
-                    
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-}
+<script src="~/js/site4.js"></script>

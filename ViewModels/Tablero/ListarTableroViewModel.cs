@@ -7,42 +7,51 @@ namespace MVC.ViewModels
 {
     public class ListarTableroViewModel
     {
-        public List<TableroViewModel> TablerosViewModels {get;set;}
-        public List<TableroViewModel> MyTablerosViewModels {get;set;}
-        public string Operador {get; set;}
-        public ListarTableroViewModel()
+        public List<TableroViewModel> MisTablerosVM{ get; set;}
+        public List<TableroViewModel> TablerosTareasVM{ get; set;}
+        public List<TableroViewModel> TodosTablerosVM{ get; set;}
+        public List<UsuarioViewModel> usuarios{get; set; }
+        public ListarTableroViewModel(List<Tablero> todosTableros, List<Usuario> usuarios)
         {
-            TablerosViewModels = new List<TableroViewModel>();
-        }
-        public ListarTableroViewModel(List<Tablero> tableros)
-        {
-            TablerosViewModels = new List<TableroViewModel>();
-            foreach (var tablero in tableros)
+            TodosTablerosVM = new List<TableroViewModel>();   
+            foreach (var t in todosTableros)
             {
-                var tableroViewModel = new TableroViewModel(tablero);
-                TablerosViewModels.Add(tableroViewModel);  
+                TableroViewModel tableroVM = new TableroViewModel(t);
+                tableroVM.NombreUsuarioPropietario = usuarios.FirstOrDefault(u => u.Id == tableroVM.IdUsuarioPropietario)?.NombreUsuario;
+                tableroVM.Modificable = true;
+                TodosTablerosVM.Add(tableroVM);
             }
-            MyTablerosViewModels = new List<TableroViewModel>();
-            Operador = "";
+            MisTablerosVM = new List<TableroViewModel>();
+            TablerosTareasVM = new List<TableroViewModel>();
         }  
 
-        public ListarTableroViewModel(List<Tablero> tableros, List<Tablero> myTableros, string operador)
+        
+        public ListarTableroViewModel(List<Tablero> misTableros, List<Tablero> tablerosTarea, List<Usuario> usuarios)
         {
-            TablerosViewModels = new List<TableroViewModel>();
-            MyTablerosViewModels = new List<TableroViewModel>();
-            foreach (var tablero in tableros)
+            TodosTablerosVM = new List<TableroViewModel>();   
+            
+            MisTablerosVM = new List<TableroViewModel>();
+            foreach (var t in misTableros)
             {
-                var tableroViewModel = new TableroViewModel(tablero);
-                TablerosViewModels.Add(tableroViewModel);  
+                TableroViewModel tableroVM = new TableroViewModel(t);
+                tableroVM.NombreUsuarioPropietario = usuarios.FirstOrDefault(u => u.Id == tableroVM.IdUsuarioPropietario)?.NombreUsuario;;
+
+                tableroVM.Modificable = true;
+                MisTablerosVM.Add(tableroVM);
             }
 
-            foreach (var tablero in myTableros)
+            TablerosTareasVM = new List<TableroViewModel>();
+            foreach (var t in tablerosTarea)
             {
-                var tableroViewModel = new TableroViewModel(tablero);
-                MyTablerosViewModels.Add(tableroViewModel);  
+                TableroViewModel tableroVM = new TableroViewModel(t);
+                tableroVM.NombreUsuarioPropietario = usuarios.FirstOrDefault(u => u.Id == tableroVM.IdUsuarioPropietario)?.NombreUsuario;
+
+                tableroVM.Modificable = false;
+                TablerosTareasVM.Add(tableroVM);
             }
-            Operador = operador;
-          
-        }       
+
+        }
+
+        public ListarTableroViewModel(){}      
     }
 }

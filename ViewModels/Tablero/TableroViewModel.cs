@@ -8,30 +8,29 @@ namespace MVC.ViewModels
     public class TableroViewModel
     {
         
-        [Required] 
-        public int Id {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "ID usuario asignado")] 
-        public int Id_usuario_propietario {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "Nombre")]
-        public string? Nombre {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "Descripcion")]
-        public string? Descripcion {get;set;}
-        public List<Usuario> Usuarios {get;set;}
-        
+        public int Id { get; set; }
+        public int IdUsuarioPropietario { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public string NombreUsuarioPropietario { get; set; }
+        public bool Modificable { get ; set; }
         public TableroViewModel()
         {
-            Usuarios = new List<Usuario>();
         }
         public TableroViewModel(Tablero tablero)
         {
             Id = tablero.Id;
-            Id_usuario_propietario = tablero.Id_usuario_propietario;
+            IdUsuarioPropietario = tablero.Id_usuario_propietario;
             Nombre = tablero.Nombre;
             Descripcion = tablero.Descripcion;
-            Usuarios = new List<Usuario>();
+        }
+        public TableroViewModel(Tablero tablero, string nombrePropietario)
+        {
+            Id = tablero.Id;
+            IdUsuarioPropietario = tablero.Id_usuario_propietario;
+            Nombre = tablero.Nombre;
+            Descripcion = tablero.Descripcion;
+            NombreUsuarioPropietario = nombrePropietario;
         }        
     }
 }

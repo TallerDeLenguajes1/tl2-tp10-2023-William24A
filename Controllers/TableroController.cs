@@ -24,33 +24,45 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Listar()
     {
-        try
+         try
         {
-            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isOperador())
-            {
-                var tableros = _repoTableroC.ListarTablerosUsuario(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                var myTableros = tablerosTareasAsignadas(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                var tablerosVM = new ListarTableroViewModel(tableros, myTableros,"operador");
-                return View(tablerosVM);
-            }
-            else
-            {
-               if(isAdmin())
-               {
-                 var tableros = _repoTableroC.ListarTableros();
-                 var tablerosVM = new ListarTableroViewModel(tableros);
-                 return View(tablerosVM);
-               }
-            }
-            return RedirectToRoute(new { controller = "Home", action = "Index"});
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+
+            List<Tablero> misTableros = _repoTableroC.ListarTablerosUsuario(userIdInSession);
+
+            List<Tablero> tablerosTareas = tablerosTareasAsignadas(userIdInSession);
+            List<Usuario> usuarios = _repoUsuarioC.GetAll();
+
+            return View(new ListarTableroViewModel(misTableros,tablerosTareas,usuarios));
+
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());            
-            return RedirectToRoute(new { controller = "Shared", action = "Error"});
+            _logger.LogError($"Error al acceder a los tableros {ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"}); //?
         }
 
+    }
+
+    [HttpGet]
+    public IActionResult TodosTableros() 
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"}); 
+            if (!isAdmin()) return RedirectToRoute(new {controller = "Login", action="Index"}); // o tiro un error??
+
+            List<Tablero> todosTableros = _repoTableroC.ListarTableros();
+            List<Usuario> usuarios = _repoUsuarioC.GetAll();
+            return View(new ListarTableroViewModel(todosTableros, usuarios));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error al acceder a todos los tableros {ex.ToString()}"); // loggeo el error
+            return RedirectToRoute(new {controller = "Home", action="Error"}); //?
+        }
     }
 
     [HttpGet]
@@ -59,20 +71,22 @@ public class TableroController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin() || isOperador())
+           
+            if (isAdmin())
             {
-                /*CrearTableroViewModel crearTableroViewModel = new();
-                crearTableroViewModel.Usuarios = _repoUsuarioC.GetAll();*/
-                var crearTableroViewModel = new CrearTableroViewModel(_repoUsuarioC.GetAll());
-                if (crearTableroViewModel.Usuarios == null) return NoContent();
-                return View(crearTableroViewModel);
+                var tablero = new CrearTableroViewModel(_repoUsuarioC.GetAll());
+                return View(tablero);
+            }else
+            {
+                var tablero = new CrearTableroViewModel(_repoUsuarioC.GetAll());
+                tablero.Id_usuario_propietario = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+                return View(tablero); 
             }
-            return RedirectToRoute(new { controller = "Login", action = "Index"});
         }
         catch(Exception ex)
         {
             _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }
@@ -83,29 +97,15 @@ public class TableroController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin()){
-                var tablero = new Tablero(tableroVM); 
-                if(!ModelState.IsValid)
-                    return RedirectToAction("Create");
-                _repoTableroC.CrearTablero(tablero);
-                return RedirectToAction("Listar");
-            }
-            else
-            {
-                if(!ModelState.IsValid) return RedirectToAction("Create");
-                if(tableroVM.Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isOperador())
-                {
-                    var tablero = new Tablero(tableroVM); 
-                    _repoTableroC.CrearTablero(tablero);
-                    return RedirectToAction("Listar");
-                }
-            }
-            return RedirectToRoute(new { controller = "Login", action = "Index"});
+            if(!ModelState.IsValid) return RedirectToAction("Create");
+            Tablero tablero = new Tablero(tableroVM);
+            _repoTableroC.CrearTablero(tablero);
+            return RedirectToAction("Listar");
         }
         catch(Exception ex)
         {
             _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }
@@ -123,12 +123,12 @@ public class TableroController : Controller
                 if (tableroVM.Usuarios == null) return NoContent();
                 return View(tableroVM);
             }
-            return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
+            return RedirectToRoute(new { controller = "Home", action = "Error"});
         }
         catch(Exception ex)
         {
             _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
        
     }
@@ -145,12 +145,12 @@ public class TableroController : Controller
                 _repoTableroC.ModificarTablero(tablero.Id, tablero);
                 return RedirectToAction("Listar");
             }
-            return RedirectToRoute(new { controller = "Tablero", action = "Listar"});
+            return RedirectToRoute(new { controller = "Home", action = "Error"});
         }
         catch(Exception ex)
         {
             _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }
@@ -163,6 +163,10 @@ public class TableroController : Controller
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin() || _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
+                foreach (var tarea in _repoTarea.BuscarTareasTablero(id))
+                {
+                    _repoTarea.DeleteTarea(tarea.Id);   
+                }
                 _repoTableroC.DeleteTablero(id);
                 return RedirectToAction("Listar");
             }
@@ -171,7 +175,7 @@ public class TableroController : Controller
         catch(Exception ex)
         {
             _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }

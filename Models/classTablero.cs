@@ -28,7 +28,7 @@ namespace tl2_tp10_2023_William24A.Models
         public Tablero(TableroViewModel tableroVM)
         {
             Id = tableroVM.Id;
-            Id_usuario_propietario = tableroVM.Id_usuario_propietario;
+            Id_usuario_propietario = tableroVM.IdUsuarioPropietario;
             Nombre = tableroVM.Nombre;
             Descripcion = tableroVM.Descripcion;
         }

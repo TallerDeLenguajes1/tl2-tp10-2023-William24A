@@ -9,11 +9,6 @@ namespace MVC.ViewModels
         public int Id {get;set;}
         public string NombreUsuario {get;set;}
         public Tipo Tipo {get;set;}
-        
-        public UsuarioViewModel()
-        {
-
-        }
         public UsuarioViewModel(string nombre, string tipo, int id)
         {
             Id = id;

@@ -28,7 +28,6 @@ namespace MVC.ViewModels
         public List<Usuario> Usuarios {get;set;}
         public List<Tablero> Tableros {get;set;}
         public string Operador {get;set;}
-        
         public ActualizarTareaViewModel()
         {
             Usuarios = new List<Usuario>();

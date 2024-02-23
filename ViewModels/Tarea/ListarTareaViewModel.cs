@@ -10,11 +10,6 @@ namespace MVC.ViewModels
         public List<TareaViewModel> TareasViewModels {get;set;}
         public List<TareaViewModel> MyTareasViewModels {get;set;}
         public string Operador {get;set;}
-        public ListarTareaViewModel()
-        {
-            TareasViewModels = new List<TareaViewModel>();
-            MyTareasViewModels = new List<TareaViewModel>();
-        }
         public ListarTareaViewModel(List<Tarea> tareas)
         {
             TareasViewModels = new List<TareaViewModel>();

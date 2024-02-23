@@ -15,8 +15,8 @@
     <h5 class="card-title">Tipo</h5>
     <p class="card-text">@Model.Tipo</p>
 
-    <a asp-controller="Usuario" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Modificar</a>
-    <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>
+    <a asp-controller="Usuario" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Modificar Usuario</a>
+    <!-- <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>-->
     <a asp-controller="Usuario" asp-action="CambiarContraseña" asp-route-id="@Model.Id" class="btn btn-primary">Cambiar contraseña</a>
   </div>
 </div>

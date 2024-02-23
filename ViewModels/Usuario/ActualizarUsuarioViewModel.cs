@@ -18,11 +18,10 @@ namespace MVC.ViewModels
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Tipo")] 
         public Tipo Tipo {get;set;}
-        
         public ActualizarUsuarioViewModel()
         {
 
-        }
+        } 
         public ActualizarUsuarioViewModel(Usuario usuario)
         {
             Id = usuario.Id;

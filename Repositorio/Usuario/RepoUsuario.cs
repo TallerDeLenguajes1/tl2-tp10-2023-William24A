@@ -180,11 +180,5 @@ namespace tl2_tp10_2023_William24A.Models
             }
             return existe;
         }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is RepoUsuarioC c &&
-                   cadenaConexion == c.cadenaConexion;
-        }
     }
 }

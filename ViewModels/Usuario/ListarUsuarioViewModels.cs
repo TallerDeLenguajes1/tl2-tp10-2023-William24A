@@ -19,12 +19,6 @@ namespace MVC.ViewModels
                 UsuariosViewModels.Add(usuarioViewModel);  
             }
           
-        }     
-        public ListarUsuarioViewModel(Usuario usuario)
-        {
-            UsuariosViewModels = new List<UsuarioViewModel>();
-            UsuarioViewModel usuarioVM = new UsuarioViewModel(usuario);
-            UsuariosViewModels.Add(usuarioVM);
-        }   
+        }       
     }
 }

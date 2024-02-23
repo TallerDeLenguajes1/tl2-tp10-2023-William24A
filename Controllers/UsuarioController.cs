@@ -10,11 +10,15 @@ public class UsuarioController : Controller
     private readonly ILogger<UsuarioController> _logger;
 
     private readonly IDUsuarioRepository _repoUsuarioC;
+    private readonly IDtableroRepositorio _repoTablero;
+    private readonly IDTareaRepositorio _repoTarea;
 
-    public UsuarioController(ILogger<UsuarioController> logger, IDUsuarioRepository reporUsuario)
+    public UsuarioController(ILogger<UsuarioController> logger, IDUsuarioRepository reporUsuario, IDtableroRepositorio repoTablero, IDTareaRepositorio repoTarea)
     {
         _logger = logger;
         _repoUsuarioC = reporUsuario;
+        _repoTablero = repoTablero;
+        _repoTarea = repoTarea;
     }
 
     [HttpGet]
@@ -144,6 +148,14 @@ public class UsuarioController : Controller
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
              if(isAdmin() || id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
+                foreach (var tarea in _repoTarea.BuscarTodasTarea(id))
+                {
+                    _repoTarea.DeleteTarea(tarea.Id);
+                }
+                foreach (var tablero in _repoTablero.ListarTablerosUsuario(id))
+                {
+                    _repoTablero.DeleteTablero(tablero.Id);
+                }
                 _repoUsuarioC.Remove(id);
                 if (id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
                 {
@@ -158,7 +170,7 @@ public class UsuarioController : Controller
         catch (System.Exception ex)
         {
              _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }

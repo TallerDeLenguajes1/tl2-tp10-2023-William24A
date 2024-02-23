@@ -21,13 +21,6 @@ namespace MVC.ViewModels
         public CambiarContraseñaViewModel()
         {
 
-        }
-        public CambiarContraseñaViewModel(string contrasenia, string nuevaContrasenia)
-        {
-          
-            Contrasenia = contrasenia;
-            NuevaContrasenia = nuevaContrasenia;
-
-        }        
+        }     
     }
 }

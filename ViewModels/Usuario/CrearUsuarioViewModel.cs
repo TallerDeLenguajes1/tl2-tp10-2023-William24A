@@ -27,12 +27,6 @@ namespace MVC.ViewModels
         public CrearUsuarioViewModel()
         {
 
-        }
-        public CrearUsuarioViewModel(Usuario usuario)
-        {
-            NombreUsuario = usuario.NombreUsuario;
-            Contrasenia = usuario.Contrasenia;
-            Tipo = usuario.Tipo;
-        }        
+        }      
     }
 }

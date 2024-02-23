@@ -29,12 +29,6 @@ namespace MVC.ViewModels
         public List<Usuario> Usuarios {get;set;}
         public List<Tablero> Tableros {get;set;}
         public string Operador {get;set;}
-        
-        public TareaViewModel()
-        {
-            Usuarios = new List<Usuario>();
-            Tableros = new List<Tablero>();
-        }
         public TareaViewModel(Tarea tarea)
         {
             Id = tarea.Id;
@@ -47,20 +41,6 @@ namespace MVC.ViewModels
             Operador = "";
             Usuarios = new List<Usuario>();
             Tableros = new List<Tablero>();
-        } 
-
-        public TareaViewModel(Tarea tarea, string operador)
-        {
-            Id = tarea.Id;
-            IdTablero = tarea.IdTablero;
-            Nombre = tarea.Nombre;
-            Descripcion = tarea.Descripcion;
-            Color = tarea.Color;
-            Estado = tarea.Estado;
-            IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
-            Usuarios = new List<Usuario>();
-            Tableros = new List<Tablero>();
-            Operador = operador;
-        }         
+        }       
     }
 }
