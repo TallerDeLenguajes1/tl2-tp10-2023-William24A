@@ -93,7 +93,7 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(isAdmin())
+             if(isAdmin() || id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
                 {
                     var usuario = _repoUsuarioC.GetById(id);
                     var usuarioVM = new ActualizarUsuarioViewModel(usuario);
@@ -114,7 +114,7 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin())
+            if(isAdmin() || usuarioVM.Id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var usuario = new Usuario(usuarioVM);
@@ -176,6 +176,54 @@ public class UsuarioController : Controller
             return RedirectToRoute(new {controller = "Home", action="Error"});
         }
         
+    }
+
+    [HttpGet]
+    public IActionResult CambiarContraseña(int id) 
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"}); 
+            if(id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            {
+                var usuarioVM = new CambiarContraseñaViewModel();
+                return View(usuarioVM);
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"});     
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error al acceder a modificar contraseña {ex.ToString()}"); 
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
+        
+    }
+
+    [HttpPost]
+    public IActionResult CambiarContraseña(CambiarContraseñaViewModel vm)
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if (!ModelState.IsValid) return View(vm);
+            var usuario = _repoUsuarioC.GetById(Convert.ToInt32(HttpContext.Session.GetString("Id")));
+            if(usuario != null && usuario.Contrasenia == vm.Contrasenia)
+            {
+                usuario.Contrasenia = vm.NuevaContrasenia;
+                _repoUsuarioC.Update(usuario.Id, usuario);
+                return RedirectToAction("Configuracion");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "La contraseña actual no coincide."); 
+                return View(vm);
+            }    
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error al acceder a modificar contraseña {ex.ToString()}"); 
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
     }
 
     [AcceptVerbs("GET", "POST")]

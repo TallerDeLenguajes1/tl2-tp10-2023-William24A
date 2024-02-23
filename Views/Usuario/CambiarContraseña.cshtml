@@ -1,0 +1,34 @@
+@model MVC.ViewModels.CambiarContraseñaViewModel
+@using tl2_tp10_2023_William24A.Models;
+<div>
+    <div class="text-center">
+            <h1 class="h3 mb-3 fw-normal">Modificar contraseña</h1>
+    </div>
+    <form asp-controller="Usuario" asp-action="CambiarContraseña">
+        <div class="mb-4">
+            <div class="input-group">
+            <label asp-for="@Model.Contrasenia" class="input-group-text">Ingrese la contraseña</label>
+            <input type="password" asp-for="@Model.Contrasenia" class="form-control"/>
+            </div>
+            <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span> 
+        </div>
+        <div class="mb-4">
+            <div class="input-group">
+            <label asp-for="@Model.NuevaContrasenia" class="input-group-text">Ingrese la nueva contraseña</label>
+            <input type="password" asp-for="@Model.NuevaContrasenia" class="form-control"/>
+            </div>
+            <span asp-validation-for="@Model.NuevaContrasenia" class="text-danger"></span> 
+        </div>
+        <div class="mb-4">
+            <div class="input-group">
+            <label asp-for="@Model.ConfirmarContraseña" class="input-group-text">Ingrese la nueva contraseña otra vez</label>
+            <input type="password" asp-for="@Model.ConfirmarContraseña" class="form-control"/>
+            </div>
+            <span asp-validation-for="@Model.ConfirmarContraseña" class="text-danger"></span> 
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+</div>
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}
