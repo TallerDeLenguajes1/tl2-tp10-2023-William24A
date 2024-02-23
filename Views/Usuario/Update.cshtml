@@ -22,6 +22,8 @@
                     </div>
                     <span asp-validation-for="@Model.Tipo" class="text-danger"></span>
                 </div>
+            }else{
+                <input hidden asp-for="@Model.Tipo"> 
             }
         <div>
             <button type="submit" class="btn btn-primary">Enviar</button>

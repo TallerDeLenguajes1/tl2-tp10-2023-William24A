@@ -82,7 +82,7 @@ public class UsuarioController : Controller
         catch (System.Exception ex)
         {
              _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
        
     }
@@ -93,7 +93,7 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(isAdmin())
+             if(isAdmin() || id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
                 {
                     var usuario = _repoUsuarioC.GetById(id);
                     var usuarioVM = new ActualizarUsuarioViewModel(usuario);
@@ -104,7 +104,7 @@ public class UsuarioController : Controller
         catch (System.Exception ex)
         {
              _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }
@@ -114,11 +114,16 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin())
+            if(_repoUsuarioC.ExistUser(usuarioVM.NombreUsuario)) return View(usuarioVM);
+            if(isAdmin() || usuarioVM.Id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
                 var usuario = new Usuario(usuarioVM, _repoUsuarioC.GetById(usuarioVM.Id).Contrasenia);
                 _repoUsuarioC.Update(usuario.Id, usuario);
+                if(usuarioVM.Id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    HttpContext.Session.SetString("Usuario", usuario.NombreUsuario);
+                }
                 return RedirectToAction("Listar");
             }
             return RedirectToRoute(new {controller = "Home", action = "Index"}); 
@@ -126,7 +131,7 @@ public class UsuarioController : Controller
         catch (System.Exception ex)
         {
              _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }

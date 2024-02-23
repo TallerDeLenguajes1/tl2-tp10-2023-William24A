@@ -23,30 +23,13 @@ namespace tl2_tp10_2023_William24A.Models
         {
 
         }
-        public Usuario(LoginViewModel usuar)
-        {
-            NombreUsuario = usuar.NombreUsuario;
-            Contrasenia = usuar.Contrasenia;
-        }
         public Usuario(CrearUsuarioViewModel usuar)
         {
             NombreUsuario = usuar.NombreUsuario;
             Contrasenia = usuar.Contrasenia;
             Tipo = usuar.Tipo;
         }
-        public Usuario(UsuarioViewModel usuar)
-        {
-            Id = usuar.Id;
-            NombreUsuario = usuar.NombreUsuario;
-            Tipo = usuar.Tipo;
-        }
-        public Usuario(ActualizarUsuarioViewModel usuar)
-        {
-            Id = usuar.Id;
-            NombreUsuario = usuar.NombreUsuario;
-            Tipo = usuar.Tipo;
-            Contrasenia = contrasenia;
-        }
+
         public Usuario(ActualizarUsuarioViewModel usuar, string contrasenia)
         {
             Id = usuar.Id;
@@ -55,9 +38,5 @@ namespace tl2_tp10_2023_William24A.Models
             Contrasenia = contrasenia;
         }
 
-        public Usuario(CambiarContraseñaViewModel usuar)
-        {
-            Contrasenia = usuar.NuevaContrasenia;
-        }
     }
 }

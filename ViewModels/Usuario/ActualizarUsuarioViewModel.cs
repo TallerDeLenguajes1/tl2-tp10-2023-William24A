@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using tl2_tp10_2023_William24A.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
+
 
 namespace MVC.ViewModels
 {
