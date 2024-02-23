@@ -238,7 +238,7 @@ public class UsuarioController : Controller
         {
             if (_repoUsuarioC.ExistUser(nombreDeUsuario))
             {
-                return Json($"El nombre de usuario {nombreDeUsuario} ya esta en uso.");
+                return Json(false);
             }
             return Json(true);
         }
