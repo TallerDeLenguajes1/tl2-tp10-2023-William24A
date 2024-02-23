@@ -45,6 +45,14 @@ namespace tl2_tp10_2023_William24A.Models
             Id = usuar.Id;
             NombreUsuario = usuar.NombreUsuario;
             Tipo = usuar.Tipo;
+            Contrasenia = contrasenia;
+        }
+        public Usuario(ActualizarUsuarioViewModel usuar, string contrasenia)
+        {
+            Id = usuar.Id;
+            NombreUsuario = usuar.NombreUsuario;
+            Tipo = usuar.Tipo;
+            Contrasenia = contrasenia;
         }
 
         public Usuario(CambiarContraseñaViewModel usuar)

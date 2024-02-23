@@ -93,7 +93,7 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(isAdmin() || id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+             if(isAdmin())
                 {
                     var usuario = _repoUsuarioC.GetById(id);
                     var usuarioVM = new ActualizarUsuarioViewModel(usuario);
@@ -114,10 +114,10 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin() || usuarioVM.Id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            if(isAdmin())
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
-                var usuario = new Usuario(usuarioVM);
+                var usuario = new Usuario(usuarioVM, _repoUsuarioC.GetById(usuarioVM.Id).Contrasenia);
                 _repoUsuarioC.Update(usuario.Id, usuario);
                 return RedirectToAction("Listar");
             }
