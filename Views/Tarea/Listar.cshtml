@@ -1,81 +1,61 @@
 
 @model MVC.ViewModels.ListarTareaViewModel
-
-<h2>Lista Tarea</h2>
-
-<table class = "table">
-    <thead>
-        <tr>
-            <th hidden>ID</th> <!-- oculto el id--->
-            <th hidden>ID Tablero</th>
-            <th>Tarea</th>
-            <th>Descripcion</th>
-            <th>Color</th>
-            <th>Estado</th>
-            <th hidden>ID usuario</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tarea in Model.TareasViewModels)
-        {
+<div>
+    <div>
+        <h2>Lista Tarea</h2>
+    </div>
+    <table class = "table">
+        <thead>
             <tr>
-                <td hidden>@tarea.Id</td>
-                <td hidden>@tarea.IdTablero</td>
-                <td>@tarea.Nombre</td>
-                <td>@tarea.Descripcion</td>
-                <td>@tarea.Color</td>
-                <td>@tarea.Estado</td>
-                <td hidden>@tarea.IdUsuarioAsignado1</td>
-                @if(@Model.Operador != "operador")
-                {
-                <td>
-                        <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
-
-                        <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
-                </td>
-                }
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Color</th>
+                    <th>Usuario asignado</th>
+                    <th>Estado</th>
+                    <th></th>
+                    <th hidden>ID</th> <!-- oculto el id--->
+                    <th hidden>Id tablero</th>
+                    <th hidden></th>
             </tr>
-        }
-        @if(@Model.Operador != "operador")
-        {
-        <tr>
-                <a asp-controller="Tarea" asp-action="Create" class="btn btn-primary">Crear tarea</a>  
-        </tr>
-        }
-    </tbody>
-</table>
-@if(@Model.Operador == "operador")
-{
-<h5>Tareas asignadas</h5>
-<table class = "table">
-    <thead>
-        <tr>
-            <th hidden>ID</th> <!-- oculto el id--->
-            <th hidden>ID Tablero</th>
-            <th>Tarea</th>
-            <th>Descripcion</th>
-            <th>Color</th>
-            <th>Estado</th>
-            <th hidden>ID usuario</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tarea in Model.MyTareasViewModels)
-        {
+        </thead>
+        <tbody>
+            @foreach (var tarea in Model.TareasVM)
+            {
+                <tr>
+                    <td></td>
+                        <td>@tarea.Nombre</td>
+                        <td>@tarea.Descripcion</td>
+                        <td>
+                            <i class="bi bi-droplet-fill" style="color: @tarea.Color"></i>
+                        </td>
+                        <td>@tarea.NombreUsuarioAsignado</td>
+                        <td>
+                            <form id="cambiarEstadoForm_@tarea.Id" asp-controller="Tarea" asp-action="UpdateEstado">
+                                <input type="hidden" name="idTablero" value="@tarea.Id_tablero">
+                                <input type="hidden" name="id" value="@tarea.Id" />
+                                <div class="input-group">
+                                    <select asp-for="@tarea.Estado" class="form-select form-control" asp-items="@Html.GetEnumSelectList<EstadoTarea>()" name="estado" onchange="enviarFormulario('cambiarEstadoForm_@tarea.Id')">
+                                    </select>
+                                </div>
+                            </form>
+                        </td>
+                    @if(Context.Session.GetString("Tipo") == "admin" || Convert.ToInt32(Context.Session.GetString("Id")) == @tarea.IdUsuarioAsignado)
+                    {
+                    <td>
+                            <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
+
+                            <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                    </td>
+                    }
+                    <td hidden>@tarea.Id</td>
+                    <td hidden>@tarea.Id_tablero</td>
+                    <td hidden>@tarea.Estado</td>
+                </tr>
+            }
             <tr>
-                <td hidden>@tarea.Id</td>
-                <td hidden>@tarea.IdTablero</td>
-                <td>@tarea.Nombre</td>
-                <td>@tarea.Descripcion</td>
-                <td>@tarea.Color</td>
-                <td>@tarea.Estado</td>
-                <td hidden>@tarea.IdUsuarioAsignado1</td>
-                <td>
-                        <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
-
-                </td>
+                    <a asp-controller="Tarea" asp-action="Create" asp-route-id="@Model.Id_tablero" class="btn btn-primary">Crear tarea</a>  
             </tr>
-        }
-    </tbody>
-</table>
-}
+        </tbody>
+    </table>
+</div>

@@ -5,42 +5,33 @@ using tl2_tp10_2023_William24A.Models;
 
 namespace MVC.ViewModels
 {
-    public class TareaViewModel
+     public class TareaViewModel
     {
-        [Required]
         public int Id {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "ID Tablero")]
-        public int? IdTablero {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "Nombre")]
-        public string? Nombre {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "Descripcion")]
-        public string? Descripcion  {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "Color de tarea")]
-        public string? Color {get;set;}
-        [Required(ErrorMessage = "Este campo es requerido.")]
-        [Display(Name = "Estado")]
+        public int? Id_tablero {get;set;}
+        public string Nombre {get;set;}
+        public string Descripcion {get;set;}
+        public string Color {get;set;}
         public EstadoTarea Estado {get;set;}
-        [Display(Name = "ID Usuario asignado")]
-        public int? IdUsuarioAsignado1  {get;set;}
-        public List<Usuario> Usuarios {get;set;}
-        public List<Tablero> Tableros {get;set;}
-        public string Operador {get;set;}
+        public int? IdUsuarioAsignado {get;set;}
+        public string NombreUsuarioAsignado {get;set;}
+        public string NombreTablero {get;set;}
+        public bool Modificable {get;set;}
+
+
         public TareaViewModel(Tarea tarea)
         {
             Id = tarea.Id;
-            IdTablero = tarea.IdTablero;
+            Id_tablero = tarea.IdTablero;
             Nombre = tarea.Nombre;
             Descripcion = tarea.Descripcion;
             Color = tarea.Color;
             Estado = tarea.Estado;
-            IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
-            Operador = "";
-            Usuarios = new List<Usuario>();
-            Tableros = new List<Tablero>();
-        }       
+            IdUsuarioAsignado = tarea.IdUsuarioAsignado1;
+        }
+
+        public TareaViewModel()
+        {
+        }
     }
 }

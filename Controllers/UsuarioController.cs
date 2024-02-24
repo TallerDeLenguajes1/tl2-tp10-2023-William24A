@@ -39,7 +39,7 @@ public class UsuarioController : Controller
         {
             
             _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
         
     }
@@ -60,7 +60,7 @@ public class UsuarioController : Controller
         {
             
              _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
         }
        
     }

@@ -7,39 +7,31 @@ namespace MVC.ViewModels
 {
     public class ListarTareaViewModel
     {
-        public List<TareaViewModel> TareasViewModels {get;set;}
-        public List<TareaViewModel> MyTareasViewModels {get;set;}
-        public string Operador {get;set;}
-        public ListarTareaViewModel(List<Tarea> tareas)
-        {
-            TareasViewModels = new List<TareaViewModel>();
-            foreach (var tarea in tareas)
-            {
-                var tareaViewModel = new TareaViewModel(tarea);
-                TareasViewModels.Add(tareaViewModel);  
-            }
-            MyTareasViewModels = new List<TareaViewModel>();
-            Operador = "";
-        } 
+        public string NombreTablero { get; set; }
+        public string UsuarioPropietario { get; set; }
+        public int Id_tablero { get; set; }
+        public List<TareaViewModel> TareasVM { get; set; }
 
-        public ListarTareaViewModel(List<Tarea> tareas, int id, string operador)
+        public ListarTareaViewModel(List<Tarea> tareas, List<Usuario> usuarios, TableroViewModel tablero)
         {
-            TareasViewModels = new List<TareaViewModel>();
-            MyTareasViewModels = new List<TareaViewModel>();
-            foreach (var tarea in tareas)
+            TareasVM = new List<TareaViewModel>();
+            NombreTablero = tablero.Nombre;
+            Id_tablero = tablero.Id;
+            UsuarioPropietario = usuarios.FirstOrDefault(u => u.Id == tablero.IdUsuarioPropietario)?.NombreUsuario;
+            foreach (var t in tareas)
             {
-                if(tarea.IdUsuarioAsignado1 == id)
+                TareaViewModel tareaVM = new TareaViewModel(t);
+                if(tareaVM.IdUsuarioAsignado == null)
                 {
-                    var mytareaViewModel = new TareaViewModel(tarea);
-                    MyTareasViewModels.Add(mytareaViewModel);
-                }else{
-                    var tareaViewModel = new TareaViewModel(tarea);
-                    TareasViewModels.Add(tareaViewModel);
+                    tareaVM.NombreUsuarioAsignado = "Sin asignar";  
+                }else
+                {        
+                    tareaVM.NombreUsuarioAsignado = usuarios.FirstOrDefault(u => u.Id == tareaVM.IdUsuarioAsignado)?.NombreUsuario;
                 }
-                  
+                TareasVM.Add(tareaVM);
             }
-            Operador = operador;
-          
-        }       
+        }
+
+        public ListarTareaViewModel(){ }      
     }
 }

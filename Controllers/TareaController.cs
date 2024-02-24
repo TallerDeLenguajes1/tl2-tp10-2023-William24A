@@ -26,29 +26,27 @@ public class TareaController : Controller
     {
         try
         {
-           if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-           if(isAdmin())
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            
+            Tablero tablero = _repoTablero.ObtenerTableroID(id);
+            List<Tarea> tareas = _repoTareaC.BuscarTareasTablero(id);
+            List<Usuario> usuarios = _repoUsuarios.GetAll();
+            TableroViewModel tableroVM = new TableroViewModel(tablero);
+
+            if (isAdmin() || tablero.Id_usuario_propietario == userIdInSession) // admin o operador dueño del tab.
             {
-                var tarea = _repoTareaC.BuscarTareasTablero(id);
-                var tareaVM = new ListarTareaViewModel(tarea);
-                return View(tareaVM);
-            }
-            else
+                return View(new ListarTareaViewModel(tareas, usuarios, tableroVM)); 
+            }else
             {
-                if (!isOperador())
-                {
-                    return NotFound();
-                }
-                var tarea = _repoTareaC.BuscarTareasTablero(id);
-                var tareaVM = new ListarTareaViewModel(tarea, Convert.ToInt32(HttpContext.Session.GetString("Id")), "operador");
-                return View(tareaVM);
-                //return RedirectToRoute(new {controller = "Home", action = "Error"}); 
-            }
+                return View("ListarTareasAsignadas", new ListarTareasAsignadasViewModel(tareas, usuarios, tableroVM, userIdInSession));
+            }     
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            _logger.LogError(ex.ToString());
-            return RedirectToRoute(new {controller = "Shared", action ="Error"});
+            _logger.LogError($"Error al acceder a las tareas{ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"});
         }
         
     }

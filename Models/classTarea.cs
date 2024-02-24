@@ -44,12 +44,12 @@ namespace tl2_tp10_2023_William24A.Models
         public Tarea(TareaViewModel tareaVM)
         {
             Id = tareaVM.Id;
-            IdTablero = tareaVM.IdTablero;
+            IdTablero = tareaVM.Id_tablero;
             Nombre = tareaVM.Nombre;
             Descripcion = tareaVM.Descripcion;
             Color = tareaVM.Color;
             Estado = tareaVM.Estado;
-            IdUsuarioAsignado1 = tareaVM.IdUsuarioAsignado1;
+            IdUsuarioAsignado1 = tareaVM.IdUsuarioAsignado;
         }
         public Tarea(ActualizarTareaViewModel tareaVM)
         {
