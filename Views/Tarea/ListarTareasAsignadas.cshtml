@@ -3,9 +3,9 @@
 
 <div class="card">
     <div class="card-header text-center">
-        <h4>
-             @Model.NombreTablero
-        </h4>
+        <h3>
+             Tablero:  @Model.NombreTablero
+        </h3>
         <h4>
             Usuario propietario : @Model.UsuarioPropietario
         </h4>
@@ -39,8 +39,9 @@
                         {
                             <td>
                             <a asp-controller="Tarea" asp-action="Update" asp-route-id="@t.Id" class="btn btn-primary">Modificar</a>
-
+                            
                             <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@t.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                            
                             </td>
                         }
                         <td hidden>@t.Id</td>

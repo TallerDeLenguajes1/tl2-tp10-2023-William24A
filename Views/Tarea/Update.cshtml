@@ -38,7 +38,10 @@
         </select>
         <span asp-validation-for="@Model.IdUsuarioAsignado1" class="text-danger"></span>
     </div>
-    } 
+    }else
+    {
+        <input hidden asp-for="@Model.IdUsuarioAsignado1">
+    }
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
 }else{

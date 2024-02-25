@@ -1,5 +1,11 @@
 @model MVC.ViewModels.ActualizarUsuarioViewModel
 @using tl2_tp10_2023_William24A.Models;
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
 <div>
     <div class="text-center">
             <h1 class="h3 mb-3 fw-normal">Modificar usuario</h1>

@@ -19,7 +19,7 @@ namespace tl2_tp10_2023_William24A.Models
                 var command = new SQLiteCommand(query, connection);
 
                 command.Parameters.Add(new SQLiteParameter("@name", usuario.NombreUsuario));
-                command.Parameters.Add(new SQLiteParameter("@contrasenia", usuario.Contrasenia));
+                command.Parameters.Add(new SQLiteParameter("@contrasenia", HashingService.HashClave(usuario.Contrasenia)));
                 command.Parameters.Add(new SQLiteParameter("@tipo", usuario.Tipo));
                 int rowsAffected = command.ExecuteNonQuery();
 
@@ -90,12 +90,13 @@ namespace tl2_tp10_2023_William24A.Models
         public Usuario login(string nombre, string password)
         {
             Usuario usuario = null;
+            string contraseniaHasheada = HashingService.HashClave(password);
             using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
                 SQLiteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT * FROM Usuario WHERE nombre_de_usuario = @nombre AND contrasenia = @contrasenia ";
                 command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
-                command.Parameters.Add(new SQLiteParameter("@contrasenia", password));
+                command.Parameters.Add(new SQLiteParameter("@contrasenia", contraseniaHasheada));
                 connection.Open();
                 using(SQLiteDataReader reader = command.ExecuteReader())
                 {

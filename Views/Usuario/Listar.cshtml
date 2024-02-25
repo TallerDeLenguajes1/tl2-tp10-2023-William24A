@@ -3,36 +3,38 @@
 }
 @using MVC.ViewModels
 @model MVC.ViewModels.ListarUsuarioViewModel
-
-<h2>Lista Usuarios</h2>
-
-<table class = "table">
-    <thead>
-        <tr>
-            <th hidden>ID</th> <!-- oculto el id--->
-            <th>Usuario</th>
-            <th>Tipo</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in Model.UsuariosViewModels)
-        {
+<div>
+    <div class="card-header text-center">
+        <h2>Lista Usuarios</h2>
+    </div>
+    <table class = "table">
+        <thead>
             <tr>
-                <td hidden>@usuario.Id</td>
-                <td>@usuario.NombreUsuario</td>
-                <td>@usuario.Tipo</td>
-                <td>
-                        <a asp-controller="Usuario" asp-action="Update" class="btn btn-primary"  asp-route-id="@usuario.Id">Modificar</a>
-                    
-                        <a asp-controller="Usuario" asp-action="Delete" 
-                        asp-route-id="@usuario.Id" class="btn btn-primary" 
-                        onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">
-                        Eliminar</a>  
-                </td>
+                <th hidden>ID</th> <!-- oculto el id--->
+                <th>Usuario</th>
+                <th>Tipo</th>
             </tr>
-        }
-        <tr>
-                <a asp-controller="Usuario" asp-action="Create" class="btn btn-primary">Crear Usuario</a>  
-        </tr>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model.UsuariosViewModels)
+            {
+                <tr>
+                    <td hidden>@usuario.Id</td>
+                    <td>@usuario.NombreUsuario</td>
+                    <td>@usuario.Tipo</td>
+                    <td>
+                            <a asp-controller="Usuario" asp-action="Update" class="btn btn-primary"  asp-route-id="@usuario.Id">Modificar</a>
+                        
+                            <a asp-controller="Usuario" asp-action="Delete" 
+                            asp-route-id="@usuario.Id" class="btn btn-primary" 
+                            onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">
+                            Eliminar</a>  
+                    </td>
+                </tr>
+            }
+            <tr>
+                    <a asp-controller="Usuario" asp-action="Create" class="btn btn-primary">Crear Usuario</a>  
+            </tr>
+        </tbody>
+    </table>
+</div>

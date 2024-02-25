@@ -1,12 +1,14 @@
 
 @model MVC.ViewModels.ListarTareaViewModel
 <div>
-        <h4>
-             @Model.NombreTablero
-        </h4>
+        <div class="card-header text-center">
+        <h3>
+             Tablero:  @Model.NombreTablero
+        </h3>
         <h4>
             Usuario propietario : @Model.UsuarioPropietario
         </h4>
+    </div>
     <table class = "table">
         <thead>
             <tr>

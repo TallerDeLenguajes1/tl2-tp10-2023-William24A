@@ -14,8 +14,13 @@
                 <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary ">Iniciar sesión</button>
-            </div>           
+                <button type="submit" class="btn btn-primary ">Iniciar sesión</button>    
+            </div>  
+            <div class="centrado">
+                <div class="boton-verde">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Create">Crear un usuario nuevo</a>
+                </div>
+            </div>         
         </form>
         @if (ViewData.ModelState.Count > 0)
                 {

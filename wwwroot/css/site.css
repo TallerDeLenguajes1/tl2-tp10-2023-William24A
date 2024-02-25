@@ -25,3 +25,27 @@ body {
   margin: 3em auto;
   width: 40%;
 }
+
+.centrado {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  /*align-items: center; /* Centra verticalmente */
+  /*height: 100vh; /* Ajusta la altura del contenedor al 100% del viewport */
+}
+
+.boton-verde {
+  background-color: #2ecf34; /* Color verde */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 3em auto;
+}
+
+.boton-verde a {
+  color: black; /* Hereda el color del texto del contenedor */
+  text-decoration: none; /* Elimina la subrayado del enlace */
+}

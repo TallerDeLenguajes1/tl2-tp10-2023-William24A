@@ -26,6 +26,7 @@ public class UsuarioController : Controller
     {
         try
         {
+            
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
@@ -33,7 +34,7 @@ public class UsuarioController : Controller
                 var usuariosView = new ListarUsuarioViewModel(usuarios);
                 return View(usuariosView);
             }
-            return RedirectToRoute(new {controller = "Home", action = "Index"});  
+            return RedirectToRoute(new {controller = "Home", action = "Index"}); 
         }
         catch (System.Exception ex)
         {
@@ -49,12 +50,13 @@ public class UsuarioController : Controller
     {
         try
         {
-            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            return View(new CrearUsuarioViewModel());
+            /*if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(isAdmin())
             {
                 return View(new CrearUsuarioViewModel());
             }
-            return RedirectToRoute(new {controller = "Home", action = "Index"});  
+            return RedirectToRoute(new {controller = "Home", action = "Index"});*/ 
         }
         catch (System.Exception ex)
         {
@@ -69,19 +71,27 @@ public class UsuarioController : Controller
     {
         try
         {
-            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(_repoUsuarioC.ExistUser(usuarioVMD.NombreUsuario))
+            
+            //if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(!ModelState.IsValid) return RedirectToAction("Create");
+            if(_repoUsuarioC.ExistUser(usuarioVMD.NombreUsuario))
             {
-                ModelState.AddModelError("NombreDeUsuario", "El nombre de usuario ingresado ya existe.");
+                 ViewBag.ErrorMessage = "El nombre de usuario ya existe";
+    
+                return View("Create");
             }
-            if(isAdmin())
+            var usuario = new Usuario(usuarioVMD);
+            _repoUsuarioC.Create(usuario);
+            if(isAdmin()) return RedirectToAction("Listar");
+            return RedirectToRoute(new {controller = "Login", action ="Index"});
+            /*if(isAdmin())
             {
                 if(!ModelState.IsValid) return RedirectToAction("Create");
                 var usuario = new Usuario(usuarioVMD);
                 _repoUsuarioC.Create(usuario);
                 return RedirectToAction("Listar");
             }
-            return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+            return RedirectToRoute(new {controller = "Home", action = "Index"});*/
         }
         catch (System.Exception ex)
         {
@@ -118,7 +128,12 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(_repoUsuarioC.ExistUser(usuarioVM.NombreUsuario)) return View(usuarioVM);
+             if(_repoUsuarioC.ExistUser(usuarioVM.NombreUsuario))
+            {
+                 ViewBag.ErrorMessage = "El nombre de usuario ya existe";
+    
+                return View("Update", usuarioVM);
+            }
             if(isAdmin() || usuarioVM.Id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
                 if(!ModelState.IsValid) return RedirectToAction("Listar");
@@ -148,12 +163,13 @@ public class UsuarioController : Controller
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
              if(isAdmin() || id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
             {
-                foreach (var tarea in _repoTarea.BuscarTodasTarea(id))
-                {
-                    _repoTarea.DeleteTarea(tarea.Id);
-                }
+                
                 foreach (var tablero in _repoTablero.ListarTablerosUsuario(id))
                 {
+                    foreach (var tarea in _repoTarea.BuscarTareasTablero(tablero.Id))
+                    {
+                        _repoTarea.DeleteTarea(tarea.Id);
+                    }
                     _repoTablero.DeleteTablero(tablero.Id);
                 }
                 _repoUsuarioC.Remove(id);
@@ -176,7 +192,7 @@ public class UsuarioController : Controller
     }
 
     [HttpGet]
-    public IActionResult Configuracion() // listo los usuarios
+    public IActionResult Configuracion() 
     {
         try
         {
@@ -206,7 +222,7 @@ public class UsuarioController : Controller
                 var usuarioVM = new CambiarContraseñaViewModel();
                 return View(usuarioVM);
             }
-            return RedirectToRoute(new {controller = "Home", action = "Index"});     
+            return RedirectToRoute(new {controller = "Home", action = "Index"});    
         }
         catch (Exception ex)
         {
@@ -224,9 +240,9 @@ public class UsuarioController : Controller
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if (!ModelState.IsValid) return View(vm);
             var usuario = _repoUsuarioC.GetById(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-            if(usuario != null && usuario.Contrasenia == vm.Contrasenia)
+            if(usuario != null && usuario.Contrasenia == HashingService.HashClave(vm.Contrasenia))
             {
-                usuario.Contrasenia = vm.NuevaContrasenia;
+                usuario.Contrasenia = HashingService.HashClave(vm.NuevaContrasenia);
                 _repoUsuarioC.Update(usuario.Id, usuario);
                 return RedirectToAction("Configuracion");
             }

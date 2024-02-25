@@ -177,7 +177,7 @@ public class TareaController : Controller
             if (isAdmin() || _repoTareaC.BuscarPorId(id).IdUsuarioAsignado1 == userIdInSession)
             {
                 _repoTareaC.DeleteTarea(id);
-                return RedirectToAction("Listar");   
+                return RedirectToAction("Listar", new{id = tareaEliminar.IdTablero});   
             }else
             {
                 return RedirectToRoute(new {controller = "Home", action="Error"});

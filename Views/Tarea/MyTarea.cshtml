@@ -1,7 +1,13 @@
 @model MVC.ViewModels.ListarMiTareaViewModel
 
-<h2>Lista Mis Tareas</h2>
-<h4>Usuario: @Model.NombreUsuarioAsignado</h4>
+<div class="card-header text-center">
+        <h2>
+             Lista Mis Tareas
+        </h2>
+        <h4>
+            Usuario propietario : @Model.NombreUsuarioAsignado
+        </h4>
+    </div>
 
 <table class = "table">
     <thead>
