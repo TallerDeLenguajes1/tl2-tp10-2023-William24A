@@ -7,7 +7,6 @@
     </div>
     <form asp-controller="Tablero" asp-action="Update">
         <input hidden asp-for="@Model.Id"> 
-        <input hidden asp-for ="@Model.Id_usuario_propietario" >
         @if(Context.Session.GetString("Tipo") == "admin")
         {
             <div class="form-group">

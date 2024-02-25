@@ -1,9 +1,12 @@
 
 @model MVC.ViewModels.ListarTareaViewModel
 <div>
-    <div>
-        <h2>Lista Tarea</h2>
-    </div>
+        <h4>
+             @Model.NombreTablero
+        </h4>
+        <h4>
+            Usuario propietario : @Model.UsuarioPropietario
+        </h4>
     <table class = "table">
         <thead>
             <tr>
@@ -26,21 +29,10 @@
                     <td></td>
                         <td>@tarea.Nombre</td>
                         <td>@tarea.Descripcion</td>
-                        <td>
-                            <i class="bi bi-droplet-fill" style="color: @tarea.Color"></i>
-                        </td>
+                        <td>@tarea.Color</td>
                         <td>@tarea.NombreUsuarioAsignado</td>
-                        <td>
-                            <form id="cambiarEstadoForm_@tarea.Id" asp-controller="Tarea" asp-action="UpdateEstado">
-                                <input type="hidden" name="idTablero" value="@tarea.Id_tablero">
-                                <input type="hidden" name="id" value="@tarea.Id" />
-                                <div class="input-group">
-                                    <select asp-for="@tarea.Estado" class="form-select form-control" asp-items="@Html.GetEnumSelectList<EstadoTarea>()" name="estado" onchange="enviarFormulario('cambiarEstadoForm_@tarea.Id')">
-                                    </select>
-                                </div>
-                            </form>
-                        </td>
-                    @if(Context.Session.GetString("Tipo") == "admin" || Convert.ToInt32(Context.Session.GetString("Id")) == @tarea.IdUsuarioAsignado)
+                        <td>@tarea.Estado</td>
+                   @if(Context.Session.GetString("Tipo") == "admin" || Convert.ToInt32(Context.Session.GetString("Id")) == tarea.IdUsuarioAsignado)
                     {
                     <td>
                             <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>

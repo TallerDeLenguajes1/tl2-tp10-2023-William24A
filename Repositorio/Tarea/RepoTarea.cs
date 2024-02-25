@@ -144,14 +144,14 @@ namespace tl2_tp10_2023_William24A.Models
             return tareas;
         }
 
-        public Tarea CreaTarea(Tarea tarea) //Consultar si es que esta modificacion esta bien
+        public Tarea CreaTarea(int idTablero, Tarea tarea) //Consultar si es que esta modificacion esta bien
         {
             var query = $"INSERT INTO Tarea(id_tablero,nombre, estado, descripcion,color, id_usuario_asignado) VALUES(@idTablero, @nombre_tarea, @estado, @descripcion, @color, @idusuario );";
             using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
                 connection.Open();
                 var command = new SQLiteCommand(query, connection);
-                command.Parameters.Add(new SQLiteParameter("@idTablero", tarea.IdTablero));
+                command.Parameters.Add(new SQLiteParameter("@idTablero", idTablero));
                 command.Parameters.Add(new SQLiteParameter("@nombre_tarea", tarea.Nombre));
                 command.Parameters.Add(new SQLiteParameter("@estado", tarea.Estado));
                 command.Parameters.Add(new SQLiteParameter("@descripcion", tarea.Descripcion));

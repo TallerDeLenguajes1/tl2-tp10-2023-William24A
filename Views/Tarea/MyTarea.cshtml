@@ -1,12 +1,12 @@
 @model MVC.ViewModels.ListarMiTareaViewModel
 
 <h2>Lista Mis Tareas</h2>
-<h4>Usuario: @Model.Usuario.NombreUsuario</h4>
+<h4>Usuario: @Model.NombreUsuarioAsignado</h4>
 
 <table class = "table">
     <thead>
         <tr>
-            <th>ID Tablero</th>
+            <th hidden>ID Tablero</th>
             <th>Nombre del Tablero</th>
             <th hidden>ID</th> <!-- oculto el id--->
             <th>Tarea</th>
@@ -16,24 +16,24 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var tarea in Model.TareasViewModels)
+        @foreach (var tarea in Model.TareasVM)
         {
             <tr>
-                <td>@tarea.IdTablero</td>
+                <td hidden>@tarea.Id_tablero</td>
                 <td>@tarea.NombreTablero</td>
                 <td hidden>@tarea.Id</td>
                 <td>@tarea.Nombre</td>
                 <td>@tarea.Descripcion</td>
                 <td>@tarea.Color</td>
                 <td>@tarea.Estado</td>
-                <td>
-                        <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
-                        @if(@Model.Operador != "operador")
-                        {
-                                <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                @if(Context.Session.GetString("Tipo") == "admin" || Convert.ToInt32(Context.Session.GetString("Id")) == tarea.IdUsuarioAsignado)
+                    {
+                    <td>
+                            <a asp-controller="Tarea" asp-action="Update" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
 
-                        }
-                </td>
+                            <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                    </td>
+                    }
             </tr>
         }
     </tbody>

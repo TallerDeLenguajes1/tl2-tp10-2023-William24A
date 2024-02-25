@@ -12,7 +12,7 @@ namespace MVC.ViewModels
 
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Nombre de Tablero")] 
-        public string? Nombre {get;set;}
+        public string Nombre {get;set;}
 
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Descripcion")] 

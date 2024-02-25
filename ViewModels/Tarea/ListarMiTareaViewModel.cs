@@ -5,25 +5,30 @@ namespace MVC.ViewModels
 {
     public class ListarMiTareaViewModel
     {
-        public Usuario Usuario {get;set;}
-        public List<MiTareaViewModel> TareasViewModels {get;set;}
-        public string Operador {get;set;}
-        public ListarMiTareaViewModel(List<Tarea> tareas, List<Tablero> tableros, Usuario usuario, string operador)
+        public string NombreUsuarioAsignado { get; set; }
+        public List<TareaViewModel> TareasVM { get; set; }
+
+        public ListarMiTareaViewModel(List<Tarea> tareas, List<Tablero> tableros, Usuario usuario)
         {
-            TareasViewModels = new List<MiTareaViewModel>();
-            Usuario = usuario;
-            Operador = operador;
-            foreach (var tarea in tareas)
+            NombreUsuarioAsignado = usuario.NombreUsuario;
+            TareasVM = new List<TareaViewModel>();
+            foreach (var t in tareas)
             {
-                foreach(var tablero in tableros)
+                TareaViewModel tareaVM = new TareaViewModel(t);  
+                
+                Tablero tableroVM =  tableros.FirstOrDefault(t => t.Id == tareaVM.Id_tablero);
+                
+                tareaVM.NombreTablero = tableroVM.Nombre;
+                
+                /*if(tableroVM.Id_usuario_propietario == usuario.Id)
                 {
-                    if(tarea.IdTablero == tablero.Id)
-                    {
-                         var tareaViewModel = new MiTareaViewModel(tarea,tablero);
-                         TareasViewModels.Add(tareaViewModel);
-                    }
-                }  
+                    tareaVM.Modificable = true;
+                }else
+                {
+                    tareaVM.Modificable = false;
+                }*/
+                TareasVM.Add(tareaVM);
             }
-        }        
+        }
     }
 }

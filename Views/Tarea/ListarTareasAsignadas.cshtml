@@ -1,0 +1,55 @@
+@model MVC.ViewModels.ListarTareasAsignadasViewModel
+
+
+<div class="card">
+    <div class="card-header text-center">
+        <h4>
+             @Model.NombreTablero
+        </h4>
+        <h4>
+            Usuario propietario : @Model.UsuarioPropietario
+        </h4>
+    </div>
+    <div class="card-body">
+        <table class="display nowrap table-striped" style="width:100%" id="myTable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Color</th>
+                    <th>Usuario asignado</th>
+                    <th>Estado</th>
+                    <th hidden>ID</th> <!-- oculto el id--->
+                    <th hidden>Id tablero</th>
+                    <th hidden></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.TareasVM)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@t.Nombre</td>
+                        <td>@t.Descripcion</td>
+                        <td>@t.Color"</td>
+                        <td>@t.NombreUsuarioAsignado</td>
+                        <td>@t.Estado</td>
+                        @if(Context.Session.GetString("Tipo") == "admin" || Convert.ToInt32(Context.Session.GetString("Id")) == @t.IdUsuarioAsignado)
+                        {
+                            <td>
+                            <a asp-controller="Tarea" asp-action="Update" asp-route-id="@t.Id" class="btn btn-primary">Modificar</a>
+
+                            <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@t.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                            </td>
+                        }
+                        <td hidden>@t.Id</td>
+                        <td hidden>@t.Id_tablero</td>
+                        <td hidden>@t.Estado</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/js/site2.js"></script>

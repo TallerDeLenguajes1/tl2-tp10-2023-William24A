@@ -8,7 +8,7 @@ namespace MVC.ViewModels
      public class TareaViewModel
     {
         public int Id {get;set;}
-        public int? Id_tablero {get;set;}
+        public int Id_tablero {get;set;}
         public string Nombre {get;set;}
         public string Descripcion {get;set;}
         public string Color {get;set;}
@@ -16,7 +16,7 @@ namespace MVC.ViewModels
         public int? IdUsuarioAsignado {get;set;}
         public string NombreUsuarioAsignado {get;set;}
         public string NombreTablero {get;set;}
-        public bool Modificable {get;set;}
+        
 
 
         public TareaViewModel(Tarea tarea)

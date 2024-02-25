@@ -1,20 +1,10 @@
 @model MVC.ViewModels.ActualizarTareaViewModel
 
-@if(Model.Operador != "operador")
+@if(Context.Session.GetString("Tipo") == Tipo.admin.ToString() || Model.IdTableroPropietario == Convert.ToInt32(Context.Session.GetString("Id")))
 {
 <form asp-controller="Tarea" asp-action="Update">
     <input hidden asp-for="@Model.Id"> 
-    <div class="form-group">
-        <label class="form-label" asp-for="@Model.IdTablero"></label>
-        <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.IdTablero">
-            <option selected>Seleccione uno</option>
-            @foreach (var tablero in Model.Tableros)
-            {
-                <option value="@tablero.Id">@tablero.Id</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
-    </div> 
+    <input hidden asp-for="@Model.IdTablero">
     <div class="form-group">
         <label asp-for="@Model.Nombre">Nombre</label>
         <input asp-for="@Model.Nombre" class="form-control" />
@@ -35,6 +25,8 @@
         <select asp-for="@Model.Estado" class="form-control"  asp-items="@Html.GetEnumSelectList<EstadoTarea>()"></select>
         <span asp-validation-for="@Model.Estado" class="text-danger"></span> 
     </div>
+    @if(Context.Session.GetString("Tipo") == Tipo.admin.ToString())
+    {
     <div class="form-group">
         <label class="form-label" asp-for="@Model.IdUsuarioAsignado1"></label>
         <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.IdUsuarioAsignado1">
@@ -45,8 +37,8 @@
             }
         </select>
         <span asp-validation-for="@Model.IdUsuarioAsignado1" class="text-danger"></span>
-    </div> 
-
+    </div>
+    } 
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
 }else{

@@ -19,13 +19,13 @@ namespace MVC.ViewModels
             foreach (var t in tareas)
             {
                 TareaViewModel tareaVM = new TareaViewModel(t);
-                if(t.IdUsuarioAsignado1 == idUsuario) //  || tablero.IdUsuarioPropietario == idUsuario
+                if(t.IdUsuarioAsignado1 == idUsuario) 
                 {
-                    tareaVM.Modificable = true;
+                    //tareaVM.Modificable = true;
                     tareaVM.NombreUsuarioAsignado = usuarios.FirstOrDefault(u => u.Id == tareaVM.IdUsuarioAsignado)?.NombreUsuario;
                 }else
                 {
-                    tareaVM.Modificable = false;
+                    //tareaVM.Modificable = false;
                     if (tareaVM.IdUsuarioAsignado == null)
                     {
                         tareaVM.NombreUsuarioAsignado = "Sin asignar";

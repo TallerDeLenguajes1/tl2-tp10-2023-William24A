@@ -3,7 +3,7 @@ namespace tl2_tp10_2023_William24A.Models
 {
     public interface IDTareaRepositorio
     {
-        public Tarea CreaTarea(Tarea tarea); 
+        public Tarea CreaTarea(int idTablero,Tarea tarea); 
         public void Modificar(int id, Tarea tarea);
         public Tarea BuscarPorId(int id);
         public List<Tarea> BuscarTodasTarea(int idUsuario);

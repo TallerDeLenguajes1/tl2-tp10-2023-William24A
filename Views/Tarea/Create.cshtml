@@ -1,17 +1,13 @@
 @model MVC.ViewModels.CrearTareaViewModel
 @using tl2_tp10_2023_William24A.Models;
 
+<div class="text-center">
+    
+    <h1 class="h3 mb-3 fw-normal">Crear tarea en tablero: @Model.Tablero</h1>
+
+</div>
 <form asp-controller="Tarea" asp-action="Create">
-    <div class="form-group">
-        <label class="form-label" asp-for="@Model.IdTablero"></label>
-        <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.IdTablero">
-            <option selected>Seleccione uno</option>
-            @foreach (var tablero in Model.Tableros)
-            {
-                <option value="@tablero.Id">@tablero.Id</option>
-            }
-        </select>
-    </div> 
+    <input hidden asp-for="@Model.IdTablero"/> 
     <div class="form-group">
         <label asp-for="@Model.Nombre">Nombre</label>
         <input asp-for="@Model.Nombre" class="form-control" />
@@ -32,17 +28,23 @@
         <select asp-for="@Model.Estado" class="form-control"  asp-items="@Html.GetEnumSelectList<EstadoTarea>()"></select>
         <span asp-validation-for="@Model.Estado" class="text-danger"></span> 
     </div>
+    @if(Context.Session.GetString("Tipo") == Tipo.admin.ToString())
+    {
     <div class="form-group">
-        <label class="form-label" asp-for="@Model.IdUsuarioAsignado1"></label>
-        <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.IdUsuarioAsignado1">
-            <option selected>Seleccione uno</option>
-            @foreach (var usuario in Model.Usuarios)
-            {
-                <option value="@usuario.Id">@usuario.NombreUsuario</option>
-            }
-        </select>
-    </div> 
-
+    <label class="form-label" asp-for="@Model.IdUsuarioAsignado1">Usuario Asignado</label>
+    <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.IdUsuarioAsignado1">
+        <option value="">Seleccione uno</option> <!-- Asegúrate de tener un valor vacío para la opción por defecto -->
+        @foreach (var usuario in Model.Usuarios)
+        {
+            <option value="@usuario.Id">@usuario.NombreUsuario</option>
+        }
+    </select>
+    <span asp-validation-for="@Model.IdUsuarioAsignado1" class="text-danger"></span>
+    </div>
+    }else
+    {
+        <input hidden asp-for="@Model.IdUsuarioAsignado1" value="@Context.Session.GetString("Id")"/>
+    }
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
 @section Scripts{<partial name="_ValidationScriptsPartial"/>}

@@ -10,16 +10,16 @@ namespace MVC.ViewModels
         public int Id {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "ID Tablero")]
-        public int? IdTablero {get;set;}
+        public int IdTablero {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Nombre")]
-        public string? Nombre {get;set;}
+        public string Nombre {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Descripcion")]
-        public string? Descripcion  {get;set;}
+        public string Descripcion  {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Color de tarea")]
-        public string? Color {get;set;}
+        public string Color {get;set;}
         [Required(ErrorMessage = "Este campo es requerido.")]
         [Display(Name = "Estado")]
         public EstadoTarea Estado {get;set;}
@@ -27,12 +27,12 @@ namespace MVC.ViewModels
         public int? IdUsuarioAsignado1  {get;set;}
         public List<Usuario> Usuarios {get;set;}
         public List<Tablero> Tableros {get;set;}
-        public string Operador {get;set;}
+        public int IdTableroPropietario {get;set;}
+        //public string Operador {get;set;}
         public ActualizarTareaViewModel()
         {
             Usuarios = new List<Usuario>();
             Tableros = new List<Tablero>();
-            Operador = "";
         }
         public ActualizarTareaViewModel(Tarea tarea, List<Usuario> usuarios, List<Tablero> tableros)
         {
@@ -43,12 +43,18 @@ namespace MVC.ViewModels
             Color = tarea.Color;
             Estado = tarea.Estado;
             IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
-            Operador = "";
             Usuarios = usuarios;
             Tableros = tableros;
+            foreach (var tablero in tableros)
+            {
+                if(tablero.Id == tarea.IdTablero)
+                {
+                    IdTableroPropietario = tablero.Id_usuario_propietario;
+                }
+            }
         } 
 
-        public ActualizarTareaViewModel(Tarea tarea, string operador)
+        public ActualizarTareaViewModel(Tarea tarea)
         {
             Id = tarea.Id;
             IdTablero = tarea.IdTablero;
@@ -59,7 +65,6 @@ namespace MVC.ViewModels
             IdUsuarioAsignado1 = tarea.IdUsuarioAsignado1;
             Usuarios = new List<Usuario>();
             Tableros = new List<Tablero>();
-            Operador = operador;
         }         
     }
 }
