@@ -156,6 +156,51 @@ public class TableroController : Controller
     }
 
     [HttpGet]
+    public IActionResult UpdateTodosTableros(int id)
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+             if(isAdmin() )
+            {
+                var tablero = _repoTableroC.ObtenerTableroID(id);
+                var tableroVM = new ActualizarTableroViewModel(tablero, _repoUsuarioC.GetAll());
+                if (tableroVM.Usuarios == null) return NoContent();
+                return View(tableroVM);
+            }
+            return RedirectToRoute(new { controller = "Home", action = "Error"});
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+       
+    }
+    [HttpPost]
+    public IActionResult UpdateTodosTableros(ActualizarTableroViewModel tableroVM)
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(isAdmin())
+            {
+                if(!ModelState.IsValid) return RedirectToAction("UpdateTodosTableros", new {id = tableroVM.Id});
+                var tablero = new Tablero(tableroVM);
+                _repoTableroC.ModificarTablero(tablero.Id, tablero);
+                return RedirectToAction("TodosTableros");
+            }
+            return RedirectToRoute(new { controller = "Home", action = "Error"});
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        
+    }
+
+    [HttpGet]
     public IActionResult Delete(int id)
     {
         try
