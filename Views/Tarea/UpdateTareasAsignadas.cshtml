@@ -1,0 +1,22 @@
+@model MVC.ViewModels.ActualizarTareaViewModel
+
+<div class="card-header text-center">
+    <h2>
+        Actualizar tarea
+    </h2>
+</div>
+<form asp-controller="Tarea" asp-action="UpdateTareasAsignadas">
+    <input hidden asp-for="@Model.Id"> 
+    <input hidden asp-for="@Model.IdTablero"> 
+    <input hidden asp-for="@Model.Nombre"> 
+    <input hidden asp-for="@Model.Descripcion">
+    <input hidden asp-for="@Model.Color">  
+    <div class="form-group">
+        <label asp-for="@Model.Estado">Estado</label>
+        <select asp-for="@Model.Estado" class="form-control"  asp-items="@Html.GetEnumSelectList<EstadoTarea>()"></select>
+        <span asp-validation-for="@Model.Estado" class="text-danger"></span> 
+    </div>
+    <input hidden asp-for="@Model.IdUsuarioAsignado1"> 
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}

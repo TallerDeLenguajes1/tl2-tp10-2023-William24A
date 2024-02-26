@@ -5,10 +5,11 @@
         Actualizar tarea
     </h2>
 </div>
+@if(Context.Session.GetString("Tipo") == Tipo.admin.ToString() || Model.IdTableroPropietario == Convert.ToInt32(Context.Session.GetString("Id")))
+{
 <form asp-controller="Tarea" asp-action="UpdateMyTarea">
     <input hidden asp-for="@Model.Id"> 
     <input hidden asp-for="@Model.IdTablero">
-    <input hidden asp-for="@Model.IdUsuarioAsignado1">
     <div class="form-group">
         <label asp-for="@Model.Nombre">Nombre</label>
         <input asp-for="@Model.Nombre" class="form-control" />
@@ -29,6 +30,42 @@
         <select asp-for="@Model.Estado" class="form-control"  asp-items="@Html.GetEnumSelectList<EstadoTarea>()"></select>
         <span asp-validation-for="@Model.Estado" class="text-danger"></span> 
     </div>
+    @if(Context.Session.GetString("Tipo") == Tipo.admin.ToString())
+    {
+    <div class="form-group">
+        <label class="form-label" asp-for="@Model.IdUsuarioAsignado1"></label>
+        <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.IdUsuarioAsignado1">
+            <option selected>Seleccione uno</option>
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <option value="@usuario.Id">@usuario.NombreUsuario</option>
+            }
+        </select>
+        <span asp-validation-for="@Model.IdUsuarioAsignado1" class="text-danger"></span>
+    </div>
+    }else
+    {
+        <input hidden asp-for="@Model.IdUsuarioAsignado1">
+    }
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+}
+else
+{
+    <form asp-controller="Tarea" asp-action="Update">
+    <input hidden asp-for="@Model.Id"> 
+    <input hidden asp-for="@Model.IdTablero"> 
+    <input hidden asp-for="@Model.Nombre"> 
+    <input hidden asp-for="@Model.Descripcion">
+    <input hidden asp-for="@Model.Color">  
+    <div class="form-group">
+        <label asp-for="@Model.Estado">Estado</label>
+        <select asp-for="@Model.Estado" class="form-control"  asp-items="@Html.GetEnumSelectList<EstadoTarea>()"></select>
+        <span asp-validation-for="@Model.Estado" class="text-danger"></span> 
+    </div>
+    <input hidden asp-for="@Model.IdUsuarioAsignado1"> 
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+    
+}
 @section Scripts{<partial name="_ValidationScriptsPartial"/>}

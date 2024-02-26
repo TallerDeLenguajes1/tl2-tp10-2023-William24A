@@ -165,7 +165,7 @@ public class TareaController : Controller
         }
     }
 
-        [HttpGet]
+    [HttpGet]
     public IActionResult UpdateMyTarea(int id)
     {
          try
@@ -195,7 +195,7 @@ public class TareaController : Controller
     {
        try
         {
-            if(!ModelState.IsValid) return RedirectToRoute(new {controller = "Tarea", action="MyTarea", id = tareaVM.Id});
+            if(!ModelState.IsValid) return RedirectToRoute(new {controller = "Tarea", action="UpdateMyTarea", id = tareaVM.Id});
 
             if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
 
@@ -205,6 +205,58 @@ public class TareaController : Controller
                 Tarea tarea = new Tarea(tareaVM);
                 _repoTareaC.Modificar(tarea.Id, tarea);
                 return RedirectToAction("MyTarea");
+            }else
+            {
+                return RedirectToRoute(new {controller = "Home", action="Error"});
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        } 
+        
+    }
+
+          [HttpGet]
+    public IActionResult UpdateTareasAsignadas(int id)
+    {
+         try
+        {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            Tarea nuevaTarea = _repoTareaC.BuscarPorId(id);
+            var tableros = _repoTablero.ListarTableros();
+            var usuarios = _repoUsuarios.GetAll();
+            if (isAdmin() || nuevaTarea.IdUsuarioAsignado1 == userIdInSession)
+            {
+                return View(new ActualizarTareaViewModel(nuevaTarea, usuarios , tableros ));
+            }else
+            {
+                return RedirectToRoute(new {controller = "Home", action="Error"});
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
+        
+    }
+    [HttpPost]
+    public IActionResult UpdateTareasAsignadas(ActualizarTareaViewModel tareaVM)
+    {
+       try
+        {
+            if(!ModelState.IsValid) return RedirectToRoute(new {controller = "Tarea", action="UpdateTareasAsignadas", id = tareaVM.Id});
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+
+            if(isAdmin() || tareaVM.IdUsuarioAsignado1 == userIdInSession){
+                Tarea tarea = new Tarea(tareaVM);
+                _repoTareaC.Modificar(tarea.Id, tarea);
+                return RedirectToAction("Listar", new{id = tarea.IdTablero});
             }else
             {
                 return RedirectToRoute(new {controller = "Home", action="Error"});

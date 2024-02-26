@@ -40,6 +40,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Tablero/CreateTodosTableros.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xDcmVhdGVUb2Rvc1RhYmxlcm9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Tablero/Listar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xMaXN0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -78,6 +82,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Tarea/UpdateMyTarea.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVXBkYXRlTXlUYXJlYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Tarea/UpdateTareasAsignadas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVXBkYXRlVGFyZWFzQXNpZ25hZGFzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/wil37/OneDrive/Documentos/A_Segundo_Año/2-Taller de Lenguaje 2/tl2-tp10-2023-William24A/Views/Usuario/CambiarContraseña.cshtml]

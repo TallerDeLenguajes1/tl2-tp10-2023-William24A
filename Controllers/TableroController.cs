@@ -110,6 +110,51 @@ public class TableroController : Controller
         
     }
 
+        [HttpGet]
+    public IActionResult CreateTodosTableros()
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+           
+            if (isAdmin())
+            {
+                var tablero = new CrearTableroViewModel(_repoUsuarioC.GetAll());
+                return View(tablero);
+            }
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        
+    }
+    [HttpPost]
+    public IActionResult CreateTodosTableros(CrearTableroViewModel tableroVM)
+    {
+
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(!ModelState.IsValid) return RedirectToAction("Create");
+            if (isAdmin())
+            {
+                Tablero tablero = new Tablero(tableroVM);
+                _repoTableroC.CrearTablero(tablero);
+                return RedirectToAction("TodosTableros");
+            }
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        
+    }
+
     [HttpGet]
     public IActionResult Update(int id)
     {
@@ -214,6 +259,31 @@ public class TableroController : Controller
                 }
                 _repoTableroC.DeleteTablero(id);
                 return RedirectToAction("Listar");
+            }
+            return RedirectToRoute(new { controller = "Login", action = "Index"});
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        
+    }
+
+    [HttpGet]
+    public IActionResult DeleteTodosTableros(int id)
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            if(isAdmin() || _repoTableroC.ObtenerTableroID(id).Id_usuario_propietario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            {
+                foreach (var tarea in _repoTarea.BuscarTareasTablero(id))
+                {
+                    _repoTarea.DeleteTarea(tarea.Id);   
+                }
+                _repoTableroC.DeleteTablero(id);
+                return RedirectToAction("TodosTableros");
             }
             return RedirectToRoute(new { controller = "Login", action = "Index"});
         }

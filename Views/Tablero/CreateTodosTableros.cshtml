@@ -1,0 +1,38 @@
+@model MVC.ViewModels.CrearTableroViewModel
+
+<div>
+    <div class="text-center">
+                <h1 class="h3 mb-3 fw-normal">Crear tablero</h1>
+    </div>
+    <form asp-controller="Tablero" asp-action="CreateTodosTableros">
+        @if(Context.Session.GetString("Tipo") == Tipo.admin.ToString())
+        {
+            <div class="form-group">
+                <label class="form-label" asp-for="@Model.Id_usuario_propietario"></label>
+                <select class="form-select w-50" aria-label="Default select example" asp-for="@Model.Id_usuario_propietario">
+                    <option selected>Seleccione uno</option>
+                    @foreach (var usuario in Model.Usuarios)
+                    {
+                        <option value="@usuario.Id">@usuario.NombreUsuario</option>
+                    }
+                </select>
+            </div> 
+        }else
+        {
+            <input hidden asp-for ="@Model.Id_usuario_propietario"> 
+        }
+        <div class="form-group">
+            <label asp-for="@Model.Nombre">Nombre del Tablero</label>
+            <input asp-for="@Model.Nombre" class="form-control" />
+            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>     
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Descripcion">Descripcion del Tablero</label>
+            <input asp-for="@Model.Descripcion" class="form-control" />
+            <span asp-validation-for="@Model.Descripcion" class="text-danger"></span> 
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+</div>
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}
