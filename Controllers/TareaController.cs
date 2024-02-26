@@ -201,14 +201,10 @@ public class TareaController : Controller
 
             int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
 
-            if(tareaVM.IdUsuarioAsignado1 == userIdInSession){
-                Tarea tarea = new Tarea(tareaVM);
-                _repoTareaC.Modificar(tarea.Id, tarea);
-                return RedirectToAction("MyTarea");
-            }else
-            {
-                return RedirectToRoute(new {controller = "Home", action="Error"});
-            }
+            Tarea tarea = new Tarea(tareaVM);
+            _repoTareaC.Modificar(tarea.Id, tarea);
+            return RedirectToAction("MyTarea");
+            
         }
         catch (Exception ex)
         {
