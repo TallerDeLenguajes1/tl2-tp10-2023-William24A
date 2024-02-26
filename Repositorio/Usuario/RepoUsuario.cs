@@ -161,9 +161,9 @@ namespace tl2_tp10_2023_William24A.Models
             }
         }
 
-        public bool ExistUser(string nombre)
+        public Usuario ExistUser(string nombre)
         {
-            bool existe = false;
+            Usuario usuario = null;
             using (SQLiteConnection connection = new SQLiteConnection(cadenaConexion))
             {
                 SQLiteCommand command = connection.CreateCommand();
@@ -174,12 +174,17 @@ namespace tl2_tp10_2023_William24A.Models
                 {
                     if (reader.Read())
                     {
-                        existe = true;
+                        usuario = new Usuario();
+                        usuario.Id = Convert.ToInt32(reader["id"]);
+                        usuario.NombreUsuario = reader["nombre_de_usuario"].ToString();
+                        usuario.Contrasenia = reader["contrasenia"].ToString();
+                        usuario.Tipo = (Tipo)Convert.ToInt32(reader["tipo"]);
+                        
                     }
                 }
                 connection.Close();
             }
-            return existe;
+            return usuario;
         }
     }
 }

@@ -72,9 +72,8 @@ public class UsuarioController : Controller
         try
         {
             
-            //if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
             if(!ModelState.IsValid) return RedirectToAction("Create");
-            if(_repoUsuarioC.ExistUser(usuarioVMD.NombreUsuario))
+            if(_repoUsuarioC.ExistUser(usuarioVMD.NombreUsuario) != null)
             {
                  ViewBag.ErrorMessage = "El nombre de usuario ya existe";
     
@@ -82,16 +81,12 @@ public class UsuarioController : Controller
             }
             var usuario = new Usuario(usuarioVMD);
             _repoUsuarioC.Create(usuario);
+
+            TempData["SuccessMessage"] = "Usuario creado exitosamente.";
+
             if(isAdmin()) return RedirectToAction("Listar");
             return RedirectToRoute(new {controller = "Login", action ="Index"});
-            /*if(isAdmin())
-            {
-                if(!ModelState.IsValid) return RedirectToAction("Create");
-                var usuario = new Usuario(usuarioVMD);
-                _repoUsuarioC.Create(usuario);
-                return RedirectToAction("Listar");
-            }
-            return RedirectToRoute(new {controller = "Home", action = "Index"});*/
+            
         }
         catch (System.Exception ex)
         {
@@ -128,7 +123,7 @@ public class UsuarioController : Controller
         try
         {
             if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-             if(_repoUsuarioC.ExistUser(usuarioVM.NombreUsuario))
+             if(_repoUsuarioC.ExistUser(usuarioVM.NombreUsuario) != null && _repoUsuarioC.ExistUser(usuarioVM.NombreUsuario).Id != usuarioVM.Id)
             {
                  ViewBag.ErrorMessage = "El nombre de usuario ya existe";
     
@@ -264,7 +259,7 @@ public class UsuarioController : Controller
     {
         try
         {
-            if (_repoUsuarioC.ExistUser(nombreDeUsuario))
+            if (_repoUsuarioC.ExistUser(nombreDeUsuario) != null)
             {
                 return Json(false);
             }

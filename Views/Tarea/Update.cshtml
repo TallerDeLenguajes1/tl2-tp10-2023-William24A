@@ -1,5 +1,10 @@
 @model MVC.ViewModels.ActualizarTareaViewModel
 
+<div class="card-header text-center">
+    <h2>
+        Actualizar tarea
+    </h2>
+</div>
 @if(Context.Session.GetString("Tipo") == Tipo.admin.ToString() || Model.IdTableroPropietario == Convert.ToInt32(Context.Session.GetString("Id")))
 {
 <form asp-controller="Tarea" asp-action="Update">

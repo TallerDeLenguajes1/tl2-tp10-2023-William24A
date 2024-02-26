@@ -1,4 +1,10 @@
 @model MVC.ViewModels.LoginViewModel
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
 <section>
     <article>
         <form asp-controller="Login" asp-action="Login" method="post" class = "formLogueo">
@@ -31,6 +37,7 @@
                         }
                     </div>
                 }
+        @TempData["SuccessMessage"] = @null;
     </article>
 </section>
 

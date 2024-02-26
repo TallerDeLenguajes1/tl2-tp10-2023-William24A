@@ -9,7 +9,7 @@ namespace tl2_tp10_2023_William24A.Models
         public void Create(Usuario usuario);
         public void Remove(int id);
         public void Update(int idUsuario, Usuario usuario);
-        public bool ExistUser(string nombre);
+        public Usuario ExistUser(string nombre);
     }
 }
 
