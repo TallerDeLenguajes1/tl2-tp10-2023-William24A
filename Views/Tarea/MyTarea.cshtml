@@ -37,7 +37,7 @@
                     <td>
                             <a asp-controller="Tarea" asp-action="UpdateMyTarea" asp-route-id="@tarea.Id" class="btn btn-primary">Modificar</a>
 
-                            <a asp-controller="Tarea" asp-action="Delete" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
+                            <a asp-controller="Tarea" asp-action="DeleteMyTarea" asp-route-id="@tarea.Id" class="btn btn-primary" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>  
                     </td>
                     }
             </tr>

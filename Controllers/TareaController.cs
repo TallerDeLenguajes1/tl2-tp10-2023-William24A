@@ -296,6 +296,32 @@ public class TareaController : Controller
         
     }
 
+    [HttpGet]
+    public IActionResult DeleteMyTarea(int id)
+    {
+        try
+        {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+
+            Tarea tareaEliminar = _repoTareaC.BuscarPorId(id);
+            if (isAdmin() || _repoTareaC.BuscarPorId(id).IdUsuarioAsignado1 == userIdInSession)
+            {
+                _repoTareaC.DeleteTarea(id);
+                return RedirectToAction("MyTarea", new{id = tareaEliminar.IdTablero});   
+            }else
+            {
+                return RedirectToRoute(new {controller = "Home", action="Error"});
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
+        
+    }
+
     private bool isAdmin()
         {
             if (HttpContext.Session != null && HttpContext.Session.GetString("Tipo") == "admin") 
