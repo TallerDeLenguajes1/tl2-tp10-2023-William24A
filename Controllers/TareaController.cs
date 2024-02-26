@@ -165,6 +165,59 @@ public class TareaController : Controller
         }
     }
 
+        [HttpGet]
+    public IActionResult UpdateMyTarea(int id)
+    {
+         try
+        {
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+            Tarea nuevaTarea = _repoTareaC.BuscarPorId(id);
+            var tableros = _repoTablero.ListarTableros();
+            var usuarios = _repoUsuarios.GetAll();
+            if (nuevaTarea.IdUsuarioAsignado1 == userIdInSession)
+            {
+                return View(new ActualizarTareaViewModel(nuevaTarea, usuarios , tableros ));
+            }else
+            {
+                return RedirectToRoute(new {controller = "Home", action="Error"});
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        }
+        
+    }
+    [HttpPost]
+    public IActionResult UpdateMyTarea(ActualizarTareaViewModel tareaVM)
+    {
+       try
+        {
+            if(!ModelState.IsValid) return RedirectToRoute(new {controller = "Tarea", action="MyTarea", id = tareaVM.Id});
+
+            if(!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+
+            int userIdInSession = Convert.ToInt32(HttpContext.Session.GetString("Id"));
+
+            if(tareaVM.IdUsuarioAsignado1 == userIdInSession){
+                Tarea tarea = new Tarea(tareaVM);
+                _repoTareaC.Modificar(tarea.Id, tarea);
+                return RedirectToAction("MyTarea");
+            }else
+            {
+                return RedirectToRoute(new {controller = "Home", action="Error"});
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"{ex.ToString()}");
+            return RedirectToRoute(new {controller = "Home", action="Error"});
+        } 
+        
+    }
+
     [HttpGet]
     public IActionResult Delete(int id)
     {
