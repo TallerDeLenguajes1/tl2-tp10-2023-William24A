@@ -51,12 +51,6 @@ public class UsuarioController : Controller
         try
         {
             return View(new CrearUsuarioViewModel());
-            /*if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
-            if(isAdmin())
-            {
-                return View(new CrearUsuarioViewModel());
-            }
-            return RedirectToRoute(new {controller = "Home", action = "Index"});*/ 
         }
         catch (System.Exception ex)
         {
