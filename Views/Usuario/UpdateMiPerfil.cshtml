@@ -1,0 +1,28 @@
+@model MVC.ViewModels.ActualizarUsuarioViewModel
+@using tl2_tp10_2023_William24A.Models;
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+<div>
+    <div class="card-header text-center">
+            <h1 class="h3 mb-3 fw-normal">Modificar usuario</h1>
+    </div>
+    <form asp-controller="Usuario" asp-action="UpdateMiPerfil">
+        <input hidden asp-for="@Model.Id">
+        <input hidden asp-for="@Model.Tipo">
+        <div class="mb-4">
+            <div class="input-group">
+            <label asp-for="@Model.NombreUsuario" class="input-group-text">Ingrese el nuevo nombre de usuario</label>
+            <input asp-for="@Model.NombreUsuario" class="form-control"/>
+            </div>
+            <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span> 
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+</div>
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}

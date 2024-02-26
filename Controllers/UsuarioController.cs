@@ -143,7 +143,58 @@ public class UsuarioController : Controller
         }
         
     }
+[HttpGet]
+    public IActionResult UpdateMiPerfil(int id)
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+             if(id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                {
+                    var usuario = _repoUsuarioC.GetById(id);
+                    var usuarioVM = new ActualizarUsuarioViewModel(usuario);
+                    return View(usuarioVM);
+                }
+                return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        }
+        catch (System.Exception ex)
+        {
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        
+    }
+    [HttpPost]
+    public IActionResult UpdateMiPerfil(ActualizarUsuarioViewModel usuarioVM)
+    {
+        try
+        {
+            if (!isLogueado()) return RedirectToRoute(new {controller = "Login", action="Index"});
+             if(_repoUsuarioC.ExistUser(usuarioVM.NombreUsuario) != null && _repoUsuarioC.ExistUser(usuarioVM.NombreUsuario).Id != usuarioVM.Id)
+            {
+                 ViewBag.ErrorMessage = "El nombre de usuario ya existe";
+    
+                return View("UpdateMiPerfil", usuarioVM);
+            }
+            if(usuarioVM.Id == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+            {
+                if(!ModelState.IsValid) return RedirectToAction("Configuracion");;
+                var usuario = new Usuario(usuarioVM, _repoUsuarioC.GetById(usuarioVM.Id).Contrasenia);
+                _repoUsuarioC.Update(usuario.Id, usuario);
+                
+                HttpContext.Session.SetString("Usuario", usuario.NombreUsuario);
 
+                return RedirectToAction("Configuracion");
+            }
+            return RedirectToRoute(new {controller = "Home", action = "Index"}); 
+        }
+        catch (System.Exception ex)
+        {
+             _logger.LogError(ex.ToString());
+            return RedirectToRoute(new {controller = "Home", action ="Error"});
+        }
+        
+    }
     [HttpGet]
     public IActionResult Delete(int id)
     {
